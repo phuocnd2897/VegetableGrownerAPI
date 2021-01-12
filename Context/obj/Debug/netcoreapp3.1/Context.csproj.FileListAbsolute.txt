@@ -1,0 +1,4 @@
+D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Context.exe
+D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\Context.csprojAssemblyReference.cache
+D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\Context.AssemblyInfoInputs.cache
+D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\Context.AssemblyInfo.cs

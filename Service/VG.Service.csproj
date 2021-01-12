@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\VG.Common.csproj" />
+    <ProjectReference Include="..\Data\VG.Data.csproj" />
+    <ProjectReference Include="..\Model\VG.Model.csproj" />
+  </ItemGroup>
+
+</Project>
