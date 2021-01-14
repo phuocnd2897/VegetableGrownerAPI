@@ -14,7 +14,7 @@ namespace VG.Model.Model
             Id = Guid.NewGuid().ToString();
         }
         [Key]
-        [MaxLength(128)]
+        [Required, MaxLength(128)]
         public string Id { get; set; }
         [Required, MaxLength(10)]
         public string PhoneNumber { get; set; }

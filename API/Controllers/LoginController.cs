@@ -32,7 +32,7 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
             var user = this._accountService.Login(login.PhoneNumber, login.Password);
-            if (user == null || user.RoleId != 1)
+            if (user == null || user.RoleId != 2)
                 return BadRequest(new { message = "Tên đăng nhập hoặc mật khẩu không đúng!" });
             //var roles = this._appUserService.getrolesbyuserid(user.UserId);
             //var claimroles = roles.SelectMany(s => s.Functions).GroupBy(s => s.FunctionCode, (k, g) => new CacheRoleFunctionsModel()
@@ -67,7 +67,7 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
             var user = this._accountService.Login(login.PhoneNumber, login.Password);
-            if (user == null && (user.RoleId != 0))
+            if (user == null && (user.RoleId != 1))
                 return BadRequest(new { message = "Tên đăng nhập hoặc mật khẩu không đúng!" });
             //var roles = this._appUserService.getrolesbyuserid(user.UserId);
             //var claimroles = roles.SelectMany(s => s.Functions).GroupBy(s => s.FunctionCode, (k, g) => new CacheRoleFunctionsModel()

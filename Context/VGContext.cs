@@ -17,7 +17,11 @@ namespace VG.Context
         {
             
         }
-        public virtual DbSet<Account> AppUsers { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<AccountDetail> AccountDetails { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<PostImage> PostImages { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

@@ -16,6 +16,8 @@ namespace VG.Model.Model
         public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
         public int Sex { get; set; }
+        [Required, MaxLength(500)]
+        public string Email { get; set; }
         public DateTime? CreatedDate { get; set; }
         [Required, MaxLength(50)]
         public string AccountId { get; set; }

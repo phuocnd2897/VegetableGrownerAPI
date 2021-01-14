@@ -41,6 +41,7 @@ namespace VG.Service.Service
                 FullName = newItem.FullName,
                 BirthDate = newItem.BirthDate,
                 Sex = newItem.Sex,
+                Email = newItem.Email,
                 CreatedDate = DateTime.Now
             });
             this._accountDetailRepository.Commit();

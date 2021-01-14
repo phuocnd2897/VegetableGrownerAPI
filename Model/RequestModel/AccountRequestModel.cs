@@ -16,5 +16,7 @@ namespace VG.Model.RequestModel
         public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
         public int Sex { get; set; }
+        [Required, MaxLength(500)]
+        public string Email { get; set; }
     }
 }

@@ -31,3 +31,5 @@ D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.csproj.Copy
 D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.dll
 D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.pdb
 D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\Data\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
+D:\Capstone\VegetableGrownerAPI\Data\bin\Debug\netcoreapp3.1\System.IO.Pipelines.dll
