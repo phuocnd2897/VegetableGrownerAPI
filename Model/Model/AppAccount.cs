@@ -6,10 +6,10 @@ using System.Text;
 
 namespace VG.Model.Model
 {
-    [Table("Account")]
-    public class Account
+    [Table("AppAccount")]
+    public class AppAccount
     {
-        public Account()
+        public AppAccount()
         {
             Id = Guid.NewGuid().ToString();
         }
@@ -23,6 +23,6 @@ namespace VG.Model.Model
         public bool Lock { get; set; }
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        public virtual AccountRole Role { get; set; }
     }
 }

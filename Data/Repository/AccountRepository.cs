@@ -6,10 +6,10 @@ using System.Text;
 
 namespace VG.Data.Repository
 {
-    public interface IAccountRepository : IRepository<Account, string>
+    public interface IAccountRepository : IRepository<AppAccount, string>
     {
     }
-    public class AccountRepository : RepositoryBase<Account, string>, IAccountRepository
+    public class AccountRepository : RepositoryBase<AppAccount, string>, IAccountRepository
     {
         public AccountRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

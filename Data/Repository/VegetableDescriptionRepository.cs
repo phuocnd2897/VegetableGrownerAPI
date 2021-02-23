@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using VG.Context;
+using VG.Model.Model;
+
+namespace VG.Data.Repository
+{
+    public interface IVegetableDescriptionRepository : IRepository<VegetableDescription, string>
+    {
+
+    }
+    public class VegetableDescriptionRepository : RepositoryBase<VegetableDescription, string>, IVegetableDescriptionRepository
+    {
+        public VegetableDescriptionRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
+    }
+}

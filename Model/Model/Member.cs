@@ -6,8 +6,8 @@ using System.Text;
 
 namespace VG.Model.Model
 {
-    [Table("AccountDetail")]
-    public class AccountDetail
+    [Table("Member")]
+    public class Member
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,6 +22,6 @@ namespace VG.Model.Model
         [Required, MaxLength(50)]
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
-        public virtual Account Account { get; set; }
+        public virtual AppAccount Account { get; set; }
     }
 }

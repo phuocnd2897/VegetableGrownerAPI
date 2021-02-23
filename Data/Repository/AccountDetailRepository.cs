@@ -6,10 +6,10 @@ using VG.Model.Model;
 
 namespace VG.Data.Repository
 {
-    public interface IAccountDetailRepository : IRepository<AccountDetail, int>
+    public interface IAccountDetailRepository : IRepository<Member, int>
     {
     }
-    public class AccountDetailRepository : RepositoryBase<AccountDetail, int>, IAccountDetailRepository
+    public class AccountDetailRepository : RepositoryBase<Member, int>, IAccountDetailRepository
     {
         public AccountDetailRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

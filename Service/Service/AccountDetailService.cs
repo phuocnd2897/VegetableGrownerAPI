@@ -28,14 +28,14 @@ namespace VG.Service.Service
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == newItem.PhoneNumber);
             if (account != null)
                 throw new Exception("Số điện thoại này đã được đăng kí. Vui lòng thử lại số khác");
-            account = this._accountRepository.Add(new Account
+            account = this._accountRepository.Add(new AppAccount
             {
                 PhoneNumber = newItem.PhoneNumber,
                 PassWord = IdentytiHelper.HashPassword(newItem.Password),
                 Lock = false,
                 RoleId = 2
             });
-            var accountDetail = this._accountDetailRepository.Add(new AccountDetail
+            var accountDetail = this._accountDetailRepository.Add(new Member
             {
                 AccountId = account.Id,
                 FullName = newItem.FullName,

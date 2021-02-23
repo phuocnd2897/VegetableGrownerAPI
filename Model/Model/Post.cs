@@ -28,7 +28,7 @@ namespace VG.Model.Model
         public DateTime CreatedDate { get; set; }
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
-        public virtual Account Account { get; set; }
+        public virtual AppAccount Account { get; set; }
         public ICollection<PostImage> PostImages { get; set; }
     }
 }

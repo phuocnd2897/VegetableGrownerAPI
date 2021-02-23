@@ -614,7 +614,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Administrator\\.nuget\\packages\\": {}
+    "C:\\Users\\phuoc'\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -622,11 +622,11 @@
       "projectUniqueName": "D:\\Capstone\\VegetableGrownerAPI\\Context\\VG.Context.csproj",
       "projectName": "VG.Context",
       "projectPath": "D:\\Capstone\\VegetableGrownerAPI\\Context\\VG.Context.csproj",
-      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\phuoc'\\.nuget\\packages\\",
       "outputPath": "D:\\Capstone\\VegetableGrownerAPI\\Context\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\phuoc'\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -638,6 +638,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
             "D:\\Capstone\\VegetableGrownerAPI\\Model\\VG.Model.csproj": {
               "projectPath": "D:\\Capstone\\VegetableGrownerAPI\\Model\\VG.Model.csproj"
@@ -653,6 +654,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
@@ -674,7 +676,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
       }
     }
   }
