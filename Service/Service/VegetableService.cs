@@ -201,14 +201,6 @@ namespace VG.Service.Service
         {
             int tmpVeg = 1;
             List<VegetableResponseModel> vegetableResponseModels = new List<VegetableResponseModel>();
-            string Name = "";
-            string Description = "";
-            string Feature = "";
-            string IdName = "";
-            string IdDescription = "";
-            string IdFeature = "";
-            string IdImage = "";
-            int GardenId = 0;
             List <VegetableImage> vegetableImages = new List<VegetableImage>();
             var result = this._vegetableRepository.GetAll(new string[] { "VegetableDescription" }).OrderBy(s => s.No);
             for (int i = 0; i < result.Max(s => s.No); i++)
