@@ -13,8 +13,9 @@ namespace VG.Service.Service
 {
     public interface IPostService
     {
-        Post Add(PostRequestModel newItem, string phoneNumber, string savePath, string domain);
+        Post Add(PostRequestModel newItem, string phoneNumber);
         IEnumerable<PostResponseModel> GetAllPost();
+        PostResponseModel Get(string Id);
         PostRequestModel Update(PostRequestModel newItem, string phoneNumber, string savePath, string domain);
         void Delete(string Id);
     }
@@ -29,7 +30,7 @@ namespace VG.Service.Service
             _accountRepository = accountRepository;
             _vegetableService = vegetableService;
         }
-        public Post Add(PostRequestModel newItem, string phoneNumber, string savePath, string domain)
+        public Post Add(PostRequestModel newItem, string phoneNumber)
         {
             string accountId = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber).Id;
             var post = this._postRepository.Add(new Post
@@ -52,11 +53,28 @@ namespace VG.Service.Service
             this._postRepository.Commit();
         }
 
+        public PostResponseModel Get(string Id)
+        {
+            var result = this._postRepository.GetSingle(s => s.Id == Id);
+            var veg = this._vegetableService.Get(result.NoVeg, result.GardenId);
+            return new PostResponseModel
+            {
+                Id = result.Id,
+                CreatedDate = result.CreatedDate,
+                AccountId = result.AccountId,
+                VegName = veg.Name,
+                PostContent = result.PostContent,
+                VegDescription = veg.Description,
+                VegFeature = veg.Feature,
+                Images = veg.Images
+            };
+        }
+
         public IEnumerable<PostResponseModel> GetAllPost()
         {
             List<PostResponseModel> postResponseModels = new List<PostResponseModel>();
             var result = this._postRepository.GetAll();
-            foreach (var item in result)
+            foreach (var item in result.ToList())
             {
 
                 var veg = this._vegetableService.Get(item.NoVeg, item.GardenId);

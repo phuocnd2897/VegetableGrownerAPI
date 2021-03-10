@@ -33,19 +33,36 @@ namespace API.Controllers
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._postService.Add(newItem, phoneNumber, Directory.GetCurrentDirectory(), Request.Scheme + "://" + Request.Host);
-                if (result == null)
+                var result = this._postService.Add(newItem, phoneNumber);
+                if (result != null)
                 {
                     return Ok(result);
                 }
                 else
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
 
+        }
+        [HttpGet]
+        public IActionResult Get(string Id)
+        {
+            try
+            {
+                var result = this._postService.Get(Id);
+                if (result == null)
+                {
+                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
         }
         [HttpGet]
         [Route("GetAll")]
