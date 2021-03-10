@@ -22,7 +22,7 @@ namespace VG.Service.Service
         public LoginResponseModel Login(string phoneNumber, string password)
         {
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
-            if (account == null || !IdentytiHelper.VerifyHashedPassword(account.PassWord, password) || account.Lock == true)
+            if (account == null || !IdentytiHelper.VerifyHashedPassword(account.PassWord, password) || account.Status == false)
                 return null;
             return new LoginResponseModel
             {

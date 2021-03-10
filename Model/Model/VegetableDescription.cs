@@ -9,16 +9,21 @@ namespace VG.Model.Model
     [Table("VegetableDescription")]
     public class VegetableDescription
     {
+        public VegetableDescription()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
         [Key]
         [Required, MaxLength(128)]
         public string Id { get; set; }
-        [Required, MaxLength(128)]
+        [Required, MaxLength(1000)]
         public string VegContent { get; set; }
-        public int VegCompositionId { get; set; }
-        public string VegetableId { get; set; }
-        [ForeignKey("VegCompositionId")]
+        public int VegetableCompositionId { get; set; }
+        public string AccountId { get; set; }
+        [ForeignKey("VegetableCompositionId")]
         public virtual VegetableComposition VegetableComposition { get; set; }
-        [ForeignKey("VegetableId")]
-        public virtual Vegetable Vegetable { get; set; }
+        [ForeignKey("AccountId")]
+        public virtual AppAccount AppAccount { get; set; }
+
     }
 }

@@ -21,12 +21,10 @@ namespace API.Controllers
     public class PostController : ControllerBase
     {
         private IPostService _postService;
-        private IPostImageService _postImageService;
         private IWebHostEnvironment _hostingEnvironment;
-        public PostController(IPostService postService, IPostImageService postImageService, IWebHostEnvironment hostingEnvironment)
+        public PostController(IPostService postService, IWebHostEnvironment hostingEnvironment)
         {
             _postService = postService;
-            _postImageService = postImageService;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost]
@@ -44,28 +42,6 @@ namespace API.Controllers
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
             catch (Exception)
-            {
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
-            }
-
-        }
-        [HttpPost]
-        [Route("PostImage")]
-        public IActionResult AddPostImage(IFormFile newItem)
-        {
-            try
-            {
-                var phoneNumber = User.Identity.Name;
-                var result = this._postImageService.UploadImage(newItem, phoneNumber, Directory.GetCurrentDirectory());
-                if (result == null)
-                {
-                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
-                }
-                else
-                    return Ok(result);
-
-            }
-            catch (Exception ex)
             {
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }

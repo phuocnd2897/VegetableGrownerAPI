@@ -39,7 +39,7 @@ namespace API.Controllers
             }
         }
         [HttpPut]
-        public IActionResult Update(Garden newItem)
+        public IActionResult Update(GardenRequestModel newItem)
         {
             try
             {

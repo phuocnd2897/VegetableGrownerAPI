@@ -20,7 +20,7 @@ namespace VG.Model.Model
         public string PhoneNumber { get; set; }
         [Required, MinLength(6), MaxLength(128)]
         public string PassWord { get; set; }
-        public bool Lock { get; set; }
+        public bool Status { get; set; }
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual AccountRole Role { get; set; }

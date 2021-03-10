@@ -10,7 +10,7 @@ namespace VG.Service.Service
     public interface IGardenService
     {
         Garden Add(GardenRequestModel newItem, string phoneNumber);
-        Garden Update(Garden newItem);
+        GardenRequestModel Update(GardenRequestModel newItem);
         IEnumerable<Garden> GetAll();
         Garden Get(int Id);
         void Delete(int Id);
@@ -54,13 +54,14 @@ namespace VG.Service.Service
             return this._gardenRepository.GetAll();
         }
 
-        public Garden Update(Garden newItem)
+        public GardenRequestModel Update(GardenRequestModel newItem)
         {
             var result = this._gardenRepository.GetSingle(s => s.Id == newItem.Id);
             result.Name = newItem.Name;
             result.Address = newItem.Address;
             this._gardenRepository.Update(result);
-            return result;
+            this._gardenRepository.Commit();
+            return newItem;
         }
 
     }

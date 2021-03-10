@@ -36,7 +36,7 @@ namespace VG.Service.Service
             string description = "";
             string feature = "";
             string tittle = "";
-            List<PostImage> postImages = new List<PostImage>();
+            List<VegetableImage> postImages = new List<VegetableImage>();
             List<VegetableResponseModel> vegetables = new List<VegetableResponseModel>();
             using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APISearchList+ title))
             {

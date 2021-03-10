@@ -9,14 +9,11 @@ namespace VG.Model.RequestModel
     public class PostRequestModel
     {
         public string Id { get; set; }
-        [Required, MaxLength(200)]
-        public string Tittle { get; set; }
         [Required, MaxLength(1000)]
         public string Content { get; set; }
-        [Required, MaxLength(1000)]
-        public string Description { get; set; }
-        [Required, MaxLength(1000)]
-        public string Feature { get; set; }
-        public IEnumerable<IFormFile> Images { get; set; }
+        public int Status { get; set; }
+        public int NoVeg { get; set; }
+        public int GardenId { get; set; }
+        public string AccountId { get; set; }
     }
 }

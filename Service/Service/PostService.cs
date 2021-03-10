@@ -22,66 +22,65 @@ namespace VG.Service.Service
     {
         private IPostRepository _postRepository;
         private IAccountRepository _accountRepository;
-        private IPostImageService _postImageService;
-        public PostService(IPostRepository postRepository, IAccountRepository accountRepository, IPostImageService postImageService)
+        private IVegetableService _vegetableService;
+        public PostService(IPostRepository postRepository, IAccountRepository accountRepository, IVegetableService vegetableService)
         {
             _postRepository = postRepository;
             _accountRepository = accountRepository;
-            _postImageService = postImageService;
+            _vegetableService = vegetableService;
         }
         public Post Add(PostRequestModel newItem, string phoneNumber, string savePath, string domain)
         {
             string accountId = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber).Id;
             var post = this._postRepository.Add(new Post
             {
-                Tittle = newItem.Tittle,
                 PostContent = newItem.Content,
-                Description = newItem.Description,
-                Feature = newItem.Feature,
                 CreatedDate = DateTime.Now,
-                AccountId = accountId
+                AccountId = accountId,
+                Status = newItem.Status,
+                GardenId = newItem.GardenId,
+                NoVeg = newItem.NoVeg
             });
-            foreach (IFormFile item in newItem.Images)
-            {
-                var image = this._postImageService.UploadImage(item, post.Id, savePath);
-                post.PostImages.Add(image);
-            }
             this._postRepository.Commit();
             return post;
         }
 
         public void Delete(string Id)
         {
-            var post = this._postRepository.GetSingle(s => s.Id == Id, new string[] { "PostImages" });
+            var post = this._postRepository.GetSingle(s => s.Id == Id);
             this._postRepository.Delete(post);
-            this._postImageService.Delete(post.Id);
             this._postRepository.Commit();
         }
 
         public IEnumerable<PostResponseModel> GetAllPost()
         {
-            var result = this._postRepository.GetAll(new string[] { "PostImages"}).Select(s => new PostResponseModel
+            List<PostResponseModel> postResponseModels = new List<PostResponseModel>();
+            var result = this._postRepository.GetAll();
+            foreach (var item in result)
             {
-                Id = s.Id,
-                Title = s.Tittle,
-                PostContent = s.PostContent,
-                Description = s.Description,
-                Feature = s.Feature,
-                CreatedDate = s.CreatedDate,
-                AccountId  = s.AccountId,
-                listImage = s.PostImages.Where(p => p.PostId == s.Id).Select(p => p.Url),
-            });
-            return result;
+
+                var veg = this._vegetableService.Get(item.NoVeg, item.GardenId);
+                postResponseModels.Add(new PostResponseModel 
+                {
+                    Id = item.Id,
+                    CreatedDate = item.CreatedDate,
+                    AccountId = item.AccountId,
+                    VegName = veg.Name,
+                    PostContent = item.PostContent,
+                    VegDescription = veg.Description,
+                    VegFeature = veg.Feature,
+                    Images = veg.Images
+                });
+            }
+            return postResponseModels;
         }
 
         public PostRequestModel Update(PostRequestModel newItem, string phoneNumber, string savePath, string domain)
         {
             var result = this._postRepository.GetSingle(s => s.Id == newItem.Id);
-            result.Tittle = newItem.Tittle;
             result.PostContent = newItem.Content;
-            result.Description = newItem.Description;
-            result.Feature = newItem.Feature;
-            this._postImageService.Update(newItem.Images, newItem.Id, savePath);
+            result.GardenId = newItem.GardenId;
+            result.NoVeg = newItem.NoVeg;
             this._postRepository.Update(result);
             this._postRepository.Commit();
             return newItem;

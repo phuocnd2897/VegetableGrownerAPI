@@ -13,22 +13,17 @@ namespace VG.Model.Model
         public Post()
         {
             Id = Guid.NewGuid().ToString();
-            PostImages = new HashSet<PostImage>();
         }
         [Required, MaxLength(128)]
         public string Id { get; set; }
-        [Required, MaxLength(200)]
-        public string Tittle { get; set; }
         [Required, MaxLength(1000)]
         public string PostContent { get; set; }
-        [Required, MaxLength(1000)]
-        public string Description { get; set; }
-        [Required, MaxLength(1000)]
-        public string Feature { get; set; }
+        public int Status { get; set; }
         public DateTime CreatedDate { get; set; }
+        public int NoVeg { get; set; }
+        public int GardenId { get; set; }
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
         public virtual AppAccount Account { get; set; }
-        public ICollection<PostImage> PostImages { get; set; }
     }
 }

@@ -7,9 +7,9 @@ using System.Text;
 namespace VG.Model.Model
 {
     [Table("PostImage")]
-    public class PostImage
+    public class VegetableImage
     {
-        public PostImage()
+        public VegetableImage()
         {
             Id = Guid.NewGuid().ToString();
         }
@@ -25,9 +25,9 @@ namespace VG.Model.Model
         [Required, MaxLength(128)]
         public string LocalUrl { get; set; }
         [Required, MaxLength(128)]
-        public string PostId { get; set; }
-        [ForeignKey("PostId")]
-        public virtual Post Post { get; set; }
+        public string VegetableDescriptionId { get; set; }
+        [ForeignKey("VegetableDescriptionId")]
+        public virtual VegetableDescription VegetableDescription { get; set; }
 
     }
 }

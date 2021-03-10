@@ -11,7 +11,7 @@ namespace VG.Model.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
         [Required, MaxLength(128)]
         public string CompositionName { get; set; }
     }
