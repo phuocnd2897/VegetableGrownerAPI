@@ -18,13 +18,11 @@ namespace API.Controllers
     {
         private IVegetableService _vegetableService;
         private IVegetableImageService _vegetableImageService;
-        private readonly IHttpContextAccessor _context;
 
-        public VegetableController(IVegetableService vegetableService, IVegetableImageService vegetableImageService, IHttpContextAccessor context)
+        public VegetableController(IVegetableService vegetableService, IVegetableImageService vegetableImageService)
         {
             _vegetableService = vegetableService;
             _vegetableImageService = vegetableImageService;
-            _context = context;
         }
         [HttpPost]
         public IActionResult AddVegetable(VegetableRequestModel newItem)

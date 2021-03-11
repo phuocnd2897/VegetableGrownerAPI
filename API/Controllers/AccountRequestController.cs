@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,9 @@ using VG.Service.Service;
 
 namespace API.Controllers
 {
+    [Authorize("Bearer")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountRequestController : ControllerBase
     {
         private IAccountRequestService _accountRequestService;
@@ -32,7 +36,7 @@ namespace API.Controllers
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
-        [HttpPost]
+        [HttpPut]
         public IActionResult IsConfirm(int Id, int status)
         {
             try

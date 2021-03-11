@@ -18,6 +18,8 @@ namespace VG.Context
             
         }
         public virtual DbSet<AppAccount> Accounts { get; set; }
+        public virtual DbSet<AccountRequest> AccountRequests { get; set; }
+        public virtual DbSet<AccountFriend> AccountFriends { get; set; }
         public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<VegetableImage> VegetableImages { get; set; }
