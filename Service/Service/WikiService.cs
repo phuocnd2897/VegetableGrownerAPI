@@ -38,6 +38,8 @@ namespace VG.Service.Service
             string tittle = "";
             List<VegetableImage> postImages = new List<VegetableImage>();
             List<VegetableResponseModel> vegetables = new List<VegetableResponseModel>();
+            char[] separators = new char[] { '[', ']', '\\' };
+            Regex pattern = new Regex("[\\[\\]\\\\]");
             using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APISearchList+ title))
             {
                 using (var httpClient = new HttpClient())
@@ -58,30 +60,6 @@ namespace VG.Service.Service
             }
             foreach (DataRow dr in dt.Rows)
             {
-                using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APIGetInfo + dr["title"]))
-                {
-                    using (var httpClient = new HttpClient())
-                    {
-                        var responseSearch = httpClient.SendAsync(httpRequestSearch).Result;
-
-                        if (responseSearch.IsSuccessStatusCode)
-                        {
-                            resultSearch = responseSearch.Content.ReadAsStringAsync().Result;
-                            JObject myObj = JsonConvert.DeserializeObject<JObject>(resultSearch);
-                            string value = myObj.SelectToken("parse.text").ToString();
-                            var document = new HtmlDocument();
-                            document.LoadHtml(value);
-                            var innerHtml = document.DocumentNode.SelectNodes("div")[0];
-                            var test1 = innerHtml.Descendants().Where(s => s.Name == "img");
-                        }
-                        else
-                        {
-                        }
-                    }
-                }
-            }
-            foreach (DataRow dr in dt.Rows)
-            {
                 using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APIGetInfo2 + dr["title"]))
                 {
                     using (var httpClient = new HttpClient())
@@ -96,13 +74,13 @@ namespace VG.Service.Service
                             string plantext = value.Replace(@"\n","\n\r");
                             var split = plantext.Split("\n\r\n\r==");
                             split = split.Select(s => Regex.Replace(s, @"[|]", string.Empty)).ToArray();
-                            description = split[0].Substring(split[0].IndexOf(dr["title"].ToString()), split[0].Length - split[0].IndexOf(dr["title"].ToString()) - 1);
+                            description = split[0].Substring(split[0].IndexOf("'''" + dr["title"].ToString() + "'''"), split[0].Length - split[0].IndexOf("'''" + dr["title"].ToString() + "'''") - 1);
                             feature = split.Where(s => s.Contains("Công dụng") || s.Contains("Tác dụng") || s.Contains("Ứng dụng")).FirstOrDefault();
                             vegetables.Add(new VegetableResponseModel
                             {
-                                Name = dr["title"].ToString(),
-                                Description = description,
-                                Feature = feature
+                                Name = dr["title"].ToString() ,
+                                Description = description != null ? pattern.Replace(description, string.Empty) : pattern.Replace(plantext, string.Empty),
+                                Feature = feature!= null ? pattern.Replace(feature, string.Empty) : pattern.Replace(plantext, string.Empty),
                             });
                         }
                         else
@@ -112,47 +90,6 @@ namespace VG.Service.Service
                 }
             }
             return vegetables;
-        }
-        public string RemoveSpecialCharacters(string str)
-        {
-            string strResult = "";
-            string except = "\n\r";
-            for (int i = 0; i < str.Length; i++)
-            {
-                if ((str[i] >= '0' && str[i] <= '9') || (str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (except.IndexOf(str[i]) > -1))
-                {
-                    strResult += str[i];
-                }
-            }
-            return strResult;
-        }
-        public string DoIt(string htmlString)
-        {
-            HtmlDocument document = new HtmlDocument();
-            document.LoadHtml(htmlString);
-            document.DocumentNode.Descendants("img")
-                                .Where(e =>
-                                {
-                                    string src = e.GetAttributeValue("src", null) ?? "";
-                                    return !string.IsNullOrEmpty(src) && src.StartsWith("data:image");
-                                })
-                                .ToList()
-                                .ForEach(x =>
-                                {
-                                    string currentSrcValue = x.GetAttributeValue("src", null);
-                                    currentSrcValue = currentSrcValue.Split(',')[1];//Base64 part of string
-                                byte[] imageData = Convert.FromBase64String(currentSrcValue);
-                                    string contentId = Guid.NewGuid().ToString();
-                                    LinkedResource inline = new LinkedResource(new MemoryStream(imageData), "image/jpeg");
-                                    inline.ContentId = contentId;
-                                    inline.TransferEncoding = TransferEncoding.Base64;
-
-                                    x.SetAttributeValue("src", "cid:" + inline.ContentId);
-                                });
-
-
-            string result = document.DocumentNode.OuterHtml;
-            return result;
         }
     }
 }

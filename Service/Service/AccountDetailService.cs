@@ -32,7 +32,7 @@ namespace VG.Service.Service
             {
                 PhoneNumber = newItem.PhoneNumber,
                 PassWord = IdentytiHelper.HashPassword(newItem.Password),
-                Status = false,
+                Status = true,
                 RoleId = 2
             });
             var accountDetail = this._accountDetailRepository.Add(new Member

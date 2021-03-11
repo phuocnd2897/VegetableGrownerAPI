@@ -134,6 +134,7 @@ namespace API
                     }
                 });
             });
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -158,6 +159,7 @@ namespace API
             });
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseStaticFiles();
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();

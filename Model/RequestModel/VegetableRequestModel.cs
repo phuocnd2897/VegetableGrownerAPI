@@ -18,7 +18,6 @@ namespace VG.Model.RequestModel
         public string Description { get; set; }
         [Required]
         public string Featture { get; set; }
-        [Required]
         public string NewFeatture { get; set; }
         public IEnumerable<IFormFile>? Images { get; set; }
         public IEnumerable<IFormFile>? NewImages { get; set; }

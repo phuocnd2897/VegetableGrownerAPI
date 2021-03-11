@@ -12,7 +12,7 @@ namespace VG.Service.Service
 {
     public interface IVegetableService
     {
-        VegetableRequestModel Add(VegetableRequestModel newItem, string phoneNumber, string savePath);
+        VegetableRequestModel Add(VegetableRequestModel newItem, string phoneNumber, string savePath, string url);
         VegetableRequestModel Update(VegetableRequestModel newItem, string phoneNumber, string savePath);
         void Delete(int noVeg, int gardenId);
         public VegetableResponseModel Get(int noVeg, int gardenId);
@@ -33,11 +33,11 @@ namespace VG.Service.Service
             _vegetableImageService = vegetableImageService;
             _acccountRepository = acccountRepository;
         }
-        public VegetableRequestModel Add(VegetableRequestModel newItem, string phoneNumber, string savePath)
+        public VegetableRequestModel Add(VegetableRequestModel newItem, string phoneNumber, string savePath, string url)
         {
             int num = 1;
             var item = this._vegetableRepository.GetMulti(s => s.GardenId == newItem.GardenId);
-            if (item != null)
+            if (item.Count() > 0)
             {
                 num = item.Select(s => s.No).Max() + 1;
             }
@@ -100,7 +100,7 @@ namespace VG.Service.Service
                 {
                     foreach (IFormFile img in newItem.Images)
                     {
-                        this._vegetableImageService.UploadImage(img, vegDetailImg.Id, savePath);
+                        this._vegetableImageService.UploadImage(img, vegDetailImg.Id, savePath, url);
                     }
                 }
                 newItem.IdName = vegName.Id;
@@ -158,7 +158,7 @@ namespace VG.Service.Service
                 {
                     foreach (IFormFile img in newItem.Images)
                     {
-                        this._vegetableImageService.UploadImage(img, vegDetailImg.Id, savePath);
+                        this._vegetableImageService.UploadImage(img, vegDetailImg.Id, savePath, url);
                     }
                 }
                 newItem.IdName = vegName.Id;

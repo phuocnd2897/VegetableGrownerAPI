@@ -6,16 +6,12 @@ using System.Text;
 
 namespace VG.Model.Model
 {
-    [Table("PostImage")]
+    [Table("VegetableImage")]
     public class VegetableImage
     {
-        public VegetableImage()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
         [Key]
-        [Required, MaxLength(128)]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         [Required, MaxLength(200)]
         public string Name { get; set; }
         [Required, MaxLength(200)]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,14 @@ namespace API.Controllers
     public class VegetableController : Controller
     {
         private IVegetableService _vegetableService;
-        public VegetableController(IVegetableService vegetableService)
+        private IVegetableImageService _vegetableImageService;
+        private readonly IHttpContextAccessor _context;
+
+        public VegetableController(IVegetableService vegetableService, IVegetableImageService vegetableImageService, IHttpContextAccessor context)
         {
             _vegetableService = vegetableService;
+            _vegetableImageService = vegetableImageService;
+            _context = context;
         }
         [HttpPost]
         public IActionResult AddVegetable(VegetableRequestModel newItem)
@@ -26,7 +32,8 @@ namespace API.Controllers
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._vegetableService.Add(newItem, phoneNumber, Directory.GetCurrentDirectory());
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                var result = this._vegetableService.Add(newItem, phoneNumber, Directory.GetCurrentDirectory(), baseUrl);
                 if (result == null)
                 {
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
@@ -37,6 +44,27 @@ namespace API.Controllers
             {
 
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpPost]
+        [Route("Image")]
+        public IActionResult AddImageVegetable(IFormFile newItem)
+        {
+            try
+            {
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                var phoneNumber = User.Identity.Name;
+                var result = this._vegetableImageService.UploadImage(newItem, "f8974e7d-91f9-4230-92af-9004b2d7a0a5", Directory.GetCurrentDirectory(), baseUrl);
+                if (result == null)
+                {
+                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
             }
         }
         [HttpPut]
@@ -59,7 +87,7 @@ namespace API.Controllers
             }
         }
         [HttpDelete]
-        public IActionResult AddVegetable(int noVeg, int gardenId)
+        public IActionResult DeleteVegetable(int noVeg, int gardenId)
         {
             try
             {

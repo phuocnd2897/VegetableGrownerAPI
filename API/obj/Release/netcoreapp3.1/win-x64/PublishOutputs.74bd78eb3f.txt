@@ -4,7 +4,9 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\VG.Data.exe
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\VG.Service.exe
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\API.exe
-D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2020-11-05214240254.png
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2020-11-30210611067.png
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2020-11-30211428106.png
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2020-11-30215836765.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\appsettings.Development.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\appsettings.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\API.dll
