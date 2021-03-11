@@ -14,7 +14,7 @@ namespace API.Controllers
     [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
-    public class VegetableController : Controller
+    public class VegetableController : ControllerBase
     {
         private IVegetableService _vegetableService;
         private IVegetableImageService _vegetableImageService;
