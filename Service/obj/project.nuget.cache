@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "YOnXeO60WXO8J7zTbR89OnY16z0dZEMJCB5ZSTZYNwvkZ7ZBAM9pIkBu5PCZXbxRdp0IL9s4Shc/2dU9Va29TA==",
+  "dgSpecHash": "ZdnG+ZPRku35+8KOzp9d4xbLPxbhwB2UasXq7wL6Eq70+ExzHRq8la31Md/Dws2MVJYrDVmCXrHVHQBAo2QPjA==",
   "success": true,
   "projectFilePath": "D:\\Capstone\\VegetableGrownerAPI\\Service\\VG.Service.csproj",
   "expectedPackageFiles": [
@@ -25,10 +25,7 @@
     "C:\\Users\\phuoc'\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.0\\system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\system.net.http.json\\5.0.0\\system.net.http.json.5.0.0.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\system.text.json\\5.0.0\\system.text.json.5.0.0.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\3.1.12\\microsoft.netcore.app.runtime.win-x64.3.1.12.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\3.1.12\\microsoft.windowsdesktop.app.runtime.win-x64.3.1.12.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.1.12\\microsoft.aspnetcore.app.runtime.win-x64.3.1.12.nupkg.sha512"
+    "C:\\Users\\phuoc'\\.nuget\\packages\\system.text.json\\5.0.0\\system.text.json.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

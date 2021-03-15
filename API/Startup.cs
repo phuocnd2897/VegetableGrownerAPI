@@ -23,7 +23,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SignalR;
 using API.Provider;
-using Swashbuckle.Swagger;
 using Microsoft.OpenApi.Models;
 using System.IO;
 
@@ -112,12 +111,14 @@ namespace API
                     Title = "My API",
                     Version = "v1"
                 });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     In = ParameterLocation.Header,
                     Description = "Please insert JWT with Bearer into field",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT"
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -128,7 +129,7 @@ namespace API
                                 {
                                     Type = ReferenceType.SecurityScheme,
                                     Id = "Bearer"
-                                }
+                                },
                         },
                         new string[] { }
                     }

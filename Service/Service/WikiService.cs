@@ -35,7 +35,6 @@ namespace VG.Service.Service
             List<string> plainText = new List<string>();
             string description = "";
             string feature = "";
-            string tittle = "";
             List<VegetableImage> postImages = new List<VegetableImage>();
             List<VegetableResponseModel> vegetables = new List<VegetableResponseModel>();
             char[] separators = new char[] { '[', ']', '\\' };

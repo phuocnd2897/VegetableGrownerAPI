@@ -13,10 +13,11 @@ namespace VG.Service.Service
     public interface IVegetableService
     {
         VegetableRequestModel Add(VegetableRequestModel newItem, string phoneNumber, string savePath, string url);
-        VegetableRequestModel Update(VegetableRequestModel newItem, string phoneNumber, string savePath);
+        VegetableRequestModel Update(VegetableRequestModel newItem, string phoneNumber, string savePath, string url);
         void Delete(int noVeg, int gardenId);
         public VegetableResponseModel Get(int noVeg, int gardenId);
-        public IEnumerable<VegetableResponseModel> GetAll();
+        public VegetableResponseModel Get(string Id);
+        public IEnumerable<VegetableResponseModel> GetByGardenId(int GardenId);
     }
     public class VegetableService : IVegetableService
     {
@@ -197,12 +198,29 @@ namespace VG.Service.Service
             };
         }
 
-        public IEnumerable<VegetableResponseModel> GetAll()
+        public VegetableResponseModel Get(string Id)
         {
-            int tmpVeg = 1;
+            var veg = this._vegetableRepository.GetSingle(s => s.Id == Id);
+            var result = this._vegetableRepository.GetMulti(s => s.No == veg.No && s.GardenId == veg.GardenId, new string[] { "VegetableDescription" });
+            return new VegetableResponseModel
+            {
+                No = veg.No,
+                Name = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent,
+                Description = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent,
+                Feature = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent,
+                Images = this._vegetableImageService.Get(result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id),
+                IdName = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 1).FirstOrDefault().Id,
+                IdDescription = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 2).FirstOrDefault().Id,
+                IdFeature = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 3).FirstOrDefault().Id,
+                IdImage = result.Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id
+            };
+        }
+
+        public IEnumerable<VegetableResponseModel> GetByGardenId(int GardenId)
+        {
             List<VegetableResponseModel> vegetableResponseModels = new List<VegetableResponseModel>();
             List <VegetableImage> vegetableImages = new List<VegetableImage>();
-            var result = this._vegetableRepository.GetAll(new string[] { "VegetableDescription" }).OrderBy(s => s.No);
+            var result = this._vegetableRepository.GetMulti(s => s.GardenId == GardenId, new string[] { "VegetableDescription" }).OrderBy(s => s.No);
             for (int i = 0; i < result.Max(s => s.No); i++)
             {
                 vegetableResponseModels.Add(new VegetableResponseModel
@@ -211,17 +229,17 @@ namespace VG.Service.Service
                     Name = result.Where(s => s.No == (i+1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent,
                     Description = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent,
                     Feature = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent,
-                    //Images = this._vegetableImageService.Get(result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id),
+                    Images = this._vegetableImageService.Get(result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id).ToList(),
                     IdName = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 1).FirstOrDefault().Id,
                     IdDescription = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 2).FirstOrDefault().Id,
                     IdFeature = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 3).FirstOrDefault().Id,
-                    //IdImage = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id,
+                    IdImage = result.Where(s => s.No == (i + 1)).Select(s => s.VegetableDescription).Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id,
                 });
             }
             return vegetableResponseModels;
         }
 
-        public VegetableRequestModel Update(VegetableRequestModel newItem, string phoneNumber, string savePath)
+        public VegetableRequestModel Update(VegetableRequestModel newItem, string phoneNumber, string savePath, string url)
         {
             int num = 1;
             var account = this._acccountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
@@ -232,12 +250,20 @@ namespace VG.Service.Service
             }
             var vegDetailDes = this._vegetableDescriptionRepository.GetSingle(s => s.Id == newItem.IdDescription);
             var vegDetailFeature = this._vegetableDescriptionRepository.GetSingle(s => s.Id == newItem.IdFeature);
+            var vegDetailImg = this._vegetableDescriptionRepository.GetSingle(s => s.Id == newItem.IdFeature);
             if (newItem.NewFeatture != "")
             {
                 if (vegDetailFeature.AccountId != "")
                 {
                     vegDetailFeature.VegContent = newItem.NewFeatture;
                     this._vegetableDescriptionRepository.Update(vegDetailFeature);
+                    if (newItem.Images != null)
+                {
+                    foreach (IFormFile img in newItem.Images)
+                    {
+                        this._vegetableImageService.UploadImage(img, vegDetailImg.Id, savePath, url);
+                    }
+                }
                 }
                 else
                 {

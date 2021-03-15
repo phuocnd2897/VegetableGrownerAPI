@@ -6,15 +6,17 @@ using System.Text;
 
 namespace VG.Model.Model
 {
+    [Table("ShareDetail")]
     public class ShareDetail
     {
         [Key]
         [Required, MaxLength(128)]
         public string Id { get; set; }
-        public DateTime DateShare { get; set; }
+        [Required]
+        public string ShareContent { get; set; }
         public int Quantity { get; set; }
-        [Required, MaxLength(128)]
-        public string ReceiveBy { get; set; }
+        public int Status { get; set; }
+        public DateTime DateShare { get; set; }
         [Required, MaxLength(128)]
         public string AccountId { get; set; }
         [Required, MaxLength(128)]

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using VG.Model.Model;
 
 namespace VG.Model.RequestModel
 {
@@ -19,7 +20,7 @@ namespace VG.Model.RequestModel
         [Required]
         public string Featture { get; set; }
         public string NewFeatture { get; set; }
-        public IEnumerable<IFormFile>? Images { get; set; }
+        public IEnumerable<VegetableImage>? Images { get; set; }
         public IEnumerable<IFormFile>? NewImages { get; set; }
         public int GardenId { get; set; }
     }

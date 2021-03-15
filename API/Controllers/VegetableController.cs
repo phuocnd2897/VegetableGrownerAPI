@@ -71,7 +71,8 @@ namespace API.Controllers
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._vegetableService.Update(newItem, phoneNumber, Directory.GetCurrentDirectory());
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                var result = this._vegetableService.Update(newItem, phoneNumber, Directory.GetCurrentDirectory(), baseUrl);
                 if (result == null)
                 {
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
@@ -117,12 +118,12 @@ namespace API.Controllers
             }
         }
         [HttpGet]
-        [Route("GetAll")]
-        public IActionResult GetAll()
+        [Route("GetByGardenId")]
+        public IActionResult GetAll(int GardenId)
         {
             try
             {
-                var result = this._vegetableService.GetAll();
+                var result = this._vegetableService.GetByGardenId(GardenId);
                 return Ok(result);
             }
             catch (Exception ex)

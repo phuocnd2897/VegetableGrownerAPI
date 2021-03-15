@@ -105,8 +105,6 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.runtimeconfig.de
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.pdb
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\HtmlAgilityPack.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\System.Web.Http.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -137,7 +135,6 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.Core.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\System.ComponentModel.Annotations.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll

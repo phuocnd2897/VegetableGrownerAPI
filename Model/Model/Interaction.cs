@@ -24,7 +24,7 @@ namespace VG.Model.Model
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }
         [ForeignKey("PostId")]
-        public virtual Post Post { get; set; }
+        public virtual ShareDetail ShareDetail { get; set; }
 
     }
 }

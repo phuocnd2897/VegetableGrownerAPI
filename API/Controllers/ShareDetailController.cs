@@ -18,22 +18,22 @@ namespace API.Controllers
     [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class ShareDetailController : ControllerBase
     {
-        private IPostService _postService;
+        private IShareDetailService _shareDetailService;
         private IWebHostEnvironment _hostingEnvironment;
-        public PostController(IPostService postService, IWebHostEnvironment hostingEnvironment)
+        public ShareDetailController(IShareDetailService shareDetailService, IWebHostEnvironment hostingEnvironment)
         {
-            _postService = postService;
+            _shareDetailService = shareDetailService;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost]
-        public IActionResult AddPost(PostRequestModel newItem)
+        public IActionResult AddShare(ShareDetailRequestModel newItem)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._postService.Add(newItem, phoneNumber);
+                var result = this._shareDetailService.Add(newItem, phoneNumber);
                 if (result != null)
                 {
                     return Ok(result);
@@ -52,7 +52,7 @@ namespace API.Controllers
         {
             try
             {
-                var result = this._postService.Get(Id);
+                var result = this._shareDetailService.Get(Id);
                 if (result == null)
                 {
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
@@ -66,11 +66,12 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("GetAll")]
-        public IActionResult GetAllPost()
+        public IActionResult GetAllShareById()
         {
             try
             {
-                var result = this._postService.GetAllPost();
+                var phoneNumber = User.Identity.Name;
+                var result = this._shareDetailService.GetShareByAccountId(phoneNumber);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -79,12 +80,12 @@ namespace API.Controllers
             }
         }
         [HttpPut]
-        public IActionResult UpdatePost(PostRequestModel newItem)
+        public IActionResult UpdateShareDetail(ShareDetailRequestModel newItem)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._postService.Update(newItem, phoneNumber, Directory.GetCurrentDirectory(), Request.Scheme + "://" + Request.Host);
+                var result = this._shareDetailService.Update(newItem, phoneNumber, Directory.GetCurrentDirectory(), Request.Scheme + "://" + Request.Host);
                 if (result == null)
                 {
                     return Ok(result);
@@ -98,11 +99,11 @@ namespace API.Controllers
             }
         }
         [HttpDelete]
-        public IActionResult Delete(string postId)
+        public IActionResult Delete(string Id)
         {
             try
             {
-                this._postService.Delete(postId);
+                this._shareDetailService.Delete(Id);
                 return Ok();
             }
             catch (Exception)

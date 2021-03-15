@@ -18,16 +18,14 @@ namespace VG.Model.Model
         public string Id { get; set; }
         public DateTime DateExchange { get; set; }
         public int Quantity { get; set; }
-        [Key]
+        public int Status { get; set; }
         [Required, MaxLength(128)]
         public string ReceiveBy { get; set; }
-        [Key]
         [Required, MaxLength(128)]
-        public string AccountId { get; set; }
-        [Key]
-        [Required, MaxLength(128)]
-        public string VegetableId { get; set; }
+        public string ShareDetailId { get; set; }
+        [ForeignKey("ReceiveBy")]
         public virtual AppAccount AppAccount { get; set; }
-        public virtual Vegetable Vegetable { get; set; }
+        [ForeignKey("ShareDetailId")]
+        public virtual ShareDetail Vegetable { get; set; }
     }
 }
