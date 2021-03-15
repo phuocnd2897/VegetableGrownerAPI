@@ -11,7 +11,7 @@ namespace VG.Service.Service
     {
         Garden Add(GardenRequestModel newItem, string phoneNumber);
         GardenRequestModel Update(GardenRequestModel newItem);
-        IEnumerable<Garden> GetAll();
+        IEnumerable<Garden> GetByAccountId(string phoneNumber);
         Garden Get(int Id);
         void Delete(int Id);
     }
@@ -49,9 +49,10 @@ namespace VG.Service.Service
             return this._gardenRepository.GetSingle(s => s.Id == Id);
         }
 
-        public IEnumerable<Garden> GetAll()
+        public IEnumerable<Garden> GetByAccountId(string phoneNumber)
         {
-            return this._gardenRepository.GetAll();
+            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
+            return this._gardenRepository.GetMulti(s => s.AccountId == account.Id);
         }
 
         public GardenRequestModel Update(GardenRequestModel newItem)

@@ -86,7 +86,7 @@ namespace API.Controllers
             {
                 var phoneNumber = User.Identity.Name;
                 var result = this._shareDetailService.Update(newItem, phoneNumber, Directory.GetCurrentDirectory(), Request.Scheme + "://" + Request.Host);
-                if (result == null)
+                if (result != null)
                 {
                     return Ok(result);
                 }

@@ -12,8 +12,6 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\API.runtim
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\API.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\API.pdb
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\HtmlAgilityPack.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\System.Net.Http.Formatting.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\System.Web.Http.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -44,7 +42,6 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Newtonsoft
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Swashbuckle.AspNetCore.Swagger.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Swashbuckle.AspNetCore.SwaggerUI.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Swashbuckle.Core.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\System.Collections.Immutable.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\System.ComponentModel.Annotations.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\System.Configuration.ConfigurationManager.dll

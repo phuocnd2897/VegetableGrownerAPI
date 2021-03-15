@@ -72,14 +72,14 @@ namespace VG.Service.Service
 
         public IEnumerable<ShareDetailResponseModel> GetShareByAccountId(string phoneNumber)
         {
-            List<ShareDetailResponseModel> postResponseModels = new List<ShareDetailResponseModel>();
+            List<ShareDetailResponseModel> shareDetailResponseModels = new List<ShareDetailResponseModel>();
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
             var result = this._shareRepository.GetMulti(s => s.AccountId == account.Id);
             foreach (var item in result.ToList())
             {
 
                 var veg = this._vegetableService.Get(item.VegetableId);
-                postResponseModels.Add(new ShareDetailResponseModel 
+                shareDetailResponseModels.Add(new ShareDetailResponseModel 
                 {
                     Id = item.Id,
                     CreatedDate = item.DateShare,
@@ -91,7 +91,7 @@ namespace VG.Service.Service
                     Images = veg.Images
                 });
             }
-            return postResponseModels;
+            return shareDetailResponseModels.ToList();
         }
 
         public ShareDetailRequestModel Update(ShareDetailRequestModel newItem, string phoneNumber, string savePath, string domain)

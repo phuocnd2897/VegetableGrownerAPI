@@ -9,6 +9,10 @@ namespace VG.Model.Model
     [Table("ShareDetail")]
     public class ShareDetail
     {
+        public ShareDetail()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
         [Key]
         [Required, MaxLength(128)]
         public string Id { get; set; }

@@ -86,12 +86,13 @@ namespace API.Controllers
             }
         }
         [HttpGet]
-        [Route("GetAll")]
-        public IActionResult GetAll()
+        [Route("GetByAccountId")]
+        public IActionResult GetByAccountId()
         {
             try
             {
-                var result = this._gardenService.GetAll();
+                var phomeNumber = User.Identity.Name;
+                var result = this._gardenService.GetByAccountId(phomeNumber);
                 return Ok(result);
             }
             catch (Exception)
