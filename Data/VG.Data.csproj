@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Korzh.EasyQuery.Linq" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Context\VG.Context.csproj" />
     <ProjectReference Include="..\Model\VG.Model.csproj" />
   </ItemGroup>

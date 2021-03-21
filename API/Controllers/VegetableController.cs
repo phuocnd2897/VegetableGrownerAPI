@@ -132,5 +132,47 @@ namespace API.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("SearchByDescription")]
+        public IActionResult SearchByDescription(string searchValue)
+        {
+            try
+            {
+                var result = this._vegetableService.SearchByDescription(searchValue);
+                return Ok(result.ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchByName")]
+        public IActionResult SearchByName(string searchValue)
+        {
+            try
+            {
+                var result = this._vegetableService.SearchByName(searchValue);
+                return Ok(result.ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchByKeyword")]
+        public IActionResult SearchByKeyword(string searchValue)
+        {
+            try
+            {
+                var result = this._vegetableService.SearchByKeyword(searchValue);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra vui lòng thử lại");
+            }
+        }
     }
 }

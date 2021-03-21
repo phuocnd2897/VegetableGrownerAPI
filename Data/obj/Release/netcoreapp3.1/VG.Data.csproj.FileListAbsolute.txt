@@ -33,3 +33,7 @@ D:\Capstone\VegetableGrownerAPI\Data\obj\Release\netcoreapp3.1\VG.Data.csproj.Co
 D:\Capstone\VegetableGrownerAPI\Data\obj\Release\netcoreapp3.1\VG.Data.dll
 D:\Capstone\VegetableGrownerAPI\Data\obj\Release\netcoreapp3.1\VG.Data.pdb
 D:\Capstone\VegetableGrownerAPI\Data\obj\Release\netcoreapp3.1\VG.Data.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\Data\bin\Release\netcoreapp3.1\EasyData.Core.dll
+D:\Capstone\VegetableGrownerAPI\Data\bin\Release\netcoreapp3.1\Korzh.EasyQuery.dll
+D:\Capstone\VegetableGrownerAPI\Data\bin\Release\netcoreapp3.1\Korzh.EasyQuery.Linq.dll
+D:\Capstone\VegetableGrownerAPI\Data\bin\Release\netcoreapp3.1\Newtonsoft.Json.dll

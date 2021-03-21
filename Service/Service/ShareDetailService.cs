@@ -24,11 +24,13 @@ namespace VG.Service.Service
         private IShareDetailRepository _shareRepository;
         private IAccountRepository _accountRepository;
         private IVegetableService _vegetableService;
-        public ShareDetailService(IShareDetailRepository shareRepository, IAccountRepository accountRepository, IVegetableService vegetableService)
+        private IAccountDetailRepository _accountDetailRepository;
+        public ShareDetailService(IShareDetailRepository shareRepository, IAccountRepository accountRepository, IVegetableService vegetableService, IAccountDetailRepository accountDetailRepository)
         {
             _shareRepository = shareRepository;
             _accountRepository = accountRepository;
             _vegetableService = vegetableService;
+            _accountDetailRepository = accountDetailRepository;
         }
         public ShareDetail Add(ShareDetailRequestModel newItem, string phoneNumber)
         {
@@ -57,6 +59,7 @@ namespace VG.Service.Service
         {
             var result = this._shareRepository.GetSingle(s => s.Id == Id);
             var veg = this._vegetableService.Get(result.VegetableId);
+            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == result.AccountId);
             return new ShareDetailResponseModel
             {
                 Id = result.Id,
@@ -66,6 +69,9 @@ namespace VG.Service.Service
                 Content = result.ShareContent,
                 VegDescription = veg.Description,
                 VegFeature = veg.Feature,
+                FullName = accountDetail.FullName,
+                Quantity = result.Quantity,
+                Statius = result.Status,
                 Images = veg.Images
             };
         }
@@ -75,6 +81,7 @@ namespace VG.Service.Service
             List<ShareDetailResponseModel> shareDetailResponseModels = new List<ShareDetailResponseModel>();
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
             var result = this._shareRepository.GetMulti(s => s.AccountId == account.Id);
+            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == account.Id);
             foreach (var item in result.ToList())
             {
 
@@ -88,6 +95,9 @@ namespace VG.Service.Service
                     Content = item.ShareContent,
                     VegDescription = veg.Description,
                     VegFeature = veg.Feature,
+                    FullName = accountDetail.FullName,
+                    Quantity = item.Quantity,
+                    Statius = item.Status,
                     Images = veg.Images
                 });
             }

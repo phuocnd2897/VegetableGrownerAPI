@@ -78,3 +78,7 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\API.csproj
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\API.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\API.pdb
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\API.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\EasyData.Core.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Korzh.EasyQuery.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Korzh.EasyQuery.Linq.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.Extensions.Http.dll

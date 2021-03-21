@@ -20,6 +20,7 @@ namespace VG.Model.RequestModel
         [Required]
         public string Featture { get; set; }
         public string NewFeatture { get; set; }
+        public int? Quantity { get; set; }
         public IEnumerable<VegetableImage>? Images { get; set; }
         public IEnumerable<IFormFile>? NewImages { get; set; }
         public int GardenId { get; set; }

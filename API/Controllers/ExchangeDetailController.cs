@@ -31,7 +31,7 @@ namespace API.Controllers
                     return Ok(result);
                 }
                 else
-                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                    return BadRequest("Số lượng còn lại không đủ. Vui lòng nhập lại");
             }
             catch (Exception ex)
             {
@@ -72,13 +72,33 @@ namespace API.Controllers
             }
         }
         [HttpPut]
-        public IActionResult UpdateShareDetail(ExchangeDetailRequestModel newItem)
+        public IActionResult UpdateExchangeDetail(ExchangeDetailRequestModel newItem)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
                 var result = this._exchangeDetailService.Update(newItem);
-                if (result == null)
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpPut]
+        [Route("IsAccept")]
+        public IActionResult AcceptExchangeDetail(string Id, int Status)
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var result = this._exchangeDetailService.IsAccept(Id, Status);
+                if (result != null)
                 {
                     return Ok(result);
                 }

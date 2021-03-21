@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VG.Common.Constant;
 using VG.Data.Repository;
 using VG.Model.Model;
 using VG.Model.RequestModel;
+using VG.Model.ResponseModel;
 
 namespace VG.Service.Service
 {
@@ -14,17 +16,23 @@ namespace VG.Service.Service
         ExchangeDetailRequestModel Update(ExchangeDetailRequestModel newItem);
         ExchangeDetail IsAccept(string Id, int Status);
         void Delete(string Id);
-        ExchangeDetail Get(string Id);
-        IEnumerable<ExchangeDetail> GetByAccountId(string phoneNumber);
+        ExchangeDetailResponseModel Get(string Id);
+        IEnumerable<ExchangeDetailResponseModel> GetByAccountId(string phoneNumber);
     }
     public class ExchangeDetailService : IExchangeDetailService
     {
         private IExchangeDetailRepository _exchangeDetailRepository;
         private IAccountRepository _accountRepository;
-        public ExchangeDetailService(IAccountRepository accountRepository, IExchangeDetailRepository exchangeDetailRepository)
+        private IShareDetailRepository _shareDetailRepository;
+        private IVegetableService _vegetableService;
+        private IAccountDetailRepository _accountDetailRepository;
+        public ExchangeDetailService(IAccountRepository accountRepository, IExchangeDetailRepository exchangeDetailRepository, IShareDetailRepository shareDetailRepository, IVegetableService vegetableService, IAccountDetailRepository accountDetailRepository)
         {
             _accountRepository = accountRepository;
             _exchangeDetailRepository = exchangeDetailRepository;
+            _shareDetailRepository = shareDetailRepository;
+            _vegetableService = vegetableService;
+            _accountDetailRepository = accountDetailRepository;
         }
 
         public ExchangeDetail IsAccept(string Id, int Status)
@@ -38,7 +46,12 @@ namespace VG.Service.Service
 
         public ExchangeDetailRequestModel Add(ExchangeDetailRequestModel newItem)
         {
-           var result = this._exchangeDetailRepository.Add(new ExchangeDetail
+            var share = this._shareDetailRepository.GetSingle(s => s.Id == newItem.ShareDetailId);
+            if (newItem.Quantity > share.Quantity)
+            {
+                return null;
+            }
+            var result = this._exchangeDetailRepository.Add(new ExchangeDetail
             {
                 Status = (int)EnumStatusRequest.Pending,
                 DateExchange = DateTime.UtcNow.AddHours(7),
@@ -67,15 +80,29 @@ namespace VG.Service.Service
             this._exchangeDetailRepository.Commit();
         }
 
-        public ExchangeDetail Get(string Id)
+        public ExchangeDetailResponseModel Get(string Id)
         {
-            return this._exchangeDetailRepository.GetSingle(S => S.Id == Id);
+            var result = this._exchangeDetailRepository.GetSingle(S => S.Id == Id, new string[] { "ShareDetail" });
+            var accountHost = this._accountDetailRepository.GetSingle(s => s.AccountId == result.ShareDetail.AccountId);
+            var accountReceiver = this._accountDetailRepository.GetSingle(s => s.AccountId == result.ReceiveBy);
+            return new ExchangeDetailResponseModel
+            {
+                Id = result.Id,
+                Quantity = result.Quantity,
+                Status = result.Status,
+                AccountHostId = result.ShareDetail.AccountId,
+                ReceiverId = result.ReceiveBy,
+                FullNameReceiver = accountReceiver.FullName,
+                VegName = _vegetableService.Get(result.ShareDetail.VegetableId).Name,
+                CreatedDate = result.DateExchange,
+                FullNameHost = accountHost.FullName,
+                ShareDetailId = result.ShareDetailId
+            };
         }
 
-        public IEnumerable<ExchangeDetail> GetByAccountId(string phoneNumber)
+        public IEnumerable<ExchangeDetailResponseModel> GetByAccountId(string phoneNumber)
         {
-            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
-            var result = this._exchangeDetailRepository.GetMulti(s => s.ReceiveBy == account.Id, new string[] { "ShareDetail" });
+            var result = this._exchangeDetailRepository.GetByAccountId(phoneNumber);
             return result;
         }
     }

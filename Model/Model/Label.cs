@@ -11,9 +11,9 @@ namespace VG.Model.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string LabelName { get; set; }
-        public string VegCompositionId { get; set; }
+        public int VegCompositionId { get; set; }
         [ForeignKey("VegCompositionId")]
         public virtual VegetableComposition VegetableComposition { get; set; }
     }

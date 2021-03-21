@@ -17,6 +17,7 @@ namespace VG.Model.Model
         [Required, MaxLength(128)]
         public string Id { get; set; }
         public int No { get; set; }
+        public int? Quantity { get; set; }
         public int GardenId { get; set; }
         [Required, MaxLength(128)]
         public string VegetableDescriptionId { get; set; }

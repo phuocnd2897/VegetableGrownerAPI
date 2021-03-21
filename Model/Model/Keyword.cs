@@ -11,14 +11,14 @@ namespace VG.Model.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
         [Required, MaxLength(100)]
         public string KeywordName { get; set; }
-        public string Type { get; set; }
-        public string VegComposition { get; set; }
-        [Required, MaxLength(100)]
+        public int VegCompositionId { get; set; }
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }
+        [ForeignKey("VegCompositionId")]
+        public virtual VegetableComposition VegetableComposition { get; set; }
     }
 }

@@ -29,6 +29,8 @@ namespace VG.Context
         public virtual DbSet<Vegetable> Vegetables { get; set; }
         public virtual DbSet<VegetableDescription> VegetableDescriptions { get; set; }
         public virtual DbSet<VegetableComposition> VegetableCompositions { get; set; }
+        public virtual DbSet<Label> Labels { get; set; }
+        public virtual DbSet<Keyword> Keywords { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

@@ -51,7 +51,7 @@ namespace API
              .AsPublicImplementedInterfaces();
             services.AddControllers();
             services.AddMemoryCache();
-
+            services.AddHttpClient();
             services.AddDbContext<VGContext>(options => options.UseSqlServer(Configuration.GetConnectionString("VGConnection")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

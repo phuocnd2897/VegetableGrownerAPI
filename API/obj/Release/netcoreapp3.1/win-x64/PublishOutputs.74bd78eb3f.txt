@@ -13,7 +13,10 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\API.deps.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\API.runtimeconfig.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\API.pdb
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\EasyData.Core.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\HtmlAgilityPack.dll
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Korzh.EasyQuery.dll
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Korzh.EasyQuery.Linq.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -28,6 +31,7 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.Abstractions.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.DependencyInjection.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.Http.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.Logging.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Microsoft.Extensions.Options.dll

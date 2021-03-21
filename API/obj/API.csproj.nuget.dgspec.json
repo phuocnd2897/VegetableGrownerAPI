@@ -253,6 +253,12 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Korzh.EasyQuery.Linq": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -381,6 +387,14 @@
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.11.29, )"
+            },
+            "Korzh.EasyQuery.Linq": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

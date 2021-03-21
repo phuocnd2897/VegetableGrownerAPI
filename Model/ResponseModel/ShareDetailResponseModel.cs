@@ -16,6 +16,7 @@ namespace VG.Model.ResponseModel
         public string Content { get; set; }
         public DateTime CreatedDate { get; set; }
         public string AccountId { get; set; }
+        public string FullName { get; set; }
         public IEnumerable<VegetableImage> Images { get; set; }
     }
 }
