@@ -14,5 +14,8 @@ namespace VG.Model.RequestModel
         public int Quantity { get; set; }
         public int Status { get; set; }
         public string VegetableId  { get; set; }
+        public string VegetableNeedId { get; set; }
+        public string VegetableNeedName { get; set; }
+        
     }
 }

@@ -190,6 +190,9 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
+              "D:\\Capstone\\VegetableGrownerAPI\\Common\\VG.Common.csproj": {
+                "projectPath": "D:\\Capstone\\VegetableGrownerAPI\\Common\\VG.Common.csproj"
+              },
               "D:\\Capstone\\VegetableGrownerAPI\\Context\\VG.Context.csproj": {
                 "projectPath": "D:\\Capstone\\VegetableGrownerAPI\\Context\\VG.Context.csproj"
               },

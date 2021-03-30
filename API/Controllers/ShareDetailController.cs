@@ -65,13 +65,28 @@ namespace API.Controllers
             }
         }
         [HttpGet]
-        [Route("GetAll")]
+        [Route("GetAllShareById")]
         public IActionResult GetAllShareById()
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
                 var result = this._shareDetailService.GetShareByAccountId(phoneNumber);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult GetAll()
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var result = this._shareDetailService.GetAll(phoneNumber);
                 return Ok(result);
             }
             catch (Exception ex)

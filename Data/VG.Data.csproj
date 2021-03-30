@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\VG.Common.csproj" />
     <ProjectReference Include="..\Context\VG.Context.csproj" />
     <ProjectReference Include="..\Model\VG.Model.csproj" />
   </ItemGroup>

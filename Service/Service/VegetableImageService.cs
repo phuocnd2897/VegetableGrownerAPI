@@ -73,7 +73,6 @@ namespace VG.Service.Service
                 Thumbnail = url + "/Image//" + imageName,
                 VegetableDescriptionId = vegDescriptionId,
             });
-            this._vegetableImageRepository.Commit();
             return postImage;
         }
         public static string FilePathToFileUrl(string filePath)

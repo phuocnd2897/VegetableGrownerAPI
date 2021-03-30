@@ -8,8 +8,8 @@ namespace VG.Model.RequestModel
     {
         public string Id { get; set; }
         public int Quantity { get; set; }
-        public int Status { get; set; }
+        public int QuantityExchange { get; set; }
         public string ShareDetailId { get; set; }
-        public string ReceivedBy { get; set; }
+        public string VegetableId { get; set; }
     }
 }

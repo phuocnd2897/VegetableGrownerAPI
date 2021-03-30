@@ -20,12 +20,17 @@ namespace VG.Model.Model
         public int Quantity { get; set; }
         public int Status { get; set; }
         [Required, MaxLength(128)]
+        public string Sender { get; set; }
+        [Required, MaxLength(128)]
         public string ReceiveBy { get; set; }
         [Required, MaxLength(128)]
         public string ShareDetailId { get; set; }
+        public string VegetableId { get; set; }
         [ForeignKey("ReceiveBy")]
         public virtual AppAccount AppAccount { get; set; }
         [ForeignKey("ShareDetailId")]
         public virtual ShareDetail ShareDetail { get; set; }
+        [ForeignKey("VegetableId")]
+        public virtual Vegetable Vegetable { get; set; }
     }
 }

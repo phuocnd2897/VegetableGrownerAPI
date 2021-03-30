@@ -22,10 +22,9 @@ namespace VG.Data.Repository
 
         public IEnumerable<string> SearchByDescription(string searchValue)
         {
-            var result = from veg in this.dbContext.Vegetables
-                         join vegDes in this.dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2) on veg.VegetableDescriptionId equals vegDes.Id
+            var result = from vegDes in this.dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2)
                          where vegDes.VegContent.Contains(searchValue)
-                         select veg.Id;
+                         select vegDes.VegDesCommonId;
             return result;
 
 
@@ -33,10 +32,9 @@ namespace VG.Data.Repository
 
         public IEnumerable<string> SearchByName(string searchValue)
         {
-            var result = from veg in this.dbContext.Vegetables
-                         join vegDes in this.dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 1) on veg.VegetableDescriptionId equals vegDes.Id
-                         where vegDes.VegContent.ToLower().Contains(searchValue.ToLower())
-                         select veg.Id;
+            var result = from vegDes in this.dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 1)
+                         where vegDes.VegContent.Contains(searchValue)
+                         select vegDes.VegDesCommonId;
             return result;
         }
     }

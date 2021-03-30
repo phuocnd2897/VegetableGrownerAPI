@@ -12,6 +12,8 @@ namespace VG.Model.Model
         public AppAccount()
         {
             Id = Guid.NewGuid().ToString();
+            Members = new HashSet<Member>();
+            Gardens = new HashSet<Garden>();
         }
         [Key]
         [Required, MaxLength(128)]
@@ -24,5 +26,7 @@ namespace VG.Model.Model
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual AccountRole Role { get; set; }
+        public virtual ICollection<Member> Members { get; set; }
+        public virtual ICollection<Garden> Gardens { get; set; }
     }
 }

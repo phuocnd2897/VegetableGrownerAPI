@@ -25,7 +25,7 @@ namespace API.Controllers
             _vegetableImageService = vegetableImageService;
         }
         [HttpPost]
-        public IActionResult AddVegetable(VegetableRequestModel newItem)
+        public IActionResult AddVegetable([FromForm] VegetableRequestModel newItem)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
 
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet]
@@ -172,6 +172,35 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Có lỗi xảy ra vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("CheckVegetableInGarden")]
+        public IActionResult CheckVegetableInGarden(string Id, string Name)
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var result = this._vegetableService.CheckVegetableInGarden(Id, Name, phoneNumber);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetAllVegetable")]
+        public IActionResult GetAllVegetable()
+        {
+            try
+            {
+                var result = this._vegetableService.GetAllVegetable();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

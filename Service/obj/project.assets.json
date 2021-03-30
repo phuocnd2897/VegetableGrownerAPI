@@ -651,6 +651,7 @@
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "Korzh.EasyQuery.Linq": "7.0.1",
+          "VG.Common": "1.0.0",
           "VG.Context": "1.0.0",
           "VG.Model": "1.0.0"
         },
@@ -1464,6 +1465,7 @@
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "Korzh.EasyQuery.Linq": "7.0.1",
+          "VG.Common": "1.0.0",
           "VG.Context": "1.0.0",
           "VG.Model": "1.0.0"
         },

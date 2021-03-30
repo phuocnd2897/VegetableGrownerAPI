@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VG.Common.Helper;
 using VG.Data.Repository;
@@ -12,6 +13,8 @@ namespace VG.Service.Service
     {
         AccountRequestModel RegistrationAccount(AccountRequestModel newItem);
         AccountRequestModel UpdateAccountDetail(AccountRequestModel newItem);
+        AccountRequestModel GetAccountDetailByPhoneNumber(string phoneNumber);
+        IEnumerable<AccountRequestModel> GetAllAccount();
     }
     public class AccountDetailService : IAccountDetailService
     {
@@ -23,6 +26,35 @@ namespace VG.Service.Service
             _accountDetailRepository = accountDetailRepository;
 
         }
+
+        public AccountRequestModel GetAccountDetailByPhoneNumber(string phoneNumber)
+        {
+            var result = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members" });
+            return new AccountRequestModel
+            {
+                Id = result.Id,
+                PhoneNumber = phoneNumber,
+                FullName = result.Members.FirstOrDefault().FullName,
+                BirthDate = result.Members.FirstOrDefault().BirthDate,
+                Email = result.Members.FirstOrDefault().Email,
+                Sex = result.Members.FirstOrDefault().Sex,
+            };
+        }
+
+        public IEnumerable<AccountRequestModel> GetAllAccount()
+        {
+            return this._accountRepository.GetAll().Select(s => new AccountRequestModel
+            {
+                Id = s.Id,
+                PhoneNumber = s.PhoneNumber,
+                Password = s.PassWord,
+                FullName = s.Members.FirstOrDefault().FullName,
+                BirthDate = s.Members.FirstOrDefault().BirthDate,
+                Email = s.Members.FirstOrDefault().Email,
+                Sex = s.Members.FirstOrDefault().Sex,
+            });
+        }
+
         public AccountRequestModel RegistrationAccount(AccountRequestModel newItem)
         {
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == newItem.PhoneNumber);

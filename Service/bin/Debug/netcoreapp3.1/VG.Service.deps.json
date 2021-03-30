@@ -491,6 +491,7 @@
       "VG.Data/1.0.0": {
         "dependencies": {
           "Korzh.EasyQuery.Linq": "7.0.1",
+          "VG.Common": "1.0.0",
           "VG.Context": "1.0.0",
           "VG.Model": "1.0.0"
         },

@@ -19,5 +19,9 @@ namespace VG.Model.ResponseModel
         public string IdDescription { get; set; }
         public string IdFeature { get; set; }
         public string IdImage { get; set; }
+        public string IdDetailName { get; set; }
+        public string IdDetailDescription { get; set; }
+        public string IdDetailFeature { get; set; }
+        public string IdDetailImage { get; set; }
     }
 }

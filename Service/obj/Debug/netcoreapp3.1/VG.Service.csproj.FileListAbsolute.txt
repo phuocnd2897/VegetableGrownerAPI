@@ -55,7 +55,10 @@ D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\VG.Service.runti
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\VG.Service.runtimeconfig.dev.json
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\VG.Service.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\VG.Service.pdb
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\EasyData.Core.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\HtmlAgilityPack.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.Linq.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
@@ -65,6 +68,7 @@ D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extens
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Http.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
@@ -92,7 +96,3 @@ D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.cspro
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.dll
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.pdb
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.genruntimeconfig.cache
-D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\EasyData.Core.dll
-D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.dll
-D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.Linq.dll
-D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Http.dll

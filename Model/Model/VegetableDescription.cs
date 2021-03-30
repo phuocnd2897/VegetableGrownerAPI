@@ -12,6 +12,7 @@ namespace VG.Model.Model
         public VegetableDescription()
         {
             Id = Guid.NewGuid().ToString();
+            Vegetables = new HashSet<Vegetable>();
         }
         [Key]
         [Required, MaxLength(128)]
@@ -20,10 +21,12 @@ namespace VG.Model.Model
         public string VegContent { get; set; }
         public int VegetableCompositionId { get; set; }
         public string AccountId { get; set; }
+        public string VegDesCommonId { get; set; }
         [ForeignKey("VegetableCompositionId")]
         public virtual VegetableComposition VegetableComposition { get; set; }
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }
+        public virtual ICollection<Vegetable> Vegetables { get; set; }
 
     }
 }

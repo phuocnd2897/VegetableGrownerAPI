@@ -82,3 +82,6 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\EasyData.C
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Korzh.EasyQuery.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Korzh.EasyQuery.Linq.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.Extensions.Http.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.AspNetCore.JsonPatch.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Release\netcoreapp3.1\win-x64\Newtonsoft.Json.Bson.dll

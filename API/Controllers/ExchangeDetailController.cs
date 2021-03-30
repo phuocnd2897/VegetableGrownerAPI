@@ -25,7 +25,8 @@ namespace API.Controllers
         {
             try
             {
-                var result = this._exchangeDetailService.Add(newItem);
+                var phoneNumber = User.Identity.Name;
+                var result = this._exchangeDetailService.Add(newItem, phoneNumber);
                 if (result != null)
                 {
                     return Ok(result);
@@ -35,7 +36,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                return BadRequest(ex.Message);
             }
 
         }
@@ -71,6 +72,21 @@ namespace API.Controllers
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
+        [HttpGet]
+        [Route("GetExchangeRequest")]
+        public IActionResult GetExchangeRequest()
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var result = this._exchangeDetailService.GetExchangeRequest(phoneNumber);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateExchangeDetail(ExchangeDetailRequestModel newItem)
         {
@@ -92,17 +108,13 @@ namespace API.Controllers
         }
         [HttpPut]
         [Route("IsAccept")]
-        public IActionResult AcceptExchangeDetail(string Id, int Status)
+        public IActionResult AcceptExchangeDetail(List<string> Id, int Status)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._exchangeDetailService.IsAccept(Id, Status);
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-                else
+                this._exchangeDetailService.IsAccept(Id, Status);
+                return Ok();
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
             catch (Exception)

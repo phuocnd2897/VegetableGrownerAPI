@@ -104,11 +104,16 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.runtimeconfig.js
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.runtimeconfig.dev.json
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\API.pdb
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\EasyData.Core.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\HtmlAgilityPack.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.Linq.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -119,6 +124,7 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Http.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
@@ -132,6 +138,7 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.IdentityMo
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\NetCore.AutoRegisterDi.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -181,7 +188,3 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.csproj.CopyCompl
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.pdb
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\EasyData.Core.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Korzh.EasyQuery.Linq.dll
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Http.dll

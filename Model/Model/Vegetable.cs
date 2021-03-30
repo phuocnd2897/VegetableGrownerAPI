@@ -12,6 +12,7 @@ namespace VG.Model.Model
         public Vegetable()
         {
             Id = Guid.NewGuid().ToString();
+            ShareDetails = new HashSet<ShareDetail>();
         }
         [Key]
         [Required, MaxLength(128)]
@@ -25,5 +26,6 @@ namespace VG.Model.Model
         public virtual Garden Garden { get; set; }
         [ForeignKey("VegetableDescriptionId")]
         public virtual VegetableDescription VegetableDescription { get; set; }
+        public virtual ICollection<ShareDetail> ShareDetails { get; set; }
     }
 }

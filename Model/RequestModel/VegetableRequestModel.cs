@@ -24,5 +24,9 @@ namespace VG.Model.RequestModel
         public IEnumerable<VegetableImage>? Images { get; set; }
         public IEnumerable<IFormFile>? NewImages { get; set; }
         public int GardenId { get; set; }
+        public string IdDetailName { get; set; }
+        public string IdDetailDescription { get; set; }
+        public string IdDetailFeature { get; set; }
+        public string IdDetailImage { get; set; }
     }
 }

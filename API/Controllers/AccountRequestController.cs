@@ -20,7 +20,7 @@ namespace API.Controllers
             _accountRequestService = accountRequestService;
         }
         [HttpPost]
-        public IActionResult SendRequestFriend(AccountRequest newItem)
+        public IActionResult SendRequestFriend(AccountFriendRequestModel newItem)
         {
             try
             {
@@ -43,6 +43,21 @@ namespace API.Controllers
             {
                  this._accountRequestService.IsComfirm(Id, status);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("GetAccountRequest")]
+        public IActionResult GetAccountRequest()
+        {
+            try
+            {
+                string phoneNumber = User.Identity.Name;
+                var result = this._accountRequestService.GetAccountRequest(phoneNumber);
+                return Ok(result);
             }
             catch (Exception ex)
             {

@@ -16,10 +16,13 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
         private IAccountDetailService _accountDetailService;
-        public AccountController(IAccountDetailService accountDetailService)
+        private IAccountService _accountService;
+        public AccountController(IAccountDetailService accountDetailService, IAccountService accountService)
         {
             _accountDetailService = accountDetailService;
-        
+            _accountService = accountService;
+
+
         }
         [HttpPost]
         [Route("Registration")]
@@ -55,6 +58,20 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("LockAccount")]
+        public IActionResult LockAccount(string Id)
+        {
+            try
+            {
+                this._accountService.LockAccount(Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
     }

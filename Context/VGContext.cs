@@ -31,6 +31,11 @@ namespace VG.Context
         public virtual DbSet<VegetableComposition> VegetableCompositions { get; set; }
         public virtual DbSet<Label> Labels { get; set; }
         public virtual DbSet<Keyword> Keywords { get; set; }
+        public virtual DbSet<Province> Provinces { get; set; }
+        public virtual DbSet<District> Districts { get; set; }
+        public virtual DbSet<Ward> Wards { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
+        public virtual DbSet<PrecentReport> PrecentReports { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
