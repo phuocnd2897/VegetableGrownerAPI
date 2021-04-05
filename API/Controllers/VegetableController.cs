@@ -44,27 +44,27 @@ namespace API.Controllers
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
-        [HttpPost]
-        [Route("Image")]
-        public IActionResult AddImageVegetable(IFormFile newItem)
-        {
-            try
-            {
-                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
-                var phoneNumber = User.Identity.Name;
-                var result = this._vegetableImageService.UploadImage(newItem, "f8974e7d-91f9-4230-92af-9004b2d7a0a5", Directory.GetCurrentDirectory(), baseUrl);
-                if (result == null)
-                {
-                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
+        //[HttpPost]
+        //[Route("Image")]
+        //public IActionResult AddImageVegetable(IFormFile newItem)
+        //{
+        //    try
+        //    {
+        //        var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+        //        var phoneNumber = User.Identity.Name;
+        //        var result = this._vegetableImageService.UploadImage(newItem, "f8974e7d-91f9-4230-92af-9004b2d7a0a5", Directory.GetCurrentDirectory(), baseUrl);
+        //        if (result == null)
+        //        {
+        //            return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+        //        }
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
         [HttpPut]
         public IActionResult UpdateVegetable(VegetableRequestModel newItem)
         {

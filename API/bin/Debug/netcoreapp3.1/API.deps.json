@@ -891,6 +891,20 @@
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {}
         }
       },
+      "QRCoder/1.4.1": {
+        "dependencies": {
+          "System.Drawing.Common": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/QRCoder.dll": {
+            "assemblyVersion": "1.4.1.0",
+            "fileVersion": "1.4.1.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/QRCoder.dll": {}
+        }
+      },
       "runtime.native.System/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
@@ -1087,6 +1101,9 @@
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
           "Microsoft.Win32.SystemEvents": "4.7.0"
+        },
+        "compile": {
+          "ref/netcoreapp3.0/System.Drawing.Common.dll": {}
         }
       },
       "System.Globalization/4.3.0": {
@@ -1610,7 +1627,8 @@
       },
       "VG.Common/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.KeyDerivation": "5.0.1"
+          "Microsoft.AspNetCore.Cryptography.KeyDerivation": "5.0.1",
+          "Newtonsoft.Json": "12.0.3"
         },
         "runtime": {
           "VG.Common.dll": {}
@@ -1622,6 +1640,7 @@
       "VG.Context/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.1",
+          "Newtonsoft.Json": "12.0.3",
           "VG.Model": "1.0.0"
         },
         "runtime": {
@@ -1634,6 +1653,7 @@
       "VG.Data/1.0.0": {
         "dependencies": {
           "Korzh.EasyQuery.Linq": "7.0.1",
+          "Newtonsoft.Json": "12.0.3",
           "VG.Common": "1.0.0",
           "VG.Context": "1.0.0",
           "VG.Model": "1.0.0"
@@ -1647,7 +1667,8 @@
       },
       "VG.Model/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.2"
+          "Microsoft.AspNetCore.Http.Features": "5.0.2",
+          "Newtonsoft.Json": "12.0.3"
         },
         "runtime": {
           "VG.Model.dll": {}
@@ -1662,6 +1683,7 @@
           "Korzh.EasyQuery.Linq": "7.0.1",
           "Microsoft.Extensions.Http": "5.0.0",
           "Newtonsoft.Json": "12.0.3",
+          "QRCoder": "1.4.1",
           "System.Net.Http.Json": "5.0.0",
           "VG.Common": "1.0.0",
           "VG.Data": "1.0.0",
@@ -3566,6 +3588,13 @@
       "sha512": "sha512-QYFyxhaABwmq3p/21VrZNYvCg3DaEoN/wUuw5nmfAf0X3HLjgupwhkEWdgfb9nvGAUIv3osmZoD3kKl4jxEmYQ==",
       "path": "newtonsoft.json.bson/1.0.2",
       "hashPath": "newtonsoft.json.bson.1.0.2.nupkg.sha512"
+    },
+    "QRCoder/1.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-W8KwCwsOJe9SI7Cm7XeIMawd08F/US6xNw34lg2Qnx6m7GYYakxbyBQaNoW1Q75oJOmX/32sJUZr6Cix2B6GUQ==",
+      "path": "qrcoder/1.4.1",
+      "hashPath": "qrcoder.1.4.1.nupkg.sha512"
     },
     "runtime.native.System/4.3.0": {
       "type": "package",

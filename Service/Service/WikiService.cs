@@ -23,7 +23,7 @@ namespace VG.Service.Service
 {
     public interface IWikiService
     {
-        IEnumerable<VegetableResponseModel> LeakInfoFromWikiByTitle(string title);
+        IEnumerable<WikiResponseModel> LeakInfoFromWikiByTitle(string title);
         IEnumerable<Keyword> TestGetKeyWord(string text);
     }
     public class WikiService : IWikiService
@@ -31,20 +31,20 @@ namespace VG.Service.Service
         private const string APISearchList = "http://vi.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=";
         private const string APIGetInfo = "http://vi.wikipedia.org/w/api.php?action=parse&prop=text&format=json&page=";
         private const string APIGetInfo2 = "http://vi.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&page=";
+        private const string APIGetDescription = "https://vi.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=";
         private ILabelRepository _labelRepository;
         public WikiService(ILabelRepository labelRepository)
         {
             _labelRepository = labelRepository;
         }
-        public IEnumerable<VegetableResponseModel> LeakInfoFromWikiByTitle(string title)
+        public IEnumerable<WikiResponseModel> LeakInfoFromWikiByTitle(string title)
         {
             string resultSearch = null;
             DataTable dt = null;
-            List<string> plainText = new List<string>();
+            List<string> texts = new List<string>();
             string description = "";
             string feature = "";
-            List<VegetableImage> postImages = new List<VegetableImage>();
-            List<VegetableResponseModel> vegetables = new List<VegetableResponseModel>();
+            List<WikiResponseModel> vegetables = new List<WikiResponseModel>();
             var listLabel = _labelRepository.GetMulti(s => s.VegCompositionId == 3).ToArray();
             char[] separators = new char[] { '[', ']', '\\' };
             Regex pattern = new Regex("[\\[\\]\\\\]");
@@ -66,9 +66,23 @@ namespace VG.Service.Service
                     }
                 }
             }
-            foreach (DataRow dr in dt.Rows)
+            for (int i = 0; i < (dt.Rows.Count) / 2 + 1; i++)
             {
-                using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APIGetInfo2 + dr["title"]))
+                using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APIGetDescription + dt.Rows[i]["title"].ToString()))
+                {
+                    using (var httpClient = new HttpClient())
+                    {
+                        var responseSearch = httpClient.SendAsync(httpRequestSearch).Result;
+
+                        if (responseSearch.IsSuccessStatusCode)
+                        {
+                            resultSearch = responseSearch.Content.ReadAsStringAsync().Result;
+                            JObject myObj = JsonConvert.DeserializeObject<JObject>(resultSearch);
+                            description = myObj.SelectToken("query.pages").FirstOrDefault().Children<JToken>().FirstOrDefault().SelectToken("extract").ToString();
+                        }
+                    }
+                }
+                using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APIGetInfo2 + dt.Rows[i]["title"].ToString()))
                 {
                     using (var httpClient = new HttpClient())
                     {
@@ -79,23 +93,26 @@ namespace VG.Service.Service
                             resultSearch = responseSearch.Content.ReadAsStringAsync().Result;
                             JObject myObj = JsonConvert.DeserializeObject<JObject>(resultSearch);
                             string value = myObj.SelectToken("parse.wikitext").ToString();
-                            string plantext = value.Replace(@"\n","\n\r");
-                            var split = plantext.Split("\n\r\n\r==");
-                            split = split.Select(s => Regex.Replace(s, @"[|]", string.Empty)).ToArray();
-                            description = split[0].Substring(split[0].IndexOf("'''" + dr["title"].ToString() + "'''"), split[0].Length - split[0].IndexOf("'''" + dr["title"].ToString() + "'''") - 1);
+                            string plantext = value.Replace(@"\n", "\n\r");
+                            var split = plantext.IndexOf("===") > 0 ? plantext.Split("\n\r\n\r== ").ToList() : plantext.Split("\n\r\n\r==").ToList();
+                            split.RemoveAt(0);
+                            split = split.Select(s => Regex.Replace(s, @"[[=\']", string.Empty)).ToList();
+                            split = split.Select(s => Regex.Replace(s, @"[]]", string.Empty)).ToList();
                             feature = split.Where(s => listLabel.Select(q => q.LabelName).Contains(s)).FirstOrDefault();
-                            vegetables.Add(new VegetableResponseModel
+                            if (feature == null)
                             {
-                                Name = dr["title"].ToString() ,
-                                Description = description != null ? pattern.Replace(description, string.Empty) : pattern.Replace(plantext, string.Empty),
-                                Feature = feature!= null ? pattern.Replace(feature, string.Empty) : pattern.Replace(plantext, string.Empty),
-                            });
-                        }
-                        else
-                        {
+                                texts = split.ToList();
+                            }
                         }
                     }
                 }
+                vegetables.Add(new WikiResponseModel
+                {
+                    Name = dt.Rows[i]["title"].ToString(),
+                    Description = description,
+                    Feature = feature,
+                    ListText = texts
+                });
             }
             return vegetables;
         }

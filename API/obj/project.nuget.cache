@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZBrxE4sKDoTAdHjOnU4UCF6A7G66NLPbwodiLgp6MQFyO6C0YxcJTDEu5rh88wN82vTLKzOtKzbXObGm9npOVA==",
+  "dgSpecHash": "Uk2MB7CZE9YGJZBRSmD4rNijTOr5P+YjMm2Xmoqe79Ck23gP4p/n1dv5vWXebbaweM6pK4EOfZMLz86EAYsAUQ==",
   "success": true,
   "projectFilePath": "D:\\Capstone\\VegetableGrownerAPI\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\phuoc'\\.nuget\\packages\\netcore.autoregisterdi\\2.1.0\\netcore.autoregisterdi.2.1.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
+    "C:\\Users\\phuoc'\\.nuget\\packages\\qrcoder\\1.4.1\\qrcoder.1.4.1.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\swashbuckle.aspnetcore\\5.5.0\\swashbuckle.aspnetcore.5.5.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.5.0\\swashbuckle.aspnetcore.swagger.5.5.0.nupkg.sha512",

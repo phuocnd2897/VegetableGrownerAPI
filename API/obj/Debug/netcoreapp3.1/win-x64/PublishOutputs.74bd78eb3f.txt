@@ -51,6 +51,7 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2021-03-07215150989.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2021-03-07215418435.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\2021-03-07215430540.png
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\QRCode\20214905160939923.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\appsettings.Development.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\appsettings.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\API.dll
@@ -92,6 +93,7 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\NetCore.AutoRegisterDi.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Newtonsoft.Json.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Newtonsoft.Json.Bson.dll
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\QRCoder.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

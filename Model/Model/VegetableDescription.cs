@@ -27,6 +27,6 @@ namespace VG.Model.Model
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }
         public virtual ICollection<Vegetable> Vegetables { get; set; }
-
+        public bool? Status { get; set; }
     }
 }

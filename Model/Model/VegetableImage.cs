@@ -22,8 +22,11 @@ namespace VG.Model.Model
         public string LocalUrl { get; set; }
         [Required, MaxLength(128)]
         public string VegetableDescriptionId { get; set; }
+        public string AccountId { get; set; }
         [ForeignKey("VegetableDescriptionId")]
         public virtual VegetableDescription VegetableDescription { get; set; }
+        [ForeignKey("AccountId")]
+        public virtual AppAccount AppAccount { get; set; }
 
     }
 }

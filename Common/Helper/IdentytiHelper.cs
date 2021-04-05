@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace VG.Common.Helper
 {
@@ -74,6 +77,48 @@ namespace VG.Common.Helper
                 | ((uint)(buffer[offset + 1]) << 16)
                 | ((uint)(buffer[offset + 2]) << 8)
                 | ((uint)(buffer[offset + 3]));
+        }
+        public static async Task<bool> NotifyAsync(string[] _registration_ids, string title, string body)
+        {
+            try
+            {
+                // Get the server key from FCM console
+                var serverKey = string.Format("key={0}", "AAAAZBez2YQ:APA91bHgjYoWKRpPhXQJ9jIo6EO8ZihVV18bJZEHpES5Yc4Z7lk6icP3sZsfBOzYwZeFBPB7ay9h4XJ89764qBf7_s33JQ9E08qYthGYWM2MnDXCtb5ckHR7HI7krRUl0ZFJ8o5SpZZM");
+
+                // Get the sender id from FCM console
+                var senderId = string.Format("id={0}", "429894392196");
+
+                var data = new
+                {
+                    registration_ids = _registration_ids, // Recipient device token
+                    notification = new { title, body }
+                };
+
+                // Using Newtonsoft.Json
+                var jsonBody = JsonConvert.SerializeObject(data);
+
+                using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/notification"))
+                {
+                    httpRequest.Headers.TryAddWithoutValidation("Authorization", serverKey);
+                    httpRequest.Headers.TryAddWithoutValidation("Sender", senderId);
+                    httpRequest.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var result = await httpClient.SendAsync(httpRequest);
+
+                        if (result.IsSuccessStatusCode)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

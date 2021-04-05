@@ -11,8 +11,8 @@ namespace VG.Service.Service
 {
     public interface IVegetableImageService
     {
-        VegetableImage UploadImage(IFormFile image, string vegDescriptionId, string savePath,string url);
-        VegetableImage Update(IEnumerable<IFormFile> image, string vegDescriptionId, string savePath, string url);
+        VegetableImage UploadImage(IFormFile image, string vegDescriptionId, string savePath,string url, string accountId);
+        VegetableImage Update(IEnumerable<IFormFile> image, string vegDescriptionId, string savePath, string url, string accountId);
         void Delete(string postId);
         IEnumerable<VegetableImage> Get(string vegDescriptionId);
     }
@@ -39,7 +39,7 @@ namespace VG.Service.Service
             return this._vegetableImageRepository.GetMulti(s => s.VegetableDescriptionId == vegDescriptionId);
         }
 
-        public VegetableImage Update(IEnumerable<IFormFile> image, string vegDescriptionId, string savePath, string url)
+        public VegetableImage Update(IEnumerable<IFormFile> image, string vegDescriptionId, string savePath, string url, string accountId)
         {
             VegetableImage result = null;
             var post = this._vegetableImageRepository.GetMulti(s => s.VegetableDescriptionId == vegDescriptionId);
@@ -50,12 +50,12 @@ namespace VG.Service.Service
             this._vegetableImageRepository.Commit();
             foreach (var item in image)
             {
-                result = UploadImage(item, vegDescriptionId, savePath, url);
+                result = UploadImage(item, vegDescriptionId, savePath, url, accountId);
             }
             return result;
         }
 
-        public VegetableImage UploadImage(IFormFile image, string vegDescriptionId, string savePath, string url)
+        public VegetableImage UploadImage(IFormFile image, string vegDescriptionId, string savePath, string url, string accountId)
         {
             string imageName = new string(Path.GetFileNameWithoutExtension(image.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(image.FileName);
@@ -72,6 +72,7 @@ namespace VG.Service.Service
                 Url = url + "/Image//"+ imageName,
                 Thumbnail = url + "/Image//" + imageName,
                 VegetableDescriptionId = vegDescriptionId,
+                AccountId = accountId
             });
             return postImage;
         }

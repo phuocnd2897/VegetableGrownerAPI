@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QJZt1t8Sw5SBt8uAKR6772a0jP6OxWMHXZ24+JimKiSIwKyHxklctfK+eMlNveV6ik4tZwSZPPzcXnoHsSgwAQ==",
+  "dgSpecHash": "JuLIKPQv4Miwup0fEH12ja6bt4rFFPiINMobWZXzuL/qzGb/GQvctCrYrQXDTLYjrb3/e2hOIJSJlccc0irDEA==",
   "success": true,
   "projectFilePath": "D:\\Capstone\\VegetableGrownerAPI\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -48,6 +48,7 @@
     "C:\\Users\\phuoc'\\.nuget\\packages\\netcore.autoregisterdi\\2.1.0\\netcore.autoregisterdi.2.1.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
+    "C:\\Users\\phuoc'\\.nuget\\packages\\qrcoder\\1.4.1\\qrcoder.1.4.1.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\runtime.any.system.collections\\4.3.0\\runtime.any.system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\runtime.any.system.diagnostics.tools\\4.3.0\\runtime.any.system.diagnostics.tools.4.3.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\runtime.any.system.diagnostics.tracing\\4.3.0\\runtime.any.system.diagnostics.tracing.4.3.0.nupkg.sha512",

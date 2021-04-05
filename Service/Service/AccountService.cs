@@ -11,15 +11,17 @@ namespace VG.Service.Service
 {
     public interface IAccountService
     {
-        LoginResponseModel Login(string phoneNumber, string password);
+        LoginResponseModel Login(string phoneNumber, string password, string deviceToken);
         void LockAccount(string Id);
     }
     public class AccountService : IAccountService
     {
         private IAccountRepository _accountRepository;
-        public AccountService(IAccountRepository accountRepository)
+        private IAppAccountLoginRepository _appAccountLoginRepository;
+        public AccountService(IAccountRepository accountRepository, IAppAccountLoginRepository appAccountLoginRepository)
         {
             _accountRepository = accountRepository;
+            _appAccountLoginRepository = appAccountLoginRepository;
         }
 
         public void LockAccount(string Id)
@@ -30,12 +32,12 @@ namespace VG.Service.Service
             this._accountRepository.Commit();
         }
 
-        public LoginResponseModel Login(string phoneNumber, string password)
+        public LoginResponseModel Login(string phoneNumber, string password, string deviceToken)
         {
-            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members"});
+            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members" });
             if (account == null || !IdentytiHelper.VerifyHashedPassword(account.PassWord, password) || account.Status == false)
                 return null;
-            return new LoginResponseModel
+            var result = new LoginResponseModel()
             {
                 AccountId = account.Id,
                 PhoneNumber = account.PhoneNumber,
@@ -43,8 +45,29 @@ namespace VG.Service.Service
                 ProviderKey = Guid.NewGuid().ToString(),
                 LoginTime = DateTime.UtcNow,
                 ExpiresTime = DateTime.UtcNow.AddDays(7),
+                DeviceToken = deviceToken,
                 RoleId = account.RoleId
             };
+            var userlogin = this._appAccountLoginRepository.GetSingle(s => s.AppAccountId == account.Id && s.DeviceToken == deviceToken);
+            if (userlogin == null)
+            {
+                userlogin = new AppAccountLogin();
+                userlogin.AppAccountId = result.AccountId;
+                userlogin.ProviderKey = result.ProviderKey;
+                userlogin.LoginTime = result.LoginTime;
+                userlogin.ExpiresTime = result.ExpiresTime;
+                userlogin.DeviceToken = result.DeviceToken;
+                this._appAccountLoginRepository.Add(userlogin);
+            }
+            else
+            {
+                userlogin.ProviderKey = result.ProviderKey;
+                userlogin.LoginTime = result.LoginTime;
+                userlogin.ExpiresTime = result.ExpiresTime;
+                this._appAccountLoginRepository.Update(userlogin);
+            }
+            this._appAccountLoginRepository.Commit();
+            return result;
         }
     }
 }

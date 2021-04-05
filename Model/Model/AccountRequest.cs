@@ -19,6 +19,8 @@ namespace VG.Model.Model
         public DateTime RequestedDate { get; set; }
         public int Status { get; set; }
         [ForeignKey("AccountSend")]
-        public virtual AppAccount AppAccount { get; set; }
+        public virtual AppAccount AppAccountSend { get; set; }
+        [ForeignKey("AccountReceived")]
+        public virtual AppAccount AppAccountReceived { get; set; }
     }
 }

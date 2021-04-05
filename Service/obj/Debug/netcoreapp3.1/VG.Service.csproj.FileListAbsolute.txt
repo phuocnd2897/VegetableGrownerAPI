@@ -96,3 +96,9 @@ D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.cspro
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.dll
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.pdb
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\QRCoder.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll

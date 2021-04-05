@@ -62,3 +62,4 @@ D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.cspro
 D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.dll
 D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.pdb
 D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

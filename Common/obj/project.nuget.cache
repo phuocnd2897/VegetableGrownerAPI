@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "a/a8uHnbJQAbZjxloGI5hN1B2MyTabKhQ3DF+D3X6ZdkDN2UJsTFyDk4xVzE8CoBCWPTqgxw/Ds5DupmMFB4+A==",
+  "dgSpecHash": "4vSItWCe1qCNOLb1OCEFFoqLIPNDkgp5Y09qFnzHl7Wpu0X59oKfcHkaw6l8PZXnKf08XkdGnSVcpSwG2UrLLQ==",
   "success": true,
   "projectFilePath": "D:\\Capstone\\VegetableGrownerAPI\\Common\\VG.Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.1\\microsoft.aspnetcore.cryptography.internal.5.0.1.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.1\\microsoft.aspnetcore.cryptography.keyderivation.5.0.1.nupkg.sha512",
+    "C:\\Users\\phuoc'\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\3.1.12\\microsoft.netcore.app.runtime.win-x64.3.1.12.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\3.1.12\\microsoft.windowsdesktop.app.runtime.win-x64.3.1.12.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.1.12\\microsoft.aspnetcore.app.runtime.win-x64.3.1.12.nupkg.sha512"

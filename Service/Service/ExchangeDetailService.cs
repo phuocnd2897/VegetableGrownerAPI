@@ -14,7 +14,7 @@ namespace VG.Service.Service
     {
         IEnumerable<ExchangeDetailResponseModel> Add(ExchangeDetailRequestModel newItem, string phoneNumber);
         ExchangeDetailRequestModel Update(ExchangeDetailRequestModel newItem);
-        void IsAccept(List<string> Id, int Status);
+        void IsAccept(List<string> Id, int Status, string baseUrl);
         void Delete(string Id);
         ExchangeDetailResponseModel Get(string Id);
         IEnumerable<ExchangeDetailResponseModel> GetByAccountId(string phoneNumber);
@@ -26,20 +26,18 @@ namespace VG.Service.Service
         private IAccountRepository _accountRepository;
         private IShareDetailRepository _shareDetailRepository;
         private IVegetableRepository _vegetableRepository;
-        private IVegetableDescriptionRepository _vegetableDescriptionRepository;
-        private IGardenRepository _gardenRepository;
+        private IQRCodeService _qrCodeService;
         public ExchangeDetailService(IAccountRepository accountRepository, IExchangeDetailRepository exchangeDetailRepository, IShareDetailRepository shareDetailRepository,
-            IVegetableRepository vegetableRepository, IVegetableDescriptionRepository vegetableDescriptionRepository, IGardenRepository gardenRepository)
+            IVegetableRepository vegetableRepository, IQRCodeService qrCodeService)
         {
             _accountRepository = accountRepository;
             _exchangeDetailRepository = exchangeDetailRepository;
             _shareDetailRepository = shareDetailRepository;
             _vegetableRepository = vegetableRepository;
-            _vegetableDescriptionRepository = vegetableDescriptionRepository;
-            _gardenRepository = gardenRepository;
+            _qrCodeService = qrCodeService;
         }
 
-        public void IsAccept(List<string> Id, int Status)
+        public void IsAccept(List<string> Id, int Status, string baseUrl)
         {
             foreach (var item in Id)
             {
@@ -56,6 +54,10 @@ namespace VG.Service.Service
                     }
                 }
                 this._exchangeDetailRepository.Update(result);
+                if (Status == (int)EnumStatusRequest.Accept)
+                {
+                    var qrCode1 = this._qrCodeService.Add(item, baseUrl);
+                }
             }
             this._exchangeDetailRepository.Commit();
         }
@@ -122,6 +124,7 @@ namespace VG.Service.Service
                     Status = (int)EnumStatusRequest.Pending,
                     DateExchange = DateTime.UtcNow.AddHours(7),
                     Quantity = newItem.Quantity,
+                    Sender = accountHost.Id,
                     ReceiveBy = accountReceiver.Id,
                     ShareDetailId = newItem.ShareDetailId,
                     VegetableId = share.VegetableId

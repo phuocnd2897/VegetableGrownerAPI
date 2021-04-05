@@ -20,11 +20,11 @@ namespace API.Controllers
             _accountRequestService = accountRequestService;
         }
         [HttpPost]
-        public IActionResult SendRequestFriend(AccountFriendRequestModel newItem)
+        public async Task<IActionResult> SendRequestFriend(AccountFriendRequestModel newItem)
         {
             try
             {
-                var result = this._accountRequestService.Add(newItem);
+                var result = await this._accountRequestService.Add(newItem);
                 if (result == null)
                 {
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");

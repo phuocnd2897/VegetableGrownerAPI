@@ -21,7 +21,7 @@ namespace API.Controllers
             _exchangeDetailService = exchangeDetailService;
         }
         [HttpPost]
-        public IActionResult AddShare(ExchangeDetailRequestModel newItem)
+        public IActionResult AddExchange(ExchangeDetailRequestModel newItem)
         {
             try
             {
@@ -113,11 +113,12 @@ namespace API.Controllers
             try
             {
                 var phoneNumber = User.Identity.Name;
-                this._exchangeDetailService.IsAccept(Id, Status);
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                this._exchangeDetailService.IsAccept(Id, Status, baseUrl);
                 return Ok();
                     return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }

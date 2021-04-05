@@ -23,7 +23,7 @@ namespace VG.Data.Repository
         public IEnumerable<string> SearchByDescription(string searchValue)
         {
             var result = from vegDes in this.dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2)
-                         where vegDes.VegContent.Contains(searchValue)
+                         where vegDes.VegContent.Contains(searchValue) && vegDes.Status == true && vegDes.AccountId == "" || vegDes.AccountId == null
                          select vegDes.VegDesCommonId;
             return result;
 
@@ -33,7 +33,7 @@ namespace VG.Data.Repository
         public IEnumerable<string> SearchByName(string searchValue)
         {
             var result = from vegDes in this.dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 1)
-                         where vegDes.VegContent.Contains(searchValue)
+                         where vegDes.VegContent.Contains(searchValue) && vegDes.Status == true && vegDes.AccountId == "" || vegDes.AccountId == null
                          select vegDes.VegDesCommonId;
             return result;
         }

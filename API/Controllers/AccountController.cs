@@ -74,5 +74,20 @@ namespace API.Controllers
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
+        [HttpGet]
+        [Route("GetAccountDetailByPhoneNumber")]
+        public IActionResult GetAccountDetailByPhoneNumber()
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var result = this._accountDetailService.GetAccountDetailByPhoneNumber(phoneNumber);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
     }
 }

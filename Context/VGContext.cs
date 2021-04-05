@@ -18,6 +18,7 @@ namespace VG.Context
             
         }
         public virtual DbSet<AppAccount> Accounts { get; set; }
+        public virtual DbSet<AppAccountLogin> AppAccountLogins { get; set; }
         public virtual DbSet<AccountRequest> AccountRequests { get; set; }
         public virtual DbSet<AccountFriend> AccountFriends { get; set; }
         public virtual DbSet<Member> Members { get; set; }
@@ -36,6 +37,7 @@ namespace VG.Context
         public virtual DbSet<Ward> Wards { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<PrecentReport> PrecentReports { get; set; }
+        public virtual DbSet<QRCodeExchange> QRCodeExchanges { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

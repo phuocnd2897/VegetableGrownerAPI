@@ -29,35 +29,47 @@ namespace API.Controllers
         [Route("MobileLogin")]
         public IActionResult MobileLogin([FromBody] LoginRequestModel login)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
-            var user = this._accountService.Login(login.PhoneNumber, login.Password);
-            if (user == null || user.RoleId != 2)
-                return BadRequest(new { message = "Tên đăng nhập hoặc mật khẩu không đúng!" });
-            //var roles = this._appUserService.getrolesbyuserid(user.UserId);
-            //var claimroles = roles.SelectMany(s => s.Functions).GroupBy(s => s.FunctionCode, (k, g) => new CacheRoleFunctionsModel()
-            //{
-            //    FunctionCode = k,
-            //    Roles = g.SelectMany(t => t.Roles).GroupBy(t => t, (k1, g1) => k1).ToArray()
-            //}).ToList();
-            //var rolename = this._appuserService.getrolename(user.UserId);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(AppConst.SecretKey);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            try
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                if (login.DeviceToken == "")
                 {
+                    return BadRequest(new { message = "Detive Token đang để trống" });
+                }
+                if (!ModelState.IsValid)
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+                var user = this._accountService.Login(login.PhoneNumber, login.Password, login.DeviceToken);
+                if (user == null || user.RoleId != 2)
+                    return BadRequest(new { message = "Tên đăng nhập hoặc mật khẩu không đúng!" });
+                //var roles = this._appUserService.getrolesbyuserid(user.UserId);
+                //var claimroles = roles.SelectMany(s => s.Functions).GroupBy(s => s.FunctionCode, (k, g) => new CacheRoleFunctionsModel()
+                //{
+                //    FunctionCode = k,
+                //    Roles = g.SelectMany(t => t.Roles).GroupBy(t => t, (k1, g1) => k1).ToArray()
+                //}).ToList();
+                //var rolename = this._appuserService.getrolename(user.UserId);
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(AppConst.SecretKey);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
                     new Claim(ClaimTypes.Name, user.PhoneNumber.ToString()),
                     new Claim("AccountId",user.AccountId)
-                }),
-                Expires = DateTime.UtcNow.AddDays(3),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
-            //user.Roles = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(roles)));
-            return Ok(user);
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(3),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                user.Token = tokenHandler.WriteToken(token);
+                //user.Roles = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(roles)));
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
         [AllowAnonymous]
         [HttpPost]
@@ -66,7 +78,7 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
-            var user = this._accountService.Login(login.PhoneNumber, login.Password);
+            var user = this._accountService.Login(login.PhoneNumber, login.Password, "");
             if (user == null && (user.RoleId != 1))
                 return BadRequest(new { message = "Tên đăng nhập hoặc mật khẩu không đúng!" });
             //var roles = this._appUserService.getrolesbyuserid(user.UserId);

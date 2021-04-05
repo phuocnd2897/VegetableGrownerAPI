@@ -13,6 +13,7 @@ namespace VG.Model.ResponseModel
         public DateTime LoginTime { get; set; }
         public DateTime ExpiresTime { get; set; }
         public string Token { get; set; }
+        public string DeviceToken { get; set; }
         public int RoleId { get; set; }
     }
 }

@@ -44,9 +44,11 @@ namespace VG.Data.Repository
                              VegDescription = vegDetailDes.VegetableDescription.VegContent,
                              VegFeature = vegDetailFeat.VegetableDescription.VegContent,
                              FullName = accountDetail.FullName,
+                             VegetableNeedId = share.VegetableNeedId,
+                             VegetableNeedName = share.VegetableNeedName,
                              Quantity = share.Quantity,
                              Statius = share.Status,
-                             Images = (from image in dbContext.VegetableImages where vegDetailImg.VegetableDescriptionId == image.VegetableDescriptionId select image).ToList()
+                             Images = (from image in dbContext.VegetableImages where vegDetailImg.VegetableDescriptionId == image.VegetableDescriptionId && image.AccountId == account.Id select image).ToList()
                          };
             return result;
         }
@@ -73,9 +75,11 @@ namespace VG.Data.Repository
                              VegDescription = vegDetailDes.VegetableDescription.VegContent,
                              VegFeature = vegDetailFeat.VegetableDescription.VegContent,
                              FullName = accountDetail.FullName,
+                             VegetableNeedId = share.VegetableNeedId,
+                             VegetableNeedName = share.VegetableNeedName,
                              Quantity = share.Quantity,
                              Statius = share.Status,
-                             Images = (from image in dbContext.VegetableImages where vegDetailImg.VegetableDescriptionId == image.VegetableDescriptionId select image).ToList()
+                             Images = (from image in dbContext.VegetableImages where vegDetailImg.VegetableDescriptionId == image.VegetableDescriptionId && image.AccountId == account.Id select image).ToList()
                          };
             return result;
         }

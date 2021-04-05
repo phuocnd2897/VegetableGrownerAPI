@@ -188,3 +188,4 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.csproj.CopyCompl
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.pdb
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\QRCoder.dll

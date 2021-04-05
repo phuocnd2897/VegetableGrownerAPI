@@ -19,7 +19,7 @@ namespace VG.Model.Model
         public DateTime DateExchange { get; set; }
         public int Quantity { get; set; }
         public int Status { get; set; }
-        [Required, MaxLength(128)]
+        [MaxLength(128)]
         public string Sender { get; set; }
         [Required, MaxLength(128)]
         public string ReceiveBy { get; set; }

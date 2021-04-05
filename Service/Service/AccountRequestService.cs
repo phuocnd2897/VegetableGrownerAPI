@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using VG.Common.Constant;
+using VG.Common.Helper;
 using VG.Data.Repository;
 using VG.Model.Model;
+using VG.Model.ResponseModel;
 
 namespace VG.Service.Service
 {
     public interface IAccountRequestService
     {
-        AccountRequest Add(AccountFriendRequestModel newItem);
-        void IsComfirm(int Id, int status);
-        IEnumerable<AccountRequest> GetAccountRequest(string phoneNumber);
+        Task<AccountRequest> Add(AccountFriendRequestModel newItem);
+        Task IsComfirm(int Id, int status);
+        IEnumerable<AccountRequestResponseModel> GetAccountRequest(string phoneNumber);
     }
     public class AccountRequestService : IAccountRequestService
     {
@@ -24,8 +28,10 @@ namespace VG.Service.Service
             _accountFriendRepository = accountFriendRepository;
             _accountRepository = accountRepository;
         }
-        public AccountRequest Add(AccountFriendRequestModel newItem)
+        public async Task<AccountRequest> Add(AccountFriendRequestModel newItem)
         {
+            var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == newItem.AccountReceived, new string[] { "AppAccountLogins", "Members" });
+            var FullNameAccountReceived = appAccountLogin.Members.FirstOrDefault().FullName;
             var result = this._accountRequestRepository.Add(new AccountRequest 
             {
                 AccountReceived = newItem.AccountReceived,
@@ -33,18 +39,28 @@ namespace VG.Service.Service
                 RequestedDate = DateTime.UtcNow.AddHours(7),
                 Status = (int)EnumStatusRequest.Pending
             });
+            var mess = IdentytiHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameAccountReceived + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
             this._accountRequestRepository.Commit();
-            return result;
+            return await Task.FromResult(result);
         }
 
-        public IEnumerable<AccountRequest> GetAccountRequest(string phoneNumber)
+        public IEnumerable<AccountRequestResponseModel> GetAccountRequest(string phoneNumber)
         {
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
-            var result = this._accountRequestRepository.GetMulti(s => s.AccountReceived == account.Id && s.Status == (int)EnumFriendRequest.Accept);
+            var result = this._accountRequestRepository.GetMulti(s => s.AccountReceived == account.Id && s.Status == (int)EnumFriendRequest.Pending, new string[] { "AppAccountSend.Members", "AppAccountReceived.Members" })
+                .Select(s => new AccountRequestResponseModel
+                {
+                    Id = s.Id,
+                    AccountSend = s.AccountSend,
+                    AccountSendName = s.AppAccountSend.Members.FirstOrDefault().FullName,
+                    AccountReceived = s.AccountReceived,
+                    AccountReceivedName = s.AppAccountReceived.Members.FirstOrDefault().FullName,
+                    RequestedDate = s.RequestedDate,
+                });
             return result;
         }
 
-        public void IsComfirm(int Id, int status)
+        public async Task IsComfirm(int Id, int status)
         {
             var result = this._accountRequestRepository.GetSingle(s => s.Id == Id);
             result.Status = status;
@@ -55,7 +71,14 @@ namespace VG.Service.Service
                 Account_two_Id = result.AccountReceived,
                 AcceptedDate = DateTime.Now
             });
+            if (status == (int)EnumStatusRequest.Accept)
+            {
+                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == result.AccountSend, new string[] { "AppAccountLogins", "Members" });
+                var FullNameAccountSend = appAccountLogin.Members.FirstOrDefault().FullName;
+                var mess = IdentytiHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Kết bạn thành công", FullNameAccountSend + " đã đồng ý kết bạn. ");
+            }
             this._accountRequestRepository.Commit();
+            await Task.CompletedTask;
         }
     }
 }
