@@ -17,7 +17,12 @@ namespace VG.Model.Model
         [Required, MaxLength(128)]
         public string Account_two_Id { get; set; }
         public DateTime AcceptedDate { get; set; }
+        public int AccountRequestId { get; set; }
+        [ForeignKey("Account_one_Id")]
+        public virtual AppAccount AppAccountSend { get; set; }
         [ForeignKey("Account_two_Id")]
-        public virtual AppAccount AppAccount { get; set; }
+        public virtual AppAccount AppAccountReceive { get; set; }
+        [ForeignKey("AccountRequestId")]
+        public virtual AccountRequest AccountRequest { get; set; }
     }
 }

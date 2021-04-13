@@ -108,7 +108,7 @@ namespace API.Controllers
         }
         [HttpPut]
         [Route("IsAccept")]
-        public IActionResult AcceptExchangeDetail(List<string> Id, int Status)
+        public IActionResult AcceptExchangeDetail(string Id, int Status)
         {
             try
             {

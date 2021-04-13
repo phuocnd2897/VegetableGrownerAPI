@@ -35,7 +35,7 @@ namespace VG.Service.Service
         public LoginResponseModel Login(string phoneNumber, string password, string deviceToken)
         {
             var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members" });
-            if (account == null || !IdentytiHelper.VerifyHashedPassword(account.PassWord, password) || account.Status == false)
+            if (account == null || !IdentityHelper.VerifyHashedPassword(account.PassWord, password) || account.Status == false)
                 return null;
             var result = new LoginResponseModel()
             {

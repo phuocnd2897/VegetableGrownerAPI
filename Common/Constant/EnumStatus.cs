@@ -9,8 +9,7 @@ namespace VG.Common.Constant
         Pending = 1,
         Accept = 2,
         Reject = 3,
-        Shipping = 4,
-        Finish = 5,
+        Finish = 4
     }
     public enum EnumStatusShare
     {

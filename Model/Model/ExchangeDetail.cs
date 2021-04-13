@@ -27,7 +27,9 @@ namespace VG.Model.Model
         public string ShareDetailId { get; set; }
         public string VegetableId { get; set; }
         [ForeignKey("ReceiveBy")]
-        public virtual AppAccount AppAccount { get; set; }
+        public virtual AppAccount AppAccountReceive { get; set; }
+        [ForeignKey("Sender")]
+        public virtual AppAccount AppAccountSender { get; set; }
         [ForeignKey("ShareDetailId")]
         public virtual ShareDetail ShareDetail { get; set; }
         [ForeignKey("VegetableId")]

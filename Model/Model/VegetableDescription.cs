@@ -13,6 +13,7 @@ namespace VG.Model.Model
         {
             Id = Guid.NewGuid().ToString();
             Vegetables = new HashSet<Vegetable>();
+            VegetableImages = new HashSet<VegetableImage>();
         }
         [Key]
         [Required, MaxLength(128)]
@@ -27,6 +28,7 @@ namespace VG.Model.Model
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }
         public virtual ICollection<Vegetable> Vegetables { get; set; }
+        public virtual ICollection<VegetableImage> VegetableImages { get; set; }
         public bool? Status { get; set; }
     }
 }

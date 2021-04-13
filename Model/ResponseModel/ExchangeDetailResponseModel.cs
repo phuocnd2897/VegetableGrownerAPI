@@ -7,7 +7,6 @@ namespace VG.Model.ResponseModel
     public class ExchangeDetailResponseModel
     {
         public string Id { get; set; }
-        public string VegNameSend { get; set; }
         public string VegNameReceive { get; set; }
         public int Quantity { get; set; }
         public int Status { get; set; }

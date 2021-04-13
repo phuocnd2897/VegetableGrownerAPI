@@ -45,7 +45,7 @@ namespace VG.Service.Service
             string description = "";
             string feature = "";
             List<WikiResponseModel> vegetables = new List<WikiResponseModel>();
-            var listLabel = _labelRepository.GetMulti(s => s.VegCompositionId == 3).ToArray();
+            var listLabel = _labelRepository.GetMulti(s => s.VegCompositionId == 3 && s.StandsFor == "CD").ToArray();
             char[] separators = new char[] { '[', ']', '\\' };
             Regex pattern = new Regex("[\\[\\]\\\\]");
             using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APISearchList+ title))
@@ -98,7 +98,10 @@ namespace VG.Service.Service
                             split.RemoveAt(0);
                             split = split.Select(s => Regex.Replace(s, @"[[=\']", string.Empty)).ToList();
                             split = split.Select(s => Regex.Replace(s, @"[]]", string.Empty)).ToList();
-                            feature = split.Where(s => listLabel.Select(q => q.LabelName).Contains(s)).FirstOrDefault();
+                            foreach (var item in listLabel.Select(s => s.LabelName))
+                            {
+                                feature = split.Where(s => s.Contains(item)).FirstOrDefault();
+                            }
                             if (feature == null)
                             {
                                 texts = split.ToList();

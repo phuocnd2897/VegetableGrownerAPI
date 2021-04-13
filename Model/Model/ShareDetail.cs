@@ -13,6 +13,7 @@ namespace VG.Model.Model
         {
             Id = Guid.NewGuid().ToString();
             ExchangeDetails = new HashSet<ExchangeDetail>();
+            VegetableShares = new HashSet<VegetableShare>();
         }
         [Key]
         [Required, MaxLength(128)]
@@ -26,13 +27,12 @@ namespace VG.Model.Model
         public string AccountId { get; set; }
         [Required, MaxLength(128)]
         public string VegetableId { get; set; }
-        public string VegetableNeedId { get; set; }
-        public string VegetableNeedName { get; set; }
         public bool Lock { get; set; }
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }
         [ForeignKey("VegetableId")]
         public virtual Vegetable Vegetable { get; set; }
         public virtual ICollection<ExchangeDetail> ExchangeDetails { get; set; }
+        public virtual ICollection<VegetableShare> VegetableShares { get; set; }
     }
 }

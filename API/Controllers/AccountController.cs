@@ -76,12 +76,27 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("GetAccountDetailByPhoneNumber")]
-        public IActionResult GetAccountDetailByPhoneNumber()
+        public IActionResult GetAccountDetailByPhoneNumber(string Id)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._accountDetailService.GetAccountDetailByPhoneNumber(phoneNumber);
+                var result = this._accountDetailService.GetAccountDetailById(Id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchAccount")]
+        public IActionResult SearchAccount(string searchValue)
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var result = this._accountDetailService.SearchAccount(searchValue);
                 return Ok(result);
             }
             catch (Exception ex)

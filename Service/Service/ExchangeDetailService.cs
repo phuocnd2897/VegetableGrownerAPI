@@ -14,7 +14,7 @@ namespace VG.Service.Service
     {
         IEnumerable<ExchangeDetailResponseModel> Add(ExchangeDetailRequestModel newItem, string phoneNumber);
         ExchangeDetailRequestModel Update(ExchangeDetailRequestModel newItem);
-        void IsAccept(List<string> Id, int Status, string baseUrl);
+        void IsAccept(string Id, int Status, string baseUrl);
         void Delete(string Id);
         ExchangeDetailResponseModel Get(string Id);
         IEnumerable<ExchangeDetailResponseModel> GetByAccountId(string phoneNumber);
@@ -37,29 +37,41 @@ namespace VG.Service.Service
             _qrCodeService = qrCodeService;
         }
 
-        public void IsAccept(List<string> Id, int Status, string baseUrl)
+        public void IsAccept(string Id, int Status, string baseUrl)
         {
-            foreach (var item in Id)
+            var exchange = this._exchangeDetailRepository.GetSingle(s => s.Id == Id, new string[] { "ShareDetail" });
+            if (exchange.Quantity <= exchange.ShareDetail.Quantity)
             {
-                var result = this._exchangeDetailRepository.GetSingle(s => s.Id == item, new string[] { "Vegetable" });
-                result.Status = Status;
+                
+                var listId = this._exchangeDetailRepository.GetMulti(s => s.ShareDetailId == exchange.ShareDetailId).Select(s => s.Id).ToList();
                 if (Status == (int)EnumStatusRequest.Accept)
                 {
-                    var veg = this._vegetableRepository.GetSingle(s => s.Id == result.VegetableId);
-                    var vegDetail = this._vegetableRepository.GetMulti(s => s.No == veg.No && s.GardenId == veg.GardenId);
-                    foreach (var v in vegDetail)
+                    exchange.ShareDetail.Quantity = exchange.ShareDetail.Quantity - exchange.Quantity;
+                }
+                foreach (var item in listId)
+                {
+                    var result = this._exchangeDetailRepository.GetSingle(s => s.Id == item, new string[] { "Vegetable" });
+                    result.Status = Status;
+                    if (Status == (int)EnumStatusRequest.Accept)
                     {
-                        v.Quantity = v.Quantity - result.Quantity;
-                        this._vegetableRepository.Update(v);
+                        var veg = this._vegetableRepository.GetSingle(s => s.Id == result.VegetableId);
+                        veg.Quantity = veg.Quantity - result.Quantity;
+                        this._vegetableRepository.Update(veg);
+                    }
+                    this._exchangeDetailRepository.Update(result);
+                    if (Status == (int)EnumStatusRequest.Accept)
+                    {
+                        var qrCode1 = this._qrCodeService.Add(item, baseUrl);
                     }
                 }
-                this._exchangeDetailRepository.Update(result);
-                if (Status == (int)EnumStatusRequest.Accept)
-                {
-                    var qrCode1 = this._qrCodeService.Add(item, baseUrl);
-                }
+                this._shareDetailRepository.Update(exchange.ShareDetail);
+                this._exchangeDetailRepository.Commit();
+
             }
-            this._exchangeDetailRepository.Commit();
+            else
+            {
+                throw new Exception("Số lượng rau nhận lớn hơn số lượng rau được chia sẻ");
+            }
         }
 
         public IEnumerable<ExchangeDetailResponseModel> Add(ExchangeDetailRequestModel newItem, string phoneNumber)
@@ -83,7 +95,6 @@ namespace VG.Service.Service
                 exchangeDetailResponseModels.Add(new ExchangeDetailResponseModel
                 {
                     Id = resullt.Id,
-                    VegNameSend = share.Vegetable.VegetableDescription.VegContent,
                     Quantity = newItem.Quantity,
                     Status = (int)EnumStatusRequest.Pending,
                     FullNameHost = accountHost.Members.FirstOrDefault().FullName,
@@ -106,7 +117,6 @@ namespace VG.Service.Service
                 exchangeDetailResponseModels.Add(new ExchangeDetailResponseModel
                 {
                     Id = resullt.Id,
-                    VegNameSend = this._vegetableRepository.GetSingle(s => s.Id == newItem.VegetableId, new string[] { "VegetableDescription" }).VegetableDescription.VegContent,
                     Quantity = newItem.QuantityExchange,
                     Status = (int)EnumStatusRequest.Pending,
                     FullNameHost = accountReceiver.Members.FirstOrDefault().FullName,
@@ -132,7 +142,6 @@ namespace VG.Service.Service
                 exchangeDetailResponseModels.Add(new ExchangeDetailResponseModel
                 {
                     Id = resullt.Id,
-                    VegNameSend = share.Vegetable.VegetableDescription.VegContent,
                     Quantity = newItem.Quantity,
                     Status = (int)EnumStatusRequest.Pending,
                     FullNameHost = accountHost.Members.FirstOrDefault().FullName,
@@ -176,7 +185,6 @@ namespace VG.Service.Service
                 AccountHostId = result.ShareDetail.AccountId,
                 ReceiverId = result.ReceiveBy,
                 FullNameReceiver = accountReceiver.Members.FirstOrDefault().FullName,
-                VegNameSend = this._vegetableRepository.GetSingle(s => s.Id == result.ShareDetail.VegetableId, new string[] { "VegetableDescription" }).VegetableDescription.VegContent,
                 CreatedDate = result.DateExchange,
                 FullNameHost = accountHost.Members.FirstOrDefault().FullName,
                 ShareDetailId = result.ShareDetailId

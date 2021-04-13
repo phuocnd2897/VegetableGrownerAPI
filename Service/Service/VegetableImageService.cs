@@ -13,7 +13,8 @@ namespace VG.Service.Service
     {
         VegetableImage UploadImage(IFormFile image, string vegDescriptionId, string savePath,string url, string accountId);
         VegetableImage Update(IEnumerable<IFormFile> image, string vegDescriptionId, string savePath, string url, string accountId);
-        void Delete(string postId);
+        void Delete(string vegDescriptionId);
+        void DeleteByIdImg(VegetableImage image);
         IEnumerable<VegetableImage> Get(string vegDescriptionId);
     }
     public class VegetableImageService : IVegetableImageService
@@ -101,6 +102,11 @@ namespace VG.Service.Service
             else
                 uri.Insert(0, "file:///");
             return uri.ToString();
+        }
+
+        public void DeleteByIdImg(VegetableImage image)
+        {
+            this._vegetableImageRepository.Delete(image);
         }
     }
 }

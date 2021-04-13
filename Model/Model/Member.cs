@@ -22,6 +22,6 @@ namespace VG.Model.Model
         [Required, MaxLength(50)]
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
-        public virtual AppAccount Account { get; set; }
+        public virtual AppAccount AppAccount { get; set; }
     }
 }

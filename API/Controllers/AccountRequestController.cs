@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VG.Model.Model;
+using VG.Model.RequestModel;
 using VG.Service.Service;
 
 namespace API.Controllers

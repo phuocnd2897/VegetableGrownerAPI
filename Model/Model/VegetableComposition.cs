@@ -9,6 +9,11 @@ namespace VG.Model.Model
     [Table("VegetableComposition")]
     public class VegetableComposition
     {
+        public VegetableComposition()
+        {
+            Keywords = new HashSet<Keyword>();
+            Labels = new HashSet<Label>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -17,5 +22,7 @@ namespace VG.Model.Model
         public string VegetableDescriptionId { get; set; }
         [ForeignKey("VegetableDescriptionId")]
         public virtual VegetableDescription VegetableDescription { get; set; }
+        public virtual ICollection<Keyword> Keywords { get; set; }
+        public virtual ICollection<Label> Labels { get; set; }
     }
 }

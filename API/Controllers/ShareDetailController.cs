@@ -126,5 +126,47 @@ namespace API.Controllers
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
+        [HttpGet]
+        [Route("SearchShareByName")]
+        public IActionResult SearchShareByName(string valueSearch)
+        {
+            try
+            {
+                var result = this._shareDetailService.SearchShareByName(valueSearch);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchShareByKeyword")]
+        public IActionResult SearchShareByKeyword(string valueSearch)
+        {
+            try
+            {
+                var result = this._shareDetailService.SearchShareByKeyword(valueSearch);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchShareByDescription")]
+        public IActionResult SearchShareByDescription(string valueSearch)
+        {
+            try
+            {
+                var result = this._shareDetailService.SearchShareByDescription(valueSearch);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
     }
 }

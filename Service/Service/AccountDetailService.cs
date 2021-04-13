@@ -6,6 +6,7 @@ using VG.Common.Helper;
 using VG.Data.Repository;
 using VG.Model.Model;
 using VG.Model.RequestModel;
+using VG.Model.ResponseModel;
 
 namespace VG.Service.Service
 {
@@ -13,8 +14,9 @@ namespace VG.Service.Service
     {
         AccountRequestModel RegistrationAccount(AccountRequestModel newItem);
         AccountRequestModel UpdateAccountDetail(AccountRequestModel newItem);
-        AccountRequestModel GetAccountDetailByPhoneNumber(string phoneNumber);
+        AccountRequestModel GetAccountDetailById(string Id);
         IEnumerable<AccountRequestModel> GetAllAccount();
+        IEnumerable<SelectedResponseModel> SearchAccount(string searchValue);
     }
     public class AccountDetailService : IAccountDetailService
     {
@@ -27,13 +29,13 @@ namespace VG.Service.Service
 
         }
 
-        public AccountRequestModel GetAccountDetailByPhoneNumber(string phoneNumber)
+        public AccountRequestModel GetAccountDetailById(string Id)
         {
-            var result = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members" });
+            var result = this._accountRepository.GetSingle(s => s.Id == Id, new string[] { "Members" });
             return new AccountRequestModel
             {
                 Id = result.Id,
-                PhoneNumber = phoneNumber,
+                PhoneNumber = result.PhoneNumber,
                 FullName = result.Members.FirstOrDefault().FullName,
                 BirthDate = result.Members.FirstOrDefault().BirthDate,
                 Email = result.Members.FirstOrDefault().Email,
@@ -63,7 +65,7 @@ namespace VG.Service.Service
             account = this._accountRepository.Add(new AppAccount
             {
                 PhoneNumber = newItem.PhoneNumber,
-                PassWord = IdentytiHelper.HashPassword(newItem.Password),
+                PassWord = IdentityHelper.HashPassword(newItem.Password),
                 Status = true,
                 RoleId = 2
             });
@@ -79,6 +81,17 @@ namespace VG.Service.Service
             this._accountDetailRepository.Commit();
             newItem.Id = account.Id;
             return newItem;
+        }
+
+        public IEnumerable<SelectedResponseModel> SearchAccount(string searchValue)
+        {
+            var result = this._accountDetailRepository.GetMulti(s => s.FullName.Contains(searchValue) && s.FullName.EndsWith(searchValue), new string[] { "AppAccount" })
+                .Select(s => new SelectedResponseModel
+                {
+                    Id = s.AppAccount.Id,
+                    Text = s.FullName
+                });
+            return result;
         }
 
         public AccountRequestModel UpdateAccountDetail(AccountRequestModel newItem)

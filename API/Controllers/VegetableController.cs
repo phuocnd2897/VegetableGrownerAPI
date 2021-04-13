@@ -86,35 +86,17 @@ namespace API.Controllers
             }
         }
         [HttpDelete]
-        public IActionResult DeleteVegetable(int noVeg, int gardenId)
+        public IActionResult DeleteVegetable(string Id)
         {
             try
             {
-                this._vegetableService.Delete(noVeg, gardenId);
+                this._vegetableService.Delete(Id);
                 return Ok();
             }
             catch (Exception ex)
             {
 
                 return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet]
-        public IActionResult Get(int noVeg, int gardenId)
-        {
-            try
-            {
-                var result = this._vegetableService.Get(noVeg, gardenId);
-                if (result == null)
-                {
-                    return BadRequest("Có lỗi xảy ra vui lòng thử lại");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Có lỗi xảy ra vui lòng thử lại");
-                throw;
             }
         }
         [HttpGet]
@@ -172,6 +154,34 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Có lỗi xảy ra vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchVegetableSharedByName")]
+        public IActionResult SearchVegetableSharedByName(string searchValue)
+        {
+            try
+            {
+                var result = this._vegetableService.SearchVegetableSharedByName(searchValue);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra vui lòng thử lại");
+            }
+        }
+        [HttpGet]
+        [Route("SearchVegetableSharedByKeyword")]
+        public IActionResult SearchVegetableSharedByKeyword(string searchValue)
+        {
+            try
+            {
+                var result = this._vegetableService.SearchVegetableSharedByKeyword(searchValue);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet]

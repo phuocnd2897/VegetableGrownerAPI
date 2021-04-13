@@ -31,17 +31,15 @@ namespace VG.Data.Repository
                          from accountDetailReceiver in _accountDetailReceiver.DefaultIfEmpty()
                          join accountDetailHost in dbContext.Members on exchange.Sender equals accountDetailHost.AccountId into _accountDetailHost
                          from accountDetailHost in _accountDetailHost.DefaultIfEmpty()
-                         join vegShare in dbContext.Vegetables on share.VegetableId equals vegShare.Id
-                         join vegReceive in dbContext.VegetableDescriptions on share.VegetableNeedId equals vegReceive.Id into vegReceiveSen
+                         join vegReceive in dbContext.VegetableDescriptions on exchange.VegetableId equals vegReceive.Id into vegReceiveSen
                          from vegReceive in vegReceiveSen.DefaultIfEmpty()
-                         where accountDetailReceiver.Account.PhoneNumber == phoneNumber || share.AppAccount.PhoneNumber == phoneNumber
+                         where accountDetailReceiver.AppAccount.PhoneNumber == phoneNumber || share.AppAccount.PhoneNumber == phoneNumber
                          select new ExchangeDetailResponseModel
                          {
                              Id = exchange.Id,
                              Quantity = exchange.Quantity,
                              Status = exchange.Status,
                              AccountHostId = exchange.Sender == "" ? share.AccountId : exchange.Sender,
-                             VegNameSend = vegShare.VegetableDescription.VegContent,
                              VegNameReceive = vegReceive.VegContent,
                              CreatedDate = exchange.DateExchange,
                              FullNameHost = accountDetailHost != null ? accountDetailHost.FullName : share.AppAccount.Members.FirstOrDefault().FullName,
@@ -61,17 +59,15 @@ namespace VG.Data.Repository
                          from accountDetailReceiver in _accountDetailReceiver.DefaultIfEmpty()
                          join accountDetailHost in dbContext.Members on exchange.Sender equals accountDetailHost.AccountId into _accountDetailHost
                          from accountDetailHost in _accountDetailHost.DefaultIfEmpty()
-                         join vegShare in dbContext.Vegetables on share.VegetableId equals vegShare.Id
-                         join vegReceive in dbContext.VegetableDescriptions on share.VegetableNeedId equals vegReceive.Id into vegReceiveSen
+                         join vegReceive in dbContext.VegetableDescriptions on exchange.VegetableId equals vegReceive.Id into vegReceiveSen
                          from vegReceive in vegReceiveSen.DefaultIfEmpty()
-                         where share.AppAccount.PhoneNumber == phoneNumber && exchange.Status == (int)EnumStatusRequest.Pending
+                         where exchange.AppAccountSender.PhoneNumber == phoneNumber && exchange.Status == (int)EnumStatusRequest.Pending
                          select new ExchangeDetailResponseModel
                          {
                              Id = exchange.Id,
                              Quantity = exchange.Quantity,
                              Status = exchange.Status,
                              AccountHostId = exchange.Sender ==  "" ? share.AccountId : exchange.Sender,
-                             VegNameSend = vegShare.VegetableDescription.VegContent,
                              VegNameReceive = vegReceive.VegContent,
                              CreatedDate = exchange.DateExchange,
                              FullNameHost = accountDetailHost != null ? accountDetailHost.FullName : share.AppAccount.Members.FirstOrDefault().FullName,

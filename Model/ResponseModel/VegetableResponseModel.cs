@@ -8,6 +8,7 @@ namespace VG.Model.ResponseModel
 {
     public class VegetableResponseModel
     {
+        public string Id { get; set; }
         public int No { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -15,13 +16,6 @@ namespace VG.Model.ResponseModel
         public int? Quantity { get; set; }
         public IEnumerable<VegetableImage> Images { get;set; }
         public int GardenId { get; set; }
-        public string IdName { get; set; }
         public string IdDescription { get; set; }
-        public string IdFeature { get; set; }
-        public string IdImage { get; set; }
-        public string IdDetailName { get; set; }
-        public string IdDetailDescription { get; set; }
-        public string IdDetailFeature { get; set; }
-        public string IdDetailImage { get; set; }
     }
 }

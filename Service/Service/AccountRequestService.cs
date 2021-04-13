@@ -7,6 +7,7 @@ using VG.Common.Constant;
 using VG.Common.Helper;
 using VG.Data.Repository;
 using VG.Model.Model;
+using VG.Model.RequestModel;
 using VG.Model.ResponseModel;
 
 namespace VG.Service.Service
@@ -39,7 +40,7 @@ namespace VG.Service.Service
                 RequestedDate = DateTime.UtcNow.AddHours(7),
                 Status = (int)EnumStatusRequest.Pending
             });
-            var mess = IdentytiHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameAccountReceived + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
+            var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameAccountReceived + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
             this._accountRequestRepository.Commit();
             return await Task.FromResult(result);
         }
@@ -75,7 +76,7 @@ namespace VG.Service.Service
             {
                 var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == result.AccountSend, new string[] { "AppAccountLogins", "Members" });
                 var FullNameAccountSend = appAccountLogin.Members.FirstOrDefault().FullName;
-                var mess = IdentytiHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Kết bạn thành công", FullNameAccountSend + " đã đồng ý kết bạn. ");
+                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Kết bạn thành công", FullNameAccountSend + " đã đồng ý kết bạn. ");
             }
             this._accountRequestRepository.Commit();
             await Task.CompletedTask;

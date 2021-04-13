@@ -14,8 +14,7 @@ namespace VG.Model.ResponseModel
         public int Quantity { get; set; }
         public int Statius { get; set; }
         public string Content { get; set; }
-        public string VegetableNeedId { get; set; }
-        public string VegetableNeedName { get; set; }
+        public IEnumerable<VegetableShareResponseModel> VegetableShare { get; set; }
         public DateTime CreatedDate { get; set; }
         public string AccountId { get; set; }
         public string FullName { get; set; }
