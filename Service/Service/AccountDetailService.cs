@@ -43,6 +43,7 @@ namespace VG.Service.Service
             };
         }
 
+
         public IEnumerable<AccountRequestModel> GetAllAccount()
         {
             return this._accountRepository.GetAll().Select(s => new AccountRequestModel
@@ -85,7 +86,7 @@ namespace VG.Service.Service
 
         public IEnumerable<SelectedResponseModel> SearchAccount(string searchValue)
         {
-            var result = this._accountDetailRepository.GetMulti(s => s.FullName.Contains(searchValue) && s.FullName.EndsWith(searchValue), new string[] { "AppAccount" })
+            var result = this._accountDetailRepository.GetMulti(s => s.FullName.Contains(searchValue) && s.FullName.EndsWith(searchValue) && s.AppAccount.Status == true, new string[] { "AppAccount" })
                 .Select(s => new SelectedResponseModel
                 {
                     Id = s.AppAccount.Id,

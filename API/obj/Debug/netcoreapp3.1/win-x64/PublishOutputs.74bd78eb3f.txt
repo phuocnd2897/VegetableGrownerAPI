@@ -89,6 +89,8 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\Image\toi-tang-d213515293.jpg
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\QRCode\202141706061724440.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\QRCode\202141706061736696.png
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\QRCode\202144014184037622.png
+D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\QRCode\202144114184117422.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\wwwroot\QRCode\20214905160939923.png
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\appsettings.Development.json
 D:\Capstone\VegetableGrownerAPI\API\obj\Release\netcoreapp3.1\win-x64\PubTmp\Out\appsettings.json

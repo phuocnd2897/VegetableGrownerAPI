@@ -104,5 +104,33 @@ namespace API.Controllers
                 return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
         }
+        [HttpGet]
+        [Route("GetPassword")]
+        public IActionResult GetPassword(string phoneNumber)
+        {
+            try
+            {
+                var result = this._accountService.GetAccountPassword(phoneNumber);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("ChangePassword")]
+        public IActionResult ChangePassword(ChangePasswordRequestModel newItem)
+        {
+            try
+            {
+                this._accountService.ChangePassword(newItem);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

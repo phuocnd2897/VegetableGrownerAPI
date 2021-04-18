@@ -18,7 +18,7 @@ namespace VG.Service.Service
     public interface IShareDetailService
     {
         ShareDetail Add(ShareDetailRequestModel newItem, string phoneNumber);
-        IEnumerable<ShareDetailResponseModel> GetShareByAccountId(string phoneNumber);
+        IEnumerable<ShareDetailResponseModel> GetShareByAccountId(string Id);
         IEnumerable<ShareDetailResponseModel> GetAll (string phoneNumber);
         ShareDetailResponseModel Get(string Id);
         ShareDetailRequestModel Update(ShareDetailRequestModel newItem, string phoneNumber, string savePath, string domain);
@@ -63,7 +63,11 @@ namespace VG.Service.Service
         public ShareDetail Add(ShareDetailRequestModel newItem, string phoneNumber)
         {
             string accountId = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber).Id;
-            
+            var veg = this._vegetableService.Get(newItem.VegetableId);
+            if (veg.Quantity < newItem.Quantity)
+            {
+                throw new Exception("Số lượng cho vượt quá số lượng bạn đang sở hữu");
+            }
             var share = this._shareRepository.Add(new ShareDetail
             {
                 ShareContent = newItem.Content,
@@ -95,7 +99,7 @@ namespace VG.Service.Service
         public void Delete(string Id)
         {
             var share = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "ExchangeDetails" });
-            if (share.ExchangeDetails.Where(s => s.Status == (int)EnumStatusRequest.Accept).Count() > 0)
+            if (share.ExchangeDetails.Where(s => s.ShareDetailId == Id && s.Status == (int)EnumStatusRequest.Accept).Count() > 0)
             {
                 throw new Exception("Có đơn hàng đang được vận chuyển, không thể xoá bài viết này");
             }
@@ -105,7 +109,7 @@ namespace VG.Service.Service
 
         public ShareDetailResponseModel Get(string Id)
         {
-            var result = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "VegetableShare.VegetableDescription" });
+            var result = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "VegetableShares.VegetableDescription" });
             List<VegetableShareResponseModel> vegetableShares = new List<VegetableShareResponseModel>();
             if (result.VegetableShares.Count > 0)
             {
@@ -146,16 +150,15 @@ namespace VG.Service.Service
             var shareFriend = this._shareRepository.GetAll(listFriend).ToList();
             var allShare = this._shareRepository.GetAllExcept(listFriend, account.Id).ToList();
             var result = shareFriend.Union(allShare);
-            return result;
+            return result.GroupBy(s => s.Id).Select(s => s.FirstOrDefault());
         }
 
-        public IEnumerable<ShareDetailResponseModel> GetShareByAccountId(string phoneNumber)
+        public IEnumerable<ShareDetailResponseModel> GetShareByAccountId(string Id)
         {
             List<ShareDetailResponseModel> shareDetailResponseModels = new List<ShareDetailResponseModel>();
-            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
 
-            var result = this._shareRepository.GetMulti(s => s.AccountId == account.Id);
-            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == account.Id);
+            var result = this._shareRepository.GetMulti(s => s.AccountId == Id, new string[] { "VegetableShares.VegetableDescription" });
+            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == Id);
             foreach (var item in result.ToList())
             {
                 List<VegetableShareResponseModel> vegetableShares = new List<VegetableShareResponseModel>();

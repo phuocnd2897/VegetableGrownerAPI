@@ -66,12 +66,12 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("GetAllShareById")]
-        public IActionResult GetAllShareById()
+        public IActionResult GetAllShareById(string Id)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._shareDetailService.GetShareByAccountId(phoneNumber);
+                var result = this._shareDetailService.GetShareByAccountId(Id);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -121,9 +121,9 @@ namespace API.Controllers
                 this._shareDetailService.Delete(Id);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet]

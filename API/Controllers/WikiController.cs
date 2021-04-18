@@ -35,5 +35,24 @@ namespace API.Controllers
             }
             
         }
+        [HttpGet]
+        [Route("GetDescription")]
+        public IActionResult GetDescription(string title)
+        {
+            try
+            {
+                var result = this._wikiService.GetDescription(title);
+                if (result == null)
+                {
+                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
     }
 }

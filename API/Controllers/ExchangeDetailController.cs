@@ -26,7 +26,8 @@ namespace API.Controllers
             try
             {
                 var phoneNumber = User.Identity.Name;
-                var result = this._exchangeDetailService.Add(newItem, phoneNumber);
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                var result = this._exchangeDetailService.Add(newItem, phoneNumber, baseUrl);
                 if (result != null)
                 {
                     return Ok(result);
@@ -116,11 +117,10 @@ namespace API.Controllers
                 var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
                 this._exchangeDetailService.IsAccept(Id, Status, baseUrl);
                 return Ok();
-                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
             }
             catch (Exception ex)
             {
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                return BadRequest(ex.Message);
             }
         }
         [HttpDelete]

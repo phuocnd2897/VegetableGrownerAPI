@@ -66,7 +66,7 @@ namespace API.Controllers
         //    }
         //}
         [HttpPut]
-        public IActionResult UpdateVegetable(VegetableRequestModel newItem)
+        public IActionResult UpdateVegetable([FromForm] VegetableRequestModel newItem)
         {
             try
             {
@@ -207,6 +207,34 @@ namespace API.Controllers
             {
                 var result = this._vegetableService.GetAllVegetable();
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetAllVegetableUnapproved")]
+        public IActionResult GetAllVegetableUnapproved()
+        {
+            try
+            {
+                var result = this._vegetableService.GetAllVegetableUnapproved();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("IsAccept")]
+        public IActionResult IsAccept(string Id, int Status)
+        {
+            try
+            {
+                this._vegetableService.IsAccept(Id, Status);
+                return Ok();
             }
             catch (Exception ex)
             {

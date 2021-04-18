@@ -26,10 +26,6 @@ namespace API.Controllers
             try
             {
                 var result = await this._accountRequestService.Add(newItem);
-                if (result == null)
-                {
-                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
-                }
                 return Ok(result);
             }
             catch (Exception ex)

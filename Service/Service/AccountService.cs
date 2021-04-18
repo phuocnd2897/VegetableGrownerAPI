@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using VG.Model.ResponseModel;
 using System.Linq;
+using VG.Model.RequestModel;
 
 namespace VG.Service.Service
 {
@@ -13,6 +14,8 @@ namespace VG.Service.Service
     {
         LoginResponseModel Login(string phoneNumber, string password, string deviceToken);
         void LockAccount(string Id);
+        string GetAccountPassword(string phoneNumber);
+        void ChangePassword(ChangePasswordRequestModel newItem);
     }
     public class AccountService : IAccountService
     {
@@ -22,6 +25,27 @@ namespace VG.Service.Service
         {
             _accountRepository = accountRepository;
             _appAccountLoginRepository = appAccountLoginRepository;
+        }
+
+        public void ChangePassword(ChangePasswordRequestModel newItem)
+        {
+            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == newItem.PhoneNumber);
+            if (account == null)
+            {
+                throw new Exception("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+            account.PassWord = IdentityHelper.HashPassword(newItem.NewPassword);
+            this._accountRepository.Update(account);
+        }
+
+        public string GetAccountPassword(string phoneNumber)
+        {
+            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
+            if (account == null)
+            {
+                throw new Exception("Số điện thoại không tồn tại");
+            }
+            return account.PassWord;
         }
 
         public void LockAccount(string Id)

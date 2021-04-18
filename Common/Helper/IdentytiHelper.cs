@@ -97,7 +97,7 @@ namespace VG.Common.Helper
                 // Using Newtonsoft.Json
                 var jsonBody = JsonConvert.SerializeObject(data);
 
-                using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/notification"))
+                using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/send"))
                 {
                     httpRequest.Headers.TryAddWithoutValidation("Authorization", serverKey);
                     httpRequest.Headers.TryAddWithoutValidation("Sender", senderId);

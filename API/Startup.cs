@@ -97,6 +97,7 @@ namespace API
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder => builder
+                .WithOrigins("http://localhost:3000", "http://54.179.74.214:4200")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

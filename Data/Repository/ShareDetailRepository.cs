@@ -32,7 +32,7 @@ namespace VG.Data.Repository
                          join vegDetailDes in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2) on veg.VegetableDescriptionId equals vegDetailDes.VegDesCommonId
                          join vegDetailFeat in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 3) on veg.VegetableDescriptionId equals vegDetailFeat.VegDesCommonId
                          join vegDetailImg in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 4) on veg.VegetableDescriptionId equals vegDetailImg.VegDesCommonId
-                         where listId.Contains(share.AccountId) && share.Quantity > 0
+                         where listId.Contains(share.AccountId) && share.Quantity > 0 && account.Status == true
                          orderby share.DateShare descending
                          select new ShareDetailResponseModel
                          {
@@ -67,7 +67,7 @@ namespace VG.Data.Repository
                          join vegDetailDes in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2) on veg.VegetableDescriptionId equals vegDetailDes.VegDesCommonId
                          join vegDetailFeat in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 3) on veg.VegetableDescriptionId equals vegDetailFeat.VegDesCommonId
                          join vegDetailImg in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 4) on veg.VegetableDescriptionId equals vegDetailImg.VegDesCommonId
-                         where !(listId.Contains(share.AccountId)) && share.AccountId != accountId && share.Quantity > 0
+                         where !(listId.Contains(share.AccountId)) && share.AccountId != accountId && share.Quantity > 0 && account.Status == true
                          orderby share.DateShare descending
                          select new ShareDetailResponseModel
                          {
@@ -103,7 +103,7 @@ namespace VG.Data.Repository
                          join vegDetailDes in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2) on veg.VegetableDescriptionId equals vegDetailDes.VegDesCommonId
                          join vegDetailFeat in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 3) on veg.VegetableDescriptionId equals vegDetailFeat.VegDesCommonId
                          join vegDetailImg in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 4) on veg.VegetableDescriptionId equals vegDetailImg.VegDesCommonId
-                         where listId.Contains(share.VegetableId) && share.Quantity > 0
+                         where listId.Contains(share.VegetableId) && share.Quantity > 0 && account.Status == true
                          orderby share.DateShare descending
                          select new ShareDetailResponseModel
                          {

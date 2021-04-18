@@ -43,7 +43,7 @@ namespace VG.Service.Service
 
         public void Unfriend(int Id)
         {
-            var result = this._accountFriendRepository.GetSingle(s => s.Id == Id, new string[] { "AccountRequest" });
+            var result = this._accountFriendRepository.GetSingle(s => s.Id == Id);
             this._accountFriendRepository.Delete(result);
             this._accountFriendRepository.Commit();
         }

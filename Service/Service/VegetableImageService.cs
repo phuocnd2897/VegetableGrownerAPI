@@ -16,6 +16,7 @@ namespace VG.Service.Service
         void Delete(string vegDescriptionId);
         void DeleteByIdImg(VegetableImage image);
         IEnumerable<VegetableImage> Get(string vegDescriptionId);
+        VegetableImage Add(string url, string DescriptionId, string AccountId);
     }
     public class VegetableImageService : IVegetableImageService
     {
@@ -107,6 +108,20 @@ namespace VG.Service.Service
         public void DeleteByIdImg(VegetableImage image)
         {
             this._vegetableImageRepository.Delete(image);
+        }
+
+        public VegetableImage Add(string url, string DescriptionId, string AccountId)
+        {
+            var result = this._vegetableImageRepository.Add(new VegetableImage
+            {
+                Name = DateTime.Now.ToString("yymmssfff") + ".jpg",
+                LocalUrl = url,
+                Url = url,
+                Thumbnail = url,
+                VegetableDescriptionId = DescriptionId,
+                AccountId = AccountId
+            });
+            return result;
         }
     }
 }

@@ -31,18 +31,23 @@ namespace VG.Service.Service
         }
         public async Task<AccountRequest> Add(AccountFriendRequestModel newItem)
         {
-            var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == newItem.AccountReceived, new string[] { "AppAccountLogins", "Members" });
-            var FullNameAccountReceived = appAccountLogin.Members.FirstOrDefault().FullName;
-            var result = this._accountRequestRepository.Add(new AccountRequest 
+            var accountReq = this._accountRequestRepository.GetMulti(s => s.AccountSend == newItem.AccountSend && s.AccountReceived == newItem.AccountReceived && s.Status == (int)EnumStatusRequest.Pending);
+            if (accountReq.Count() <= 0)
             {
-                AccountReceived = newItem.AccountReceived,
-                AccountSend = newItem.AccountSend,
-                RequestedDate = DateTime.UtcNow.AddHours(7),
-                Status = (int)EnumStatusRequest.Pending
-            });
-            var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameAccountReceived + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
-            this._accountRequestRepository.Commit();
-            return await Task.FromResult(result);
+                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == newItem.AccountReceived, new string[] { "AppAccountLogins", "Members" });
+                var FullNameAccountReceived = appAccountLogin.Members.FirstOrDefault().FullName;
+                var result = this._accountRequestRepository.Add(new AccountRequest
+                {
+                    AccountReceived = newItem.AccountReceived,
+                    AccountSend = newItem.AccountSend,
+                    RequestedDate = DateTime.UtcNow.AddHours(7),
+                    Status = (int)EnumStatusRequest.Pending
+                });
+                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameAccountReceived + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
+                this._accountRequestRepository.Commit();
+                return await Task.FromResult(result);
+            }
+            return null;
         }
 
         public IEnumerable<AccountRequestResponseModel> GetAccountRequest(string phoneNumber)

@@ -44,7 +44,7 @@ namespace VG.Service.Service
         private ILabelRepository _labelRepository;
         private IHttpClientFactory _factory;
         private const string uri = "https://extractkeywords.herokuapp.com";
-        public VegetableService(IVegetableRepository vegetableRepository, IVegetableDescriptionRepository vegetableDescriptionRepository, 
+        public VegetableService(IVegetableRepository vegetableRepository, IVegetableDescriptionRepository vegetableDescriptionRepository,
             IVegetableCompositionRepository vegetableCompositionRepository, IVegetableImageService vegetableImageService, IShareDetailRepository shareDetailRepository,
             IAccountRepository acccountRepository, IWikiService wikiService, IKeywordRepository keywordRepository, IHttpClientFactory factory, ILabelRepository labelRepository)
         {
@@ -68,7 +68,7 @@ namespace VG.Service.Service
             {
                 num = item.Select(s => s.No).Max() + 1;
             }
-            
+
             if (newItem.IdDescription != null && newItem.IdDescription != "")
             {
                 if (account == null)
@@ -205,7 +205,7 @@ namespace VG.Service.Service
                     var ListVegName = this._labelRepository.GetMulti(s => s.LabelName == newItem.Title);
                     if (ListVegName.Count() > 0)
                     {
-                        
+
                         this._labelRepository.Add(new Label
                         {
                             LabelName = newItem.NameSearch,
@@ -261,6 +261,11 @@ namespace VG.Service.Service
                                 this._vegetableImageService.UploadImage(img, vegImagePending.Id, savePath, url, "");
                             }
                         }
+                        else if (newItem.Images != null)
+                        {
+                            this._vegetableImageService.Add(newItem.Images, vegImagePending.Id, "");
+
+                        }
                         var vegName = this._vegetableDescriptionRepository.Add(new VegetableDescription
                         {
                             VegContent = newItem.Title,
@@ -307,6 +312,11 @@ namespace VG.Service.Service
                                 this._vegetableImageService.UploadImage(img, vegImage.Id, savePath, url, account.Id);
                             }
                         }
+                        else if (newItem.Images != null)
+                        {
+                            this._vegetableImageService.Add(newItem.Images, vegImage.Id, account.Id);
+
+                        }
                         newItem.Id = veg.Id;
                         newItem.IdDescription = vegName.VegDesCommonId;
                         var comName = this._vegetableCompositionRepository.Add(new VegetableComposition
@@ -314,7 +324,7 @@ namespace VG.Service.Service
                             CompositionName = vegName.VegContent,
                             VegetableDescriptionId = vegName.VegDesCommonId,
                         });
-                        
+
                         HttpClient client = _factory.CreateClient();
                         var request = new HttpRequestMessage
                         {
@@ -355,30 +365,6 @@ namespace VG.Service.Service
                 }
                 else
                 {
-                    var ListVegName = this._labelRepository.GetMulti(s => s.LabelName == newItem.Title);
-                    if (ListVegName.Count() > 0)
-                    {
-
-                        this._labelRepository.Add(new Label
-                        {
-                            LabelName = newItem.Title,
-                            StandsFor = "VEG",
-                            VegCompositionId = ListVegName.FirstOrDefault().VegCompositionId
-                        });
-                        var composition = this._vegetableCompositionRepository.GetSingle(s => s.Id == ListVegName.FirstOrDefault().VegCompositionId, new string[] { "VegetableDescription" });
-                        if (composition != null && (composition.VegetableDescription.AccountId == null || composition.VegetableDescription.AccountId == ""))
-                        {
-                            var veg = this._vegetableRepository.Add(new Vegetable
-                            {
-                                No = num,
-                                Quantity = newItem.Quantity,
-                                GardenId = newItem.GardenId,
-                                VegetableDescriptionId = composition.VegetableDescriptionId
-                            });
-                        }
-                    }
-                    else
-                    {
                         var vegNamePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
                         {
                             VegContent = newItem.Title,
@@ -413,6 +399,11 @@ namespace VG.Service.Service
                             {
                                 this._vegetableImageService.UploadImage(img, vegImagePending.Id, savePath, url, "");
                             }
+                        }
+                        else if (newItem.Images != null)
+                        {
+                            this._vegetableImageService.Add(newItem.Images, vegImagePending.Id, "");
+
                         }
                         var vegName = this._vegetableDescriptionRepository.Add(new VegetableDescription
                         {
@@ -459,6 +450,11 @@ namespace VG.Service.Service
                             {
                                 this._vegetableImageService.UploadImage(img, vegImage.Id, savePath, url, account.Id);
                             }
+                        }
+                        else if (newItem.Images != null)
+                        {
+                            this._vegetableImageService.Add(newItem.Images, vegImage.Id, account.Id);
+
                         }
                         newItem.Id = veg.Id;
                         newItem.IdDescription = vegName.VegDesCommonId;
@@ -503,7 +499,7 @@ namespace VG.Service.Service
                             LabelName = newItem.Title,
                             VegCompositionId = comName.Id,
                         });
-                    }
+                    
                 }
             }
 
@@ -520,7 +516,7 @@ namespace VG.Service.Service
                 throw new Exception("Vui lòng xoá bài viết trước!");
             }
             this._vegetableRepository.Delete(result);
-            
+
             foreach (var des in details)
             {
                 var composition = this._vegetableCompositionRepository.GetMulti(s => s.VegetableDescriptionId == des.Id, new string[] { "Keywords", "Labels" });
@@ -621,13 +617,13 @@ namespace VG.Service.Service
             foreach (var key in keys)
             {
                 var t = key.KeywordName.Contains('_') ? IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty) : IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim();
-                if (key.KeywordName.Contains('_') ? 
-                    (IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty).Contains(IdentityHelper.RemoveUnicode(keyword).ToUpper().Trim()) 
+                if (key.KeywordName.Contains('_') ?
+                    (IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty).Contains(IdentityHelper.RemoveUnicode(keyword).ToUpper().Trim())
                     || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty) == (IdentityHelper.RemoveUnicode(keyword).ToUpper().Trim()))
                     : IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(keyword).ToUpper().Trim())
                     || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim() == IdentityHelper.RemoveUnicode(keyword).ToUpper().Trim())
                 {
-                    desids.AddRange(this._vegetableCompositionRepository.GetMulti(s => key.VegCompositionId == s.Id && (s.VegetableDescription.AccountId == "" || s.VegetableDescription.AccountId == null), new string[] { "VegetableDescription" }).Select(s => s.VegetableDescriptionId).Distinct().ToList());                   
+                    desids.AddRange(this._vegetableCompositionRepository.GetMulti(s => key.VegCompositionId == s.Id && (s.VegetableDescription.AccountId == "" || s.VegetableDescription.AccountId == null), new string[] { "VegetableDescription" }).Select(s => s.VegetableDescriptionId).Distinct().ToList());
                 }
             }
             if (desids.Count > 0)
@@ -683,7 +679,7 @@ namespace VG.Service.Service
         public IEnumerable<VegetableResponseModel> SearchByName(string searchValue)
         {
             List<VegetableResponseModel> vegetableResponseModels = new List<VegetableResponseModel>();
-            var Labels = this._labelRepository.GetMulti(s =>  (s.StandsFor == "" || s.StandsFor == null), new string[] { "VegetableComposition" }).ToList();
+            var Labels = this._labelRepository.GetMulti(s => (s.StandsFor == "" || s.StandsFor == null), new string[] { "VegetableComposition" }).ToList();
             foreach (var label in Labels)
             {
                 if (IdentityHelper.RemoveUnicode(label.LabelName).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(searchValue).ToUpper().Trim()))
@@ -830,7 +826,7 @@ namespace VG.Service.Service
         public IEnumerable<VegetableResponseModel> CheckVegetableInGarden(string Id, string Name, string PhoneNumber)
         {
             List<VegetableResponseModel> vegetableResponseModels = new List<VegetableResponseModel>();
-            
+
             var account = this._acccountRepository.GetSingle(s => s.PhoneNumber == PhoneNumber, new string[] { "Gardens" });
             var yourVeg = this._vegetableRepository.GetMulti(s => s.VegetableDescriptionId == Id).ToList();
             if (account.Gardens.Count() > 0)
@@ -860,30 +856,36 @@ namespace VG.Service.Service
                 }
                 else
                 {
-                    var ListName = this._labelRepository.GetMulti(s => s.VegetableComposition.VegetableDescriptionId == Id, new string[] { "VegetableComposition" });
+                    var ListName = this._labelRepository.GetMulti(s => s.VegetableComposition.VegetableDescriptionId == Id, new string[] { "VegetableComposition" }).Distinct().ToList();
                     if (ListName.Count() > 0)
                     {
-                        var vegDetailName = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 1 && ListName.Select(q => IdentityHelper.RemoveUnicode(q.LabelName).Trim()).Contains(s.VegContent) && account.Id == s.AccountId);
-                        foreach (var item in vegDetailName)
+                        var vegDetailName = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 1 && account.Id == s.AccountId).ToList();
+                        foreach (var label in ListName)
                         {
-                            var veg = this._vegetableRepository.GetSingle(s => s.VegetableDescriptionId == item.Id);
-                            var vegDetail = this._vegetableDescriptionRepository.GetMulti(s => s.VegDesCommonId == item.VegDesCommonId);
-                            var name = vegDetail.Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent;
-                            var des = vegDetail.Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent;
-                            var feat = vegDetail.Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent;
-                            var img = vegDetail.Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id;
-                            vegetableResponseModels.Add(new VegetableResponseModel
+                            foreach (var item in vegDetailName)
                             {
-                                Id = veg.Id,
-                                No = veg.No,
-                                Name = name,
-                                Description = des,
-                                Feature = feat,
-                                Quantity = veg.Quantity,
-                                GardenId = veg.GardenId,
-                                Images = this._vegetableImageService.Get(img).ToList(),
-                                IdDescription = veg.VegetableDescriptionId
-                            });
+                                if (IdentityHelper.RemoveUnicode(label.LabelName).ToLower() == IdentityHelper.RemoveUnicode(item.VegContent).ToLower())
+                                {
+                                    var veg = this._vegetableRepository.GetSingle(s => s.VegetableDescriptionId == item.Id);
+                                    var vegDetail = this._vegetableDescriptionRepository.GetMulti(s => s.VegDesCommonId == item.VegDesCommonId);
+                                    var name = vegDetail.Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent;
+                                    var des = vegDetail.Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent;
+                                    var feat = vegDetail.Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent;
+                                    var img = vegDetail.Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id;
+                                    vegetableResponseModels.Add(new VegetableResponseModel
+                                    {
+                                        Id = veg.Id,
+                                        No = veg.No,
+                                        Name = name,
+                                        Description = des,
+                                        Feature = feat,
+                                        Quantity = veg.Quantity,
+                                        GardenId = veg.GardenId,
+                                        Images = this._vegetableImageService.Get(img).ToList(),
+                                        IdDescription = veg.VegetableDescriptionId
+                                    });
+                                }
+                            }
                         }
 
                     }
@@ -891,7 +893,7 @@ namespace VG.Service.Service
             }
             else
                 throw new Exception("Bạn chưa sở hữu bất kì loại rau nào!");
-            return vegetableResponseModels;
+            return vegetableResponseModels.GroupBy(s => s.Id).Select(s => s.FirstOrDefault());
         }
 
         public IEnumerable<SelectedResponseModel> GetAllVegetable()
