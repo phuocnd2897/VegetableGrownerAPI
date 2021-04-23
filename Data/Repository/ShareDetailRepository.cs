@@ -44,6 +44,7 @@ namespace VG.Data.Repository
                              VegDescription = vegDetailDes.VegContent,
                              VegFeature = vegDetailFeat.VegContent,
                              FullName = accountDetail.FullName,
+                             PhoneNumber = account.PhoneNumber,
                              VegetableShare = (from vegNeed in dbContext.VegetableShares where vegNeed.ShareDetailId == share.Id 
                                               select new VegetableShareResponseModel 
                                               { 
@@ -79,6 +80,7 @@ namespace VG.Data.Repository
                              VegDescription = vegDetailDes.VegContent,
                              VegFeature = vegDetailFeat.VegContent,
                              FullName = accountDetail.FullName,
+                             PhoneNumber = account.PhoneNumber,
                              VegetableShare = (from vegNeed in dbContext.VegetableShares
                                                where vegNeed.ShareDetailId == share.Id
                                                select new VegetableShareResponseModel
@@ -115,6 +117,7 @@ namespace VG.Data.Repository
                              VegDescription = vegDetailDes.VegContent,
                              VegFeature = vegDetailFeat.VegContent,
                              FullName = accountDetail.FullName,
+                             PhoneNumber = account.PhoneNumber,
                              VegetableShare = (from vegNeed in dbContext.VegetableShares
                                                where vegNeed.ShareDetailId == share.Id
                                                select new VegetableShareResponseModel

@@ -123,6 +123,22 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut]
+        [Route("Finish")]
+        public IActionResult FinishExchangeDetail(string Id)
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                this._exchangeDetailService.Finish(Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpDelete]
         public IActionResult Delete(string Id)
         {

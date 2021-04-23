@@ -17,5 +17,6 @@ namespace VG.Model.ResponseModel
         public IEnumerable<VegetableImage> Images { get;set; }
         public int GardenId { get; set; }
         public string IdDescription { get; set; }
+        public bool? Status { get; set; }
     }
 }

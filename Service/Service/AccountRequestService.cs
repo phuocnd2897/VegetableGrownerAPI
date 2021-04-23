@@ -34,8 +34,8 @@ namespace VG.Service.Service
             var accountReq = this._accountRequestRepository.GetMulti(s => s.AccountSend == newItem.AccountSend && s.AccountReceived == newItem.AccountReceived && s.Status == (int)EnumStatusRequest.Pending);
             if (accountReq.Count() <= 0)
             {
-                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == newItem.AccountReceived, new string[] { "AppAccountLogins", "Members" });
-                var FullNameAccountReceived = appAccountLogin.Members.FirstOrDefault().FullName;
+                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == newItem.AccountReceived, new string[] { "AppAccountLogins" });
+                var FullNameSend = this._accountRepository.GetSingle(s => s.Id == newItem.AccountSend, new string[] { "Members" }).Members.FirstOrDefault().FullName;
                 var result = this._accountRequestRepository.Add(new AccountRequest
                 {
                     AccountReceived = newItem.AccountReceived,
@@ -43,7 +43,7 @@ namespace VG.Service.Service
                     RequestedDate = DateTime.UtcNow.AddHours(7),
                     Status = (int)EnumStatusRequest.Pending
                 });
-                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameAccountReceived + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
+                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameSend + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
                 this._accountRequestRepository.Commit();
                 return await Task.FromResult(result);
             }
@@ -71,17 +71,17 @@ namespace VG.Service.Service
             var result = this._accountRequestRepository.GetSingle(s => s.Id == Id);
             result.Status = status;
             this._accountRequestRepository.Update(result);
-            this._accountFriendRepository.Add(new AccountFriend
-            {
-                Account_one_Id = result.AccountSend,
-                Account_two_Id = result.AccountReceived,
-                AcceptedDate = DateTime.Now
-            });
             if (status == (int)EnumStatusRequest.Accept)
             {
-                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == result.AccountSend, new string[] { "AppAccountLogins", "Members" });
-                var FullNameAccountSend = appAccountLogin.Members.FirstOrDefault().FullName;
-                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Kết bạn thành công", FullNameAccountSend + " đã đồng ý kết bạn. ");
+                this._accountFriendRepository.Add(new AccountFriend
+                {
+                    Account_one_Id = result.AccountSend,
+                    Account_two_Id = result.AccountReceived,
+                    AcceptedDate = DateTime.Now
+                });
+                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == result.AccountReceived, new string[] { "AppAccountLogins", "Members" });
+                var FullNameAccountReceived = appAccountLogin.Members.FirstOrDefault().FullName;
+                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Kết bạn thành công", FullNameAccountReceived + " đã đồng ý kết bạn. ");
             }
             this._accountRequestRepository.Commit();
             await Task.CompletedTask;

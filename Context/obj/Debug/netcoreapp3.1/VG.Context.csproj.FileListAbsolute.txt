@@ -48,6 +48,7 @@ D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Microsoft.Extens
 D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
 D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\System.ComponentModel.Annotations.dll
 D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
@@ -62,4 +63,3 @@ D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.cspro
 D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.dll
 D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.pdb
 D:\Capstone\VegetableGrownerAPI\Context\obj\Debug\netcoreapp3.1\VG.Context.genruntimeconfig.cache
-D:\Capstone\VegetableGrownerAPI\Context\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

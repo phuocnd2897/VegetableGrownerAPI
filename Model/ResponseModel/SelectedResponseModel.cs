@@ -9,4 +9,8 @@ namespace VG.Model.ResponseModel
         public string Id { get; set; }
         public string Text { get; set; }
     }
+    public class AccountSelectedResponseModel : SelectedResponseModel
+    {
+        public string Avatar { get; set; }
+    }
 }

@@ -92,19 +92,27 @@ namespace VG.Service.Service
                             }
                             if (feature != "")
                             {
+                                vegetables.Add(new WikiResponseModel
+                                {
+                                    Name = title,
+                                    Description = description,
+                                    Feature = feature,
+                                    ListText = texts
+                                });
                                 break;
                             }
                             else
                             {
                                 texts = split.Select(s => Regex.Replace(s, "<.*?>.*?<.*?>", String.Empty)).ToList();
+                                vegetables.Add(new WikiResponseModel
+                                {
+                                    Name = title,
+                                    Description = description,
+                                    Feature = feature,
+                                    ListText = texts
+                                });
                             }
-                            vegetables.Add(new WikiResponseModel
-                            {
-                                Name = title,
-                                Description = description,
-                                Feature = feature,
-                                ListText = texts
-                            });
+                            
                         }
                     }
                 }

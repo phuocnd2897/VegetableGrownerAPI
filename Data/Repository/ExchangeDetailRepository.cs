@@ -33,7 +33,7 @@ namespace VG.Data.Repository
                          from accountDetailHost in _accountDetailHost.DefaultIfEmpty()
                          join vegReceive in dbContext.Vegetables on exchange.VegetableId equals vegReceive.Id into vegReceiveSen
                          from vegReceive in vegReceiveSen.DefaultIfEmpty()
-                         where accountDetailReceiver.AppAccount.PhoneNumber == phoneNumber || share.AppAccount.PhoneNumber == phoneNumber && (accountDetailReceiver.AppAccount.Status == false || accountDetailHost.AppAccount.Status == false)
+                         where accountDetailReceiver.AppAccount.PhoneNumber == phoneNumber || accountDetailHost.AppAccount.PhoneNumber == phoneNumber && (accountDetailReceiver.AppAccount.Status == true || accountDetailHost.AppAccount.Status == true)
                          select new ExchangeDetailResponseModel
                          {
                              Id = exchange.Id,
@@ -45,7 +45,8 @@ namespace VG.Data.Repository
                              FullNameHost = accountDetailHost != null ? accountDetailHost.FullName : share.AppAccount.Members.FirstOrDefault().FullName,
                              FullNameReceiver = accountDetailReceiver.FullName,
                              ReceiverId = exchange.ReceiveBy,
-                             ShareDetailId = share.Id
+                             ShareDetailId = share.Id,
+                             TypeShare = share.Status == 1 ? 1 : 2
                          };
             return result;
 
@@ -61,7 +62,7 @@ namespace VG.Data.Repository
                          from accountDetailHost in _accountDetailHost.DefaultIfEmpty()
                          join vegReceive in dbContext.Vegetables on exchange.VegetableId equals vegReceive.Id into vegReceiveSen
                          from vegReceive in vegReceiveSen.DefaultIfEmpty()
-                         where exchange.AppAccountSender.PhoneNumber == phoneNumber && exchange.Status == (int)EnumStatusRequest.Pending
+                         where exchange.AppAccountSender.PhoneNumber == phoneNumber && exchange.Status == (int)EnumStatusRequest.Pending && (accountDetailReceiver.AppAccount.Status == true && accountDetailHost.AppAccount.Status == true)
                          select new ExchangeDetailResponseModel
                          {
                              Id = exchange.Id,

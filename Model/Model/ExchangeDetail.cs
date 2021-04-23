@@ -16,6 +16,7 @@ namespace VG.Model.Model
         [Key]
         [Required, MaxLength(128)]
         public string Id { get; set; }
+        public int Stt { get; set; }
         public DateTime DateExchange { get; set; }
         public int Quantity { get; set; }
         public int Status { get; set; }

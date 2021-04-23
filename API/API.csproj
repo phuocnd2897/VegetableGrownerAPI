@@ -26,7 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Avatar\" />
     <Folder Include="wwwroot\Image\" />
+    <Folder Include="wwwroot\QRCodeForShipper\" />
     <Folder Include="wwwroot\QRCode\" />
   </ItemGroup>
 

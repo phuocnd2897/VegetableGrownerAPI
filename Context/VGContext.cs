@@ -39,6 +39,7 @@ namespace VG.Context
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<PrecentReport> PrecentReports { get; set; }
         public virtual DbSet<QRCodeExchange> QRCodeExchanges { get; set; }
+        public virtual DbSet<QRCodeForShipper> QRCodeForShippers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

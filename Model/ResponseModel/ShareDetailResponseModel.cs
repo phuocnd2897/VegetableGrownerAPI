@@ -18,6 +18,7 @@ namespace VG.Model.ResponseModel
         public DateTime CreatedDate { get; set; }
         public string AccountId { get; set; }
         public string FullName { get; set; }
+        public string PhoneNumber { get; set; }
         public IEnumerable<VegetableImage> Images { get; set; }
     }
 }

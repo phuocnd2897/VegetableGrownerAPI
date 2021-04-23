@@ -78,7 +78,7 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
-            var user = this._accountService.Login(login.PhoneNumber, login.Password, "");
+            var user = this._accountService.Login(login.PhoneNumber, login.Password, login.DeviceToken);
             if (user == null && (user.RoleId != 1))
                 return BadRequest(new { message = "Tên đăng nhập hoặc mật khẩu không đúng!" });
             //var roles = this._appUserService.getrolesbyuserid(user.UserId);

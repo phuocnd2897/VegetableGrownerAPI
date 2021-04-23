@@ -139,6 +139,7 @@ D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dl
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\NetCore.AutoRegisterDi.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\QRCoder.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -188,4 +189,3 @@ D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.csproj.CopyCompl
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.dll
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.pdb
 D:\Capstone\VegetableGrownerAPI\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
-D:\Capstone\VegetableGrownerAPI\API\bin\Debug\netcoreapp3.1\QRCoder.dll

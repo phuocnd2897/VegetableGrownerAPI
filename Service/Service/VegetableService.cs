@@ -39,6 +39,7 @@ namespace VG.Service.Service
         private IVegetableImageService _vegetableImageService;
         private IShareDetailRepository _shareDetailRepository;
         private IAccountRepository _acccountRepository;
+        private IAppAccountLoginRepository _acccountLoginRepository;
         private IWikiService _wikiService;
         private IKeywordRepository _keywordRepository;
         private ILabelRepository _labelRepository;
@@ -46,7 +47,8 @@ namespace VG.Service.Service
         private const string uri = "https://extractkeywords.herokuapp.com";
         public VegetableService(IVegetableRepository vegetableRepository, IVegetableDescriptionRepository vegetableDescriptionRepository,
             IVegetableCompositionRepository vegetableCompositionRepository, IVegetableImageService vegetableImageService, IShareDetailRepository shareDetailRepository,
-            IAccountRepository acccountRepository, IWikiService wikiService, IKeywordRepository keywordRepository, IHttpClientFactory factory, ILabelRepository labelRepository)
+            IAccountRepository acccountRepository, IWikiService wikiService, IKeywordRepository keywordRepository, IHttpClientFactory factory, ILabelRepository labelRepository,
+            IAppAccountLoginRepository acccountLoginRepository)
         {
             _vegetableRepository = vegetableRepository;
             _vegetableDescriptionRepository = vegetableDescriptionRepository;
@@ -63,7 +65,7 @@ namespace VG.Service.Service
         {
             int num = 1;
             var item = this._vegetableRepository.GetMulti(s => s.GardenId == newItem.GardenId);
-            var account = this._acccountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
+            var account = this._acccountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members" });
             if (item.Count() > 0)
             {
                 num = item.Select(s => s.No).Max() + 1;
@@ -266,6 +268,11 @@ namespace VG.Service.Service
                             this._vegetableImageService.Add(newItem.Images, vegImagePending.Id, "");
 
                         }
+                        var admin = this._acccountRepository.GetMulti(s => s.RoleId == 1);
+                        var token = this._acccountLoginRepository.GetMulti(s => admin.Select(q => q.Id).Contains(s.AppAccountId)).Select(s => s.DeviceToken);
+                        var mess = IdentityHelper.NotifyAsync(token.ToArray(),
+                           "Có thông tin rau mới cần duyệt",
+                           account.Members.FirstOrDefault().FullName + " đã thêm thông tin rau mới vào hệ thống.");
                         var vegName = this._vegetableDescriptionRepository.Add(new VegetableDescription
                         {
                             VegContent = newItem.Title,
@@ -365,141 +372,146 @@ namespace VG.Service.Service
                 }
                 else
                 {
-                        var vegNamePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    var vegNamePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = newItem.Title,
+                        VegetableCompositionId = 1,
+                        Status = false,
+                    });
+                    vegNamePending.VegDesCommonId = vegNamePending.Id;
+                    var vegDescriptionPending = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = newItem.Description,
+                        VegetableCompositionId = 2,
+                        Status = false,
+                        VegDesCommonId = vegNamePending.VegDesCommonId
+                    });
+                    var vegFeaturePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = newItem.Featture,
+                        VegetableCompositionId = 3,
+                        Status = false,
+                        VegDesCommonId = vegNamePending.VegDesCommonId
+                    });
+                    var vegImagePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = "Image",
+                        VegetableCompositionId = 4,
+                        Status = false,
+                        VegDesCommonId = vegNamePending.VegDesCommonId
+                    });
+                    if (newItem.NewImages != null)
+                    {
+                        foreach (IFormFile img in newItem.NewImages)
                         {
-                            VegContent = newItem.Title,
-                            VegetableCompositionId = 1,
-                            Status = false,
-                        });
-                        vegNamePending.VegDesCommonId = vegNamePending.Id;
-                        var vegDescriptionPending = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = newItem.Description,
-                            VegetableCompositionId = 2,
-                            Status = false,
-                            VegDesCommonId = vegNamePending.VegDesCommonId
-                        });
-                        var vegFeaturePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = newItem.Featture,
-                            VegetableCompositionId = 3,
-                            Status = false,
-                            VegDesCommonId = vegNamePending.VegDesCommonId
-                        });
-                        var vegImagePending = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = "Image",
-                            VegetableCompositionId = 4,
-                            Status = false,
-                            VegDesCommonId = vegNamePending.VegDesCommonId
-                        });
-                        if (newItem.NewImages != null)
-                        {
-                            foreach (IFormFile img in newItem.NewImages)
-                            {
-                                this._vegetableImageService.UploadImage(img, vegImagePending.Id, savePath, url, "");
-                            }
+                            this._vegetableImageService.UploadImage(img, vegImagePending.Id, savePath, url, "");
                         }
-                        else if (newItem.Images != null)
-                        {
-                            this._vegetableImageService.Add(newItem.Images, vegImagePending.Id, "");
+                    }
+                    else if (newItem.Images != null)
+                    {
+                        this._vegetableImageService.Add(newItem.Images, vegImagePending.Id, "");
 
+                    }
+                    var admin = this._acccountRepository.GetMulti(s => s.RoleId == 1);
+                    var token = this._acccountLoginRepository.GetMulti(s => admin.Select(q => q.Id).Contains(s.AppAccountId)).Select(s => s.DeviceToken);
+                    var mess = IdentityHelper.NotifyAsync(token.ToArray(),
+                       "Có thông tin rau mới cần duyệt",
+                       account.Members.FirstOrDefault().FullName + " đã thêm thông tin rau mới vào hệ thống.");
+                    var vegName = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = newItem.Title,
+                        VegetableCompositionId = 1,
+                        Status = false,
+                        AccountId = account.Id
+                    });
+                    vegName.VegDesCommonId = vegName.Id;
+                    var vegDescription = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = newItem.Description,
+                        VegetableCompositionId = 2,
+                        Status = false,
+                        VegDesCommonId = vegName.VegDesCommonId,
+                        AccountId = account.Id
+                    });
+                    var vegFeature = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = newItem.Featture,
+                        VegetableCompositionId = 3,
+                        Status = false,
+                        VegDesCommonId = vegName.VegDesCommonId,
+                        AccountId = account.Id
+                    });
+                    var vegImage = this._vegetableDescriptionRepository.Add(new VegetableDescription
+                    {
+                        VegContent = "Image",
+                        VegetableCompositionId = 4,
+                        Status = false,
+                        VegDesCommonId = vegName.VegDesCommonId,
+                        AccountId = account.Id
+                    });
+                    var veg = this._vegetableRepository.Add(new Vegetable
+                    {
+                        No = num,
+                        Quantity = newItem.Quantity,
+                        GardenId = newItem.GardenId,
+                        VegetableDescriptionId = vegName.Id
+                    });
+                    if (newItem.NewImages != null)
+                    {
+                        foreach (IFormFile img in newItem.NewImages)
+                        {
+                            this._vegetableImageService.UploadImage(img, vegImage.Id, savePath, url, account.Id);
                         }
-                        var vegName = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = newItem.Title,
-                            VegetableCompositionId = 1,
-                            Status = false,
-                            AccountId = account.Id
-                        });
-                        vegName.VegDesCommonId = vegName.Id;
-                        var vegDescription = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = newItem.Description,
-                            VegetableCompositionId = 2,
-                            Status = false,
-                            VegDesCommonId = vegName.VegDesCommonId,
-                            AccountId = account.Id
-                        });
-                        var vegFeature = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = newItem.Featture,
-                            VegetableCompositionId = 3,
-                            Status = false,
-                            VegDesCommonId = vegName.VegDesCommonId,
-                            AccountId = account.Id
-                        });
-                        var vegImage = this._vegetableDescriptionRepository.Add(new VegetableDescription
-                        {
-                            VegContent = "Image",
-                            VegetableCompositionId = 4,
-                            Status = false,
-                            VegDesCommonId = vegName.VegDesCommonId,
-                            AccountId = account.Id
-                        });
-                        var veg = this._vegetableRepository.Add(new Vegetable
-                        {
-                            No = num,
-                            Quantity = newItem.Quantity,
-                            GardenId = newItem.GardenId,
-                            VegetableDescriptionId = vegName.Id
-                        });
-                        if (newItem.NewImages != null)
-                        {
-                            foreach (IFormFile img in newItem.NewImages)
-                            {
-                                this._vegetableImageService.UploadImage(img, vegImage.Id, savePath, url, account.Id);
-                            }
-                        }
-                        else if (newItem.Images != null)
-                        {
-                            this._vegetableImageService.Add(newItem.Images, vegImage.Id, account.Id);
+                    }
+                    else if (newItem.Images != null)
+                    {
+                        this._vegetableImageService.Add(newItem.Images, vegImage.Id, account.Id);
 
-                        }
-                        newItem.Id = veg.Id;
-                        newItem.IdDescription = vegName.VegDesCommonId;
-                        var comName = this._vegetableCompositionRepository.Add(new VegetableComposition
+                    }
+                    newItem.Id = veg.Id;
+                    newItem.IdDescription = vegName.VegDesCommonId;
+                    var comName = this._vegetableCompositionRepository.Add(new VegetableComposition
+                    {
+                        CompositionName = vegNamePending.VegContent,
+                        VegetableDescriptionId = vegNamePending.VegDesCommonId,
+                    });
+
+                    HttpClient client = _factory.CreateClient();
+                    var request = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Get,
+                        RequestUri = new Uri(uri + "/keywords"),
+                        Content = new StringContent(JsonConvert.SerializeObject(new KeywordsRequestModel { text = vegFeature.VegContent }), Encoding.UTF8, "application/json"),
+                    };
+                    var response = client.SendAsync(request).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var comKey = this._vegetableCompositionRepository.Add(new VegetableComposition
                         {
                             CompositionName = vegNamePending.VegContent,
-                            VegetableDescriptionId = vegNamePending.VegDesCommonId,
+                            VegetableDescriptionId = vegFeaturePending.Id,
                         });
-
-                        HttpClient client = _factory.CreateClient();
-                        var request = new HttpRequestMessage
+                        this._vegetableCompositionRepository.Commit();
+                        string jsonData = response.Content.ReadAsStringAsync().Result;
+                        var newkeywords = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData).FirstOrDefault();
+                        if (newkeywords.Value.Count() > 0)
                         {
-                            Method = HttpMethod.Get,
-                            RequestUri = new Uri(uri + "/keywords"),
-                            Content = new StringContent(JsonConvert.SerializeObject(new KeywordsRequestModel { text = vegFeature.VegContent }), Encoding.UTF8, "application/json"),
-                        };
-                        var response = client.SendAsync(request).Result;
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var comKey = this._vegetableCompositionRepository.Add(new VegetableComposition
+                            foreach (var value in newkeywords.Value)
                             {
-                                CompositionName = vegNamePending.VegContent,
-                                VegetableDescriptionId = vegFeaturePending.Id,
-                            });
-                            this._vegetableCompositionRepository.Commit();
-                            string jsonData = response.Content.ReadAsStringAsync().Result;
-                            var newkeywords = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData).FirstOrDefault();
-                            if (newkeywords.Value.Count() > 0)
-                            {
-                                foreach (var value in newkeywords.Value)
+                                this._keywordRepository.Add(new Keyword
                                 {
-                                    this._keywordRepository.Add(new Keyword
-                                    {
-                                        KeywordName = value,
-                                        VegCompositionId = comKey.Id,
-                                    });
-                                }
+                                    KeywordName = value,
+                                    VegCompositionId = comKey.Id,
+                                });
                             }
                         }
-                        this._labelRepository.Add(new Label
-                        {
-                            LabelName = newItem.Title,
-                            VegCompositionId = comName.Id,
-                        });
-                    
+                    }
+                    this._labelRepository.Add(new Label
+                    {
+                        LabelName = newItem.Title,
+                        VegCompositionId = comName.Id,
+                    });
+
                 }
             }
 
@@ -965,7 +977,8 @@ namespace VG.Service.Service
             List<string> listId = new List<string>();
             List<VegetableResponseModel> vegetableResponseModels = new List<VegetableResponseModel>();
             var listVegetableShared = this._shareDetailRepository.GetMulti(s => s.Quantity > 0).Select(s => s.VegetableId).Distinct().ToList();
-            var vegDetails = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 2 && s.AccountId != "" && s.AccountId != null).Distinct().ToList();
+            var vegNameDetails = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 1 && s.Vegetables.Count > 0, new string[] { "Vegetables" }).Distinct().ToList();
+            var vegDetails = this._vegetableDescriptionRepository.GetMulti(s => vegNameDetails.Select(s => s.VegDesCommonId).Contains(s.VegDesCommonId) && s.VegetableCompositionId == 2).Distinct().ToList();
             foreach (var detail in vegDetails)
             {
                 if (IdentityHelper.RemoveUnicode(detail.VegContent).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(searchValue).ToUpper().Trim()))
@@ -988,11 +1001,33 @@ namespace VG.Service.Service
                                 Description = des,
                                 Feature = feat,
                                 Images = this._vegetableImageService.Get(img).ToList(),
-                                IdDescription = vegDetail.VegDesCommonId
+                                IdDescription = vegDetail.VegDesCommonId,
+                                Status = true
                             });
+                            break;
+                        }
+                        else
+                        {
+                            var result = this._vegetableDescriptionRepository.GetMulti(s => s.VegDesCommonId == vegDetail.VegDesCommonId);
+                            var name = result.Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent;
+                            var des = result.Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent;
+                            var feat = result.Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent;
+                            var img = result.Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id;
+                            if (name.Count() == 0 && des.Count() == 0 && feat.Count() == 0 && img.Count() == 0) return null;
+                            vegetableResponseModels.Add(new VegetableResponseModel
+                            {
+                                Name = name,
+                                Description = des,
+                                Feature = feat,
+                                Images = this._vegetableImageService.Get(img).ToList(),
+                                IdDescription = vegDetail.VegDesCommonId,
+                                Status = false
+                            });
+                            break;
                         }
                     }
                 }
+
             }
             return vegetableResponseModels;
         }
@@ -1008,8 +1043,12 @@ namespace VG.Service.Service
                 if (IdentityHelper.RemoveUnicode(label.LabelName).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(searchValue).ToUpper().Trim()))
                 {
                     var vegDetail = this._vegetableDescriptionRepository.GetSingle(s => s.Id == label.VegetableComposition.VegetableDescriptionId);
-                    listId = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == vegDetail.VegContent && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
-                        .Select(s => s.Vegetables).FirstOrDefault().Select(s => s.Id).Distinct().ToList();
+                    var Veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == vegDetail.VegContent && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
+                        .Select(s => s.Vegetables).FirstOrDefault();
+                    if (Veg != null)
+                    {
+                        listId = Veg.Select(s => s.Id).Distinct().ToList();
+                    }
                     foreach (var item in listId)
                     {
                         if (listVegetableShared.Contains(item))
@@ -1026,8 +1065,29 @@ namespace VG.Service.Service
                                 Description = des,
                                 Feature = feat,
                                 Images = this._vegetableImageService.Get(img).ToList(),
-                                IdDescription = vegDetail.VegDesCommonId
+                                IdDescription = vegDetail.VegDesCommonId,
+                                Status = true
                             });
+                            break;
+                        }
+                        else
+                        {
+                            var result = this._vegetableDescriptionRepository.GetMulti(s => s.VegDesCommonId == vegDetail.VegDesCommonId);
+                            var name = result.Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent;
+                            var des = result.Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent;
+                            var feat = result.Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent;
+                            var img = result.Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id;
+                            if (name.Count() == 0 && des.Count() == 0 && feat.Count() == 0 && img.Count() == 0) return null;
+                            vegetableResponseModels.Add(new VegetableResponseModel
+                            {
+                                Name = name,
+                                Description = des,
+                                Feature = feat,
+                                Images = this._vegetableImageService.Get(img).ToList(),
+                                IdDescription = vegDetail.VegDesCommonId,
+                                Status = false
+                            });
+                            break;
                         }
                     }
                 }
@@ -1052,8 +1112,12 @@ namespace VG.Service.Service
                 {
                     var nameVeg = this._vegetableCompositionRepository.GetSingle(s => key.VegCompositionId == s.Id, new string[] { "VegetableDescription" }).VegetableDescription;
                     nameVeg = nameVeg.VegetableCompositionId == 3 ? this._vegetableDescriptionRepository.GetSingle(s => s.VegetableCompositionId == 1 && s.VegDesCommonId == nameVeg.VegDesCommonId) : nameVeg;
-                    listId.AddRange(this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg.VegContent && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
-                        .Select(s => s.Vegetables).FirstOrDefault().Select(s => s.Id).Distinct().ToList());
+                    var Veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg.VegContent && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
+                        .Select(s => s.Vegetables).FirstOrDefault();
+                    if (Veg != null)
+                    {
+                        listId.AddRange(Veg.Select(s => s.Id).Distinct().ToList());
+                    }
                     foreach (var item in listId.ToList())
                     {
                         if (listVegetableShared.Contains(item))
@@ -1070,7 +1134,26 @@ namespace VG.Service.Service
                                 Description = des,
                                 Feature = feat,
                                 Images = this._vegetableImageService.Get(img).ToList(),
-                                IdDescription = nameVeg.VegDesCommonId
+                                IdDescription = nameVeg.VegDesCommonId,
+                                Status = true
+                            });
+                        }
+                        else
+                        {
+                            var result = this._vegetableDescriptionRepository.GetMulti(s => s.VegDesCommonId == nameVeg.VegDesCommonId);
+                            var name = result.Where(s => s.VegetableCompositionId == 1).FirstOrDefault().VegContent;
+                            var des = result.Where(s => s.VegetableCompositionId == 2).FirstOrDefault().VegContent;
+                            var feat = result.Where(s => s.VegetableCompositionId == 3).FirstOrDefault().VegContent;
+                            var img = result.Where(s => s.VegetableCompositionId == 4).FirstOrDefault().Id;
+                            if (name.Count() == 0 && des.Count() == 0 && feat.Count() == 0 && img.Count() == 0) return null;
+                            vegetableResponseModels.Add(new VegetableResponseModel
+                            {
+                                Name = name,
+                                Description = des,
+                                Feature = feat,
+                                Images = this._vegetableImageService.Get(img).ToList(),
+                                IdDescription = nameVeg.VegDesCommonId,
+                                Status = false
                             });
                         }
                     }

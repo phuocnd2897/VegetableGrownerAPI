@@ -98,7 +98,7 @@ namespace VG.Service.Service
 
         public void Delete(string Id)
         {
-            var share = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "ExchangeDetails" });
+            var share = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "ExchangeDetails","VegetableShares" });
             if (share.ExchangeDetails.Where(s => s.ShareDetailId == Id && s.Status == (int)EnumStatusRequest.Accept).Count() > 0)
             {
                 throw new Exception("Có đơn hàng đang được vận chuyển, không thể xoá bài viết này");
@@ -123,7 +123,7 @@ namespace VG.Service.Service
                 }
             }
             var veg = this._vegetableService.Get(result.VegetableId);
-            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == result.AccountId);
+            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == result.AccountId, new string[] { "AppAccount" });
             return new ShareDetailResponseModel
             {
                 Id = result.Id,
@@ -134,6 +134,7 @@ namespace VG.Service.Service
                 VegDescription = veg.Description,
                 VegFeature = veg.Feature,
                 FullName = accountDetail.FullName,
+                PhoneNumber = accountDetail.AppAccount.PhoneNumber,
                 Quantity = result.Quantity,
                 Statius = result.Status,
                 Images = veg.Images,
@@ -158,7 +159,7 @@ namespace VG.Service.Service
             List<ShareDetailResponseModel> shareDetailResponseModels = new List<ShareDetailResponseModel>();
 
             var result = this._shareRepository.GetMulti(s => s.AccountId == Id, new string[] { "VegetableShares.VegetableDescription" });
-            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == Id);
+            var accountDetail = _accountDetailRepository.GetSingle(s => s.AccountId == Id, new string[] { "AppAccount" });
             foreach (var item in result.ToList())
             {
                 List<VegetableShareResponseModel> vegetableShares = new List<VegetableShareResponseModel>();
@@ -184,6 +185,7 @@ namespace VG.Service.Service
                     VegDescription = veg.Description,
                     VegFeature = veg.Feature,
                     FullName = accountDetail.FullName,
+                    PhoneNumber = accountDetail.AppAccount.PhoneNumber,
                     Quantity = item.Quantity,
                     Statius = item.Status,
                     Images = veg.Images,
@@ -202,8 +204,12 @@ namespace VG.Service.Service
                 if (IdentityHelper.RemoveUnicode(label.LabelName).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim()))
                 {
                     var nameVeg = this._vegetableDescriptionRepository.GetSingle(s => s.Id == label.VegetableComposition.VegetableDescriptionId).VegContent;
-                    listId.AddRange(this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.AccountId != "" && s.AccountId != null, new string[] { "Vegetables"})
+                    var Veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.AccountId != "" && s.AccountId != null && s.Vegetables.Count() > 0, new string[] { "Vegetables" }).Select(s => s.Vegetables).FirstOrDefault();
+                    if (Veg != null)
+                    {
+                        listId.AddRange(this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.AccountId != "" && s.AccountId != null && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
                         .Select(s => s.Vegetables).FirstOrDefault().Select(s => s.Id));
+                    }
                 }
             }
             var result = this._shareRepository.SearchShare(listId.Distinct().ToList());
@@ -223,8 +229,12 @@ namespace VG.Service.Service
                     || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim() == IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim())
                 {
                     var nameVeg = this._vegetableCompositionRepository.GetSingle(s => key.VegCompositionId == s.Id, new string[] { "VegetableDescription" }).VegetableDescription.VegContent;
-                    listId.AddRange(this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
-                        .Select(s => s.Vegetables).FirstOrDefault().Select(s => s.Id));
+                    var Veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
+                        .Select(s => s.Vegetables).FirstOrDefault();
+                    if (Veg != null)
+                    {
+                        listId.AddRange(Veg.Select(s => s.Id));
+                    }
                 }
             }
             if (listId.Count() <= 0)

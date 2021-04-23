@@ -16,5 +16,9 @@ namespace VG.Model.ResponseModel
         public string AccountHostId { get; set; }
         public string ReceiverId { get; set; }
         public string ShareDetailId { get; set; }
+        public string ReceiverAddress { get; set; }
+        public string ReceiverPhoneNumber { get; set; }
+        public string QRCode { get; set; }
+        public int TypeShare { get; set; }
     }
 }
