@@ -43,7 +43,7 @@ namespace API.Controllers
         }
         [HttpPut]
         [Route("UploadAvata")]
-        public IActionResult UploadAvata([FromForm]IFormFile newItem)
+        public IActionResult UploadAvata(IFormFile newItem)
         {
             try
             {

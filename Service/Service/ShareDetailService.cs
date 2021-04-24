@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -19,13 +20,13 @@ namespace VG.Service.Service
     {
         ShareDetail Add(ShareDetailRequestModel newItem, string phoneNumber);
         IEnumerable<ShareDetailResponseModel> GetShareByAccountId(string Id);
-        IEnumerable<ShareDetailResponseModel> GetAll (string phoneNumber);
+        IEnumerable<ShareDetailResponseModel> GetAll(string phoneNumber);
         ShareDetailResponseModel Get(string Id);
         ShareDetailRequestModel Update(ShareDetailRequestModel newItem, string phoneNumber, string savePath, string domain);
         void Delete(string Id);
-        IEnumerable<ShareDetailResponseModel> SearchShareByName(string valueSearch);
-        IEnumerable<ShareDetailResponseModel> SearchShareByKeyword(string valueSearch);
-        IEnumerable<ShareDetailResponseModel> SearchShareByDescription(string valueSearch);
+        IEnumerable<ShareDetailResponseModel> SearchShareByName(string valueSearch, string phoneNumer);
+        IEnumerable<ShareDetailResponseModel> SearchShareByKeyword(string valueSearch, string phoneNumer);
+        IEnumerable<ShareDetailResponseModel> SearchShareByDescription(string valueSearch, string phoneNumer);
     }
     public class ShareDetailService : IShareDetailService
     {
@@ -33,7 +34,6 @@ namespace VG.Service.Service
         private IAccountRepository _accountRepository;
         private IVegetableService _vegetableService;
         private IAccountDetailRepository _accountDetailRepository;
-        private IExchangeDetailRepository _exchangeDetailRepository;
         private IAccountFriendRepository _accountFriendRepository;
         private IVegetableShareRepository _vegetableShareRepository;
         private IVegetableDescriptionRepository _vegetableDescriptionRepository;
@@ -42,8 +42,9 @@ namespace VG.Service.Service
         private IKeywordRepository _keywordRepository;
         private IHttpClientFactory _factory;
         private const string uri = "https://extractkeywords.herokuapp.com";
-        public ShareDetailService(IShareDetailRepository shareRepository, IAccountRepository accountRepository, IVegetableService vegetableService, IAccountDetailRepository accountDetailRepository, 
-            IExchangeDetailRepository exchangeDetailRepository, IAccountFriendRepository accountFriendRepository, IHttpClientFactory factory,
+        public ShareDetailService(IShareDetailRepository shareRepository, IAccountRepository accountRepository,
+            IVegetableService vegetableService, IAccountDetailRepository accountDetailRepository,
+            IAccountFriendRepository accountFriendRepository, IHttpClientFactory factory,
             IVegetableShareRepository vegetableShareRepository, IVegetableDescriptionRepository vegetableDescriptionRepository,
             IVegetableCompositionRepository vegetableCompositionRepository, ILabelRepository labelRepository, IKeywordRepository keywordRepository)
         {
@@ -51,7 +52,6 @@ namespace VG.Service.Service
             _accountRepository = accountRepository;
             _vegetableService = vegetableService;
             _accountDetailRepository = accountDetailRepository;
-            _exchangeDetailRepository = exchangeDetailRepository;
             _accountFriendRepository = accountFriendRepository;
             _vegetableShareRepository = vegetableShareRepository;
             _vegetableDescriptionRepository = vegetableDescriptionRepository;
@@ -98,7 +98,7 @@ namespace VG.Service.Service
 
         public void Delete(string Id)
         {
-            var share = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "ExchangeDetails","VegetableShares" });
+            var share = this._shareRepository.GetSingle(s => s.Id == Id, new string[] { "ExchangeDetails", "VegetableShares" });
             if (share.ExchangeDetails.Where(s => s.ShareDetailId == Id && s.Status == (int)EnumStatusRequest.Accept).Count() > 0)
             {
                 throw new Exception("Có đơn hàng đang được vận chuyển, không thể xoá bài viết này");
@@ -175,7 +175,7 @@ namespace VG.Service.Service
                     }
                 }
                 var veg = this._vegetableService.Get(item.VegetableId);
-                shareDetailResponseModels.Add(new ShareDetailResponseModel 
+                shareDetailResponseModels.Add(new ShareDetailResponseModel
                 {
                     Id = item.Id,
                     CreatedDate = item.DateShare,
@@ -195,9 +195,10 @@ namespace VG.Service.Service
             return shareDetailResponseModels.OrderByDescending(s => s.CreatedDate).ToList();
         }
 
-        public IEnumerable<ShareDetailResponseModel> SearchShareByName(string valueSearch)
+        public IEnumerable<ShareDetailResponseModel> SearchShareByName(string valueSearch, string phoneNumer)
         {
             List<string> listId = new List<string>();
+            var accountId = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumer).Id;
             var Labels = this._labelRepository.GetMulti(s => (s.StandsFor == "" || s.StandsFor == null), new string[] { "VegetableComposition" }).ToList();
             foreach (var label in Labels)
             {
@@ -212,39 +213,53 @@ namespace VG.Service.Service
                     }
                 }
             }
-            var result = this._shareRepository.SearchShare(listId.Distinct().ToList());
+            var result = this._shareRepository.SearchShare(listId.Distinct().ToList(), accountId);
             return result;
         }
-        public IEnumerable<ShareDetailResponseModel> SearchShareByKeyword(string valueSearch)
+        public IEnumerable<ShareDetailResponseModel> SearchShareByKeyword(string valueSearch, string phoneNumer)
         {
             List<string> listId = new List<string>();
+            var accountId = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumer).Id;
             var keys = this._keywordRepository.GetAll().ToList();
-            foreach (var key in keys)
-            {
-                var t = key.KeywordName.Contains('_') ? IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty) : IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim();
-                if (key.KeywordName.Contains('_') ? 
-                    (IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty).Contains(IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim()) 
-                    || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty) == (IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim()))
-                    : IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim())
-                    || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim() == IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim())
-                {
-                    var nameVeg = this._vegetableCompositionRepository.GetSingle(s => key.VegCompositionId == s.Id, new string[] { "VegetableDescription" }).VegetableDescription.VegContent;
-                    var Veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
-                        .Select(s => s.Vegetables).FirstOrDefault();
-                    if (Veg != null)
-                    {
-                        listId.AddRange(Veg.Select(s => s.Id));
-                    }
-                }
-            }
+            //foreach (var key in keys)
+            //{
+            //    var t = key.KeywordName.Contains('_') ? IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty) : IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim();
+            //    if (key.KeywordName.Contains('_') ? 
+            //        (IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty).Contains(IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim()) 
+            //        || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Replace("_", string.Empty) == (IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim()))
+            //        : IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim().Contains(IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim())
+            //        || IdentityHelper.RemoveUnicode(key.KeywordName).ToUpper().Trim() == IdentityHelper.RemoveUnicode(valueSearch).ToUpper().Trim())
+            //    {
+            //        var nameVeg = this._vegetableCompositionRepository.GetSingle(s => key.VegCompositionId == s.Id, new string[] { "VegetableDescription" }).VegetableDescription.VegContent;
+            //        var Veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegContent == nameVeg && s.Vegetables.Count() > 0, new string[] { "Vegetables" })
+            //            .Select(s => s.Vegetables).FirstOrDefault();
+            //        if (Veg != null)
+            //        {
+            //            listId.AddRange(Veg.Select(s => s.Id));
+            //        }
+            //    }
+            //}
             if (listId.Count() <= 0)
             {
+                var db = keys.GroupBy(q => q.VegCompositionId).Select(s =>
+                new Dictionary<int, string>() { { s.Key, string.Join(',', s.Select(q => q.KeywordName))} });         
+                var json = JsonConvert.SerializeObject( new KeywordsRequestModel
+                        {
+                            text = valueSearch,
+                            db = db
+                });
                 HttpClient client = _factory.CreateClient();
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri(uri + "/searchplant"),
-                    Content = new StringContent(JsonConvert.SerializeObject(new KeywordsRequestModel { text = valueSearch }), Encoding.UTF8, "application/json"),
+                    RequestUri = new Uri(uri + "/searchplat_withowndatabase"),
+                    Content = new StringContent(JsonConvert.SerializeObject(
+                        new KeywordsRequestModel
+                        {
+                            text = valueSearch,
+                            db = db
+                        }),
+                        Encoding.UTF8, "application/json"),
                 };
                 var response = client.SendAsync(request).Result;
                 if (response.IsSuccessStatusCode)
@@ -270,12 +285,13 @@ namespace VG.Service.Service
                     }
                 }
             }
-            var result = this._shareRepository.SearchShare(listId.Distinct().ToList());
+            var result = this._shareRepository.SearchShare(listId.Distinct().ToList(), accountId);
             return result;
         }
-        public IEnumerable<ShareDetailResponseModel> SearchShareByDescription(string valueSearch)
+        public IEnumerable<ShareDetailResponseModel> SearchShareByDescription(string valueSearch, string phoneNumer)
         {
             List<string> listId = new List<string>();
+            var accountId = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumer).Id;
             var vegDetails = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 2 && s.AccountId != "" && s.AccountId != null).Distinct().ToList();
             foreach (var detail in vegDetails)
             {
@@ -285,7 +301,7 @@ namespace VG.Service.Service
                     listId.AddRange(vegDetail.Vegetables.Select(s => s.Id));
                 }
             }
-            var result = this._shareRepository.SearchShare(listId.Distinct().ToList());
+            var result = this._shareRepository.SearchShare(listId.Distinct().ToList(), accountId);
             return result;
         }
         public ShareDetailRequestModel Update(ShareDetailRequestModel newItem, string phoneNumber, string savePath, string domain)
@@ -300,6 +316,6 @@ namespace VG.Service.Service
             return newItem;
         }
 
-        
+
     }
 }

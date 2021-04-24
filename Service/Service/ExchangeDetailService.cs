@@ -60,19 +60,26 @@ namespace VG.Service.Service
                 if (Status == (int)EnumStatusRequest.Accept)
                 {
                     var veg = this._vegetableRepository.GetSingle(s => s.Id == exchangeResponse.FirstOrDefault().VegetableId, new string[] { "VegetableDescription", "ShareDetails" });
-                    if (veg.ShareDetails.Count() > 0)
+                    if (veg.Quantity >= exchangeResponse.FirstOrDefault().Quantity)
                     {
-                        foreach (var share in veg.ShareDetails)
+                        if (veg.ShareDetails.Count() > 0)
                         {
-                            share.Quantity = share.Quantity - exchangeResponse.FirstOrDefault().Quantity;
-                            this._shareDetailRepository.Update(share);
+                            foreach (var share in veg.ShareDetails)
+                            {
+                                share.Quantity = share.Quantity - exchangeResponse.FirstOrDefault().Quantity;
+                                this._shareDetailRepository.Update(share);
+                            }
                         }
+                        veg.Quantity = veg.Quantity - exchangeResponse.FirstOrDefault().Quantity;
+                        this._vegetableRepository.Update(veg);
+                        var qrCode = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, baseUrl);
+                        var qrCodeForShipper = this._qrCodeForShipperService.Add(exchangeResponse.FirstOrDefault().Id, baseUrl);
+                        vegNameReceive = veg.VegetableDescription.VegContent;
                     }
-                    veg.Quantity = veg.Quantity - exchangeResponse.FirstOrDefault().Quantity;
-                    this._vegetableRepository.Update(veg);
-                    var qrCode = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, baseUrl);
-                    var qrCodeForShipper = this._qrCodeForShipperService.Add(exchangeResponse.FirstOrDefault().Id, baseUrl);
-                    vegNameReceive = veg.VegetableDescription.VegContent;
+                    else
+                    {
+                        throw new Exception("Tài khoản " + account.Members.FirstOrDefault().FullName + " không còn đủ số lượng " + veg.VegetableDescription.VegContent );
+                    }
                 }
                 this._exchangeDetailRepository.Update(exchangeResponse);
             }
@@ -80,7 +87,7 @@ namespace VG.Service.Service
 
             if (Status == (int)EnumStatusRequest.Accept)
             {
-                if (exchange.Quantity <= exchange.ShareDetail.Quantity)
+                if (exchange.ShareDetail.Quantity >= exchange.Quantity)
                 {
                     exchange.ShareDetail.Quantity = exchange.ShareDetail.Quantity - exchange.Quantity;
                     var veg = this._vegetableRepository.GetSingle(s => s.Id == exchange.VegetableId, new string[] { "VegetableDescription" });

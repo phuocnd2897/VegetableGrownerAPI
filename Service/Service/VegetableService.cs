@@ -60,6 +60,7 @@ namespace VG.Service.Service
             _keywordRepository = keywordRepository;
             _labelRepository = labelRepository;
             _factory = factory;
+            _acccountLoginRepository = acccountLoginRepository;
         }
         public VegetableRequestModel Add(VegetableRequestModel newItem, string phoneNumber, string savePath, string url)
         {
@@ -268,11 +269,7 @@ namespace VG.Service.Service
                             this._vegetableImageService.Add(newItem.Images, vegImagePending.Id, "");
 
                         }
-                        var admin = this._acccountRepository.GetMulti(s => s.RoleId == 1);
-                        var token = this._acccountLoginRepository.GetMulti(s => admin.Select(q => q.Id).Contains(s.AppAccountId)).Select(s => s.DeviceToken);
-                        var mess = IdentityHelper.NotifyAsync(token.ToArray(),
-                           "Có thông tin rau mới cần duyệt",
-                           account.Members.FirstOrDefault().FullName + " đã thêm thông tin rau mới vào hệ thống.");
+                        
                         var vegName = this._vegetableDescriptionRepository.Add(new VegetableDescription
                         {
                             VegContent = newItem.Title,
@@ -342,16 +339,16 @@ namespace VG.Service.Service
                         var response = client.SendAsync(request).Result;
                         if (response.IsSuccessStatusCode)
                         {
-                            var comKey = this._vegetableCompositionRepository.Add(new VegetableComposition
-                            {
-                                CompositionName = vegName.VegContent,
-                                VegetableDescriptionId = vegFeature.Id,
-                            });
-                            this._vegetableCompositionRepository.Commit();
                             string jsonData = response.Content.ReadAsStringAsync().Result;
                             var newkeywords = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData).FirstOrDefault();
                             if (newkeywords.Value.Count() > 0)
                             {
+                                var comKey = this._vegetableCompositionRepository.Add(new VegetableComposition
+                                {
+                                    CompositionName = vegName.VegContent,
+                                    VegetableDescriptionId = vegFeature.Id,
+                                });
+                                this._vegetableCompositionRepository.Commit();
                                 foreach (var value in newkeywords.Value)
                                 {
                                     this._keywordRepository.Add(new Keyword
@@ -368,6 +365,16 @@ namespace VG.Service.Service
                             LabelName = newItem.NameSearch,
                             VegCompositionId = comName.Id,
                         });
+                        var admin = this._acccountRepository.GetMulti(s => s.RoleId == 1);
+                        var loginAdmin = this._acccountLoginRepository.GetMulti(s => admin.Select(q => q.Id).Contains(s.AppAccountId));
+                        if (loginAdmin.Count() > 0)
+                        {
+                            var token = loginAdmin.Select(s => s.DeviceToken);
+                            var mess = IdentityHelper.NotifyAsync(token.ToArray(),
+                       "Có thông tin rau mới cần duyệt",
+                       account.Members.FirstOrDefault().FullName + " đã thêm thông tin rau mới vào hệ thống.");
+                        }
+
                     }
                 }
                 else

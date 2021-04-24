@@ -12,7 +12,7 @@ namespace VG.Data.Repository
     {
         IEnumerable<ShareDetailResponseModel> GetAll(List<string> listId);
         IEnumerable<ShareDetailResponseModel> GetAllExcept(List<string> listId, string accountId);
-        IEnumerable<ShareDetailResponseModel> SearchShare(List<string> valueSearch);
+        IEnumerable<ShareDetailResponseModel> SearchShare(List<string> valueSearch, string accountId);
     }
     public class ShareDetailRepository : RepositoryBase<ShareDetail, string>, IShareDetailRepository
     {
@@ -95,7 +95,7 @@ namespace VG.Data.Repository
             return result;
         }
 
-        public IEnumerable<ShareDetailResponseModel> SearchShare(List<string> listId)
+        public IEnumerable<ShareDetailResponseModel> SearchShare(List<string> listId, string accountId)
         {
             var result = from share in dbContext.ShareDetails
                          join account in dbContext.Accounts on share.AccountId equals account.Id
@@ -105,7 +105,7 @@ namespace VG.Data.Repository
                          join vegDetailDes in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 2) on veg.VegetableDescriptionId equals vegDetailDes.VegDesCommonId
                          join vegDetailFeat in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 3) on veg.VegetableDescriptionId equals vegDetailFeat.VegDesCommonId
                          join vegDetailImg in dbContext.VegetableDescriptions.Where(s => s.VegetableCompositionId == 4) on veg.VegetableDescriptionId equals vegDetailImg.VegDesCommonId
-                         where listId.Contains(share.VegetableId) && share.Quantity > 0 && account.Status == true
+                         where listId.Contains(share.VegetableId) && share.Quantity > 0 && account.Status == true && share.AccountId != accountId
                          orderby share.DateShare descending
                          select new ShareDetailResponseModel
                          {

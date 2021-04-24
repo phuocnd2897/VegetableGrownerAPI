@@ -41,7 +41,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
 
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                return BadRequest(ex.Message);
             }
         }
         //[HttpPost]

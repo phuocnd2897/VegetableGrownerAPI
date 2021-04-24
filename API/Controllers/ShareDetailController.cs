@@ -132,7 +132,8 @@ namespace API.Controllers
         {
             try
             {
-                var result = this._shareDetailService.SearchShareByName(valueSearch);
+                var phoneNumber = User.Identity.Name;
+                var result = this._shareDetailService.SearchShareByName(valueSearch, phoneNumber);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -146,7 +147,8 @@ namespace API.Controllers
         {
             try
             {
-                var result = this._shareDetailService.SearchShareByKeyword(valueSearch);
+                var phoneNumber = User.Identity.Name;
+                var result = this._shareDetailService.SearchShareByKeyword(valueSearch, phoneNumber);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -160,7 +162,8 @@ namespace API.Controllers
         {
             try
             {
-                var result = this._shareDetailService.SearchShareByDescription(valueSearch);
+                var phoneNumber = User.Identity.Name;
+                var result = this._shareDetailService.SearchShareByDescription(valueSearch, phoneNumber);
                 return Ok(result);
             }
             catch (Exception ex)
