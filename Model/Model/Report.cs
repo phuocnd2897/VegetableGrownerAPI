@@ -16,11 +16,11 @@ namespace VG.Model.Model
         public string ReportContent { get; set; }
         public DateTime DateReport { get; set; }
         [Required, MaxLength(128)]
-        public string ShareDetailId { get; set; }
+        public string PostId { get; set; }
         [Required, MaxLength(128)]
         public string AccountReport { get; set; }
-        [ForeignKey("ShareDetailId")]
-        public virtual ShareDetail ShareDetail { get; set; }
+        [ForeignKey("PostId")]
+        public virtual Post Post { get; set; }
         [ForeignKey("AccountReport")]
         public virtual AppAccount AppAccount { get; set; }
     }

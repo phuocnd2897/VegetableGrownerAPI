@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http.Formatting;
 
 namespace VG.Common.Helper
 {
     public class IdentityHelper
     {
+        private const string GoogleAPIKey = "AIzaSyA20DZM-KQ30vUa63XoopRiJIzyis_t21I";
+        private const string url = "https://maps.googleapis.com/maps/api/directions/json";
         public static string HashPassword(string password)
         {
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -138,6 +143,29 @@ namespace VG.Common.Helper
                 text = text.Replace(arr1[i].ToUpper(), arr2[i].ToUpper());
             }
             return text;
+        }
+        public static double GetDistance(string origin, string destination)
+        {
+            System.Threading.Thread.Sleep(1000);
+            double distance = 0;
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                // Add an Accept header for JSON format.
+                client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // List data response.
+                HttpResponseMessage response = client.GetAsync(url+ "?origin=" + origin + "&destination=" + destination + "&sensor=false&key=" + GoogleAPIKey).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response body.
+                    var dataObjects = response.Content.ReadAsAsync<JObject>().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
+                    distance = (double)dataObjects.SelectToken("routes[0].legs[0].distance.value") / 1000;
+                }
+            }
+            return distance;
+            //ResultingDistance.Text = distance;
         }
     }
 }

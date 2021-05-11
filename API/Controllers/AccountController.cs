@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VG.Model.RequestModel;
+using VG.Model.ResponseModel;
 using VG.Service.Service;
 
 namespace API.Controllers
@@ -78,6 +79,34 @@ namespace API.Controllers
             {
                 this._accountService.ChangePassword(newItem);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetAccountLocked")]
+        public IActionResult GetAccountLocked()
+        {
+            try
+            {
+                var account = this._accountDetailService.GetAccountLocked();
+                return Ok(account);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("Unlock")]
+        public IActionResult Unlock(IEnumerable<LockedAccountSelectedResponseModel> newItem)
+        {
+            try
+            {
+                var account = this._accountDetailService.UnLock(newItem);
+                return Ok(account);
             }
             catch (Exception ex)
             {

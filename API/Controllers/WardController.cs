@@ -8,7 +8,6 @@ using VG.Service.Service;
 
 namespace API.Controllers
 {
-    [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class WardController : ControllerBase

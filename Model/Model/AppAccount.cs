@@ -25,6 +25,7 @@ namespace VG.Model.Model
         public string PassWord { get; set; }
         public bool Status { get; set; }
         public int RoleId { get; set; }
+        public DateTime? DateUnlock { get; set; }
         [ForeignKey("RoleId")]
         public virtual AccountRole Role { get; set; }
         public virtual ICollection<AppAccountLogin> AppAccountLogins { get; set; }

@@ -59,12 +59,12 @@ namespace API.Controllers
         }
         [HttpPut]
         [Route("ChangePassword")]
-        public IActionResult ChangePassword(string newPass)
+        public IActionResult ChangePassword(string oldPass, string newPass)
         {
             try
             {
                 var phoneNumber = User.Identity.Name;
-                this._accountDetailService.ChangePassword(newPass, phoneNumber);
+                this._accountDetailService.ChangePassword(oldPass, newPass, phoneNumber);
                 return Ok();
             }
             catch (Exception ex)
@@ -96,6 +96,21 @@ namespace API.Controllers
                 var phoneNumber = User.Identity.Name;
                 var result = this._accountDetailService.SearchAccount(searchValue);
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpDelete]
+        [Route("LogOut")]
+        public IActionResult LogOut(string deviceToken)
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                this._accountDetailService.LogOut(phoneNumber, deviceToken);
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -8,6 +8,6 @@ namespace VG.Model.RequestModel
     public class KeywordsRequestModel
     {
         public string text { get; set; }
-        public IEnumerable<Dictionary<int, string>> db { get; set; }
+        public IEnumerable<Dictionary<string, string>> db { get; set; }
     }
 }

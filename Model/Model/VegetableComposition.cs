@@ -11,12 +11,12 @@ namespace VG.Model.Model
     {
         public VegetableComposition()
         {
+            Id = Guid.NewGuid().ToString();
             Keywords = new HashSet<Keyword>();
             Labels = new HashSet<Label>();
         }
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Required, MaxLength(128)]
+        public string Id { get; set; }
         [Required, MaxLength(128)]
         public string CompositionName { get; set; }
         public string VegetableDescriptionId { get; set; }

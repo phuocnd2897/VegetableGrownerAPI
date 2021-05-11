@@ -17,6 +17,7 @@ namespace VG.Service.Service
         Task<AccountRequest> Add(AccountFriendRequestModel newItem);
         Task IsComfirm(int Id, int status);
         IEnumerable<AccountRequestResponseModel> GetAccountRequest(string phoneNumber);
+        void Delete(int Id);
     }
     public class AccountRequestService : IAccountRequestService
     {
@@ -43,11 +44,21 @@ namespace VG.Service.Service
                     RequestedDate = DateTime.UtcNow.AddHours(7),
                     Status = (int)EnumStatusRequest.Pending
                 });
-                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameSend + " đã gửi cho bạn một lời kết không bạn. Bạn có đồng ý không ?");
+                var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Bạn có lời mời kết bạn mới", FullNameSend + " đã gửi cho bạn một lời mời kết bạn. Bạn có đồng ý không ?");
                 this._accountRequestRepository.Commit();
                 return await Task.FromResult(result);
             }
             return null;
+        }
+
+        public void Delete(int Id)
+        {
+            var result = this._accountRequestRepository.GetSingle(s => s.Id == Id);
+            if (result != null)
+            {
+                this._accountRequestRepository.Delete(result);
+                this._accountRequestRepository.Commit();
+            }
         }
 
         public IEnumerable<AccountRequestResponseModel> GetAccountRequest(string phoneNumber)
@@ -69,6 +80,10 @@ namespace VG.Service.Service
         public async Task IsComfirm(int Id, int status)
         {
             var result = this._accountRequestRepository.GetSingle(s => s.Id == Id);
+            if (result == null)
+            {
+                throw new Exception("Yêu cầu kết bạn đã bị huỷ");
+            }
             result.Status = status;
             this._accountRequestRepository.Update(result);
             if (status == (int)EnumStatusRequest.Accept)
@@ -79,8 +94,8 @@ namespace VG.Service.Service
                     Account_two_Id = result.AccountReceived,
                     AcceptedDate = DateTime.Now
                 });
-                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == result.AccountReceived, new string[] { "AppAccountLogins", "Members" });
-                var FullNameAccountReceived = appAccountLogin.Members.FirstOrDefault().FullName;
+                var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == result.AccountSend, new string[] { "AppAccountLogins" });
+                var FullNameAccountReceived = this._accountRepository.GetSingle(s => s.Id == result.AccountReceived, new string[] { "Members" }).Members.FirstOrDefault().FullName;
                 var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(), "Kết bạn thành công", FullNameAccountReceived + " đã đồng ý kết bạn. ");
             }
             this._accountRequestRepository.Commit();

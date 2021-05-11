@@ -192,6 +192,10 @@ namespace API.Controllers
             {
                 var phoneNumber = User.Identity.Name;
                 var result = this._vegetableService.CheckVegetableInGarden(Id, Name, phoneNumber);
+                if (result.Count() <= 0)
+                {
+                    return BadRequest("Trong vườn rau của bạn không có loại rau đang tìm");
+                }
                 return Ok(result);
             }
             catch (Exception ex)
@@ -213,6 +217,7 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetAllVegetableUnapproved")]
         public IActionResult GetAllVegetableUnapproved()
@@ -227,6 +232,7 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [AllowAnonymous]
         [HttpPut]
         [Route("IsAccept")]
         public IActionResult IsAccept(string Id, int Status)

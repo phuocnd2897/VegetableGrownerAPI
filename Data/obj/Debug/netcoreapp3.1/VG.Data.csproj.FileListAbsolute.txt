@@ -77,3 +77,5 @@ D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.csproj.Copy
 D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.dll
 D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.pdb
 D:\Capstone\VegetableGrownerAPI\Data\obj\Debug\netcoreapp3.1\VG.Data.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\Data\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+D:\Capstone\VegetableGrownerAPI\Data\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll

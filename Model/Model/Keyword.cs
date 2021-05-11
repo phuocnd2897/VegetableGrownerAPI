@@ -14,7 +14,7 @@ namespace VG.Model.Model
         public int Id { get; set; }
         [Required, MaxLength(100)]
         public string KeywordName { get; set; }
-        public int VegCompositionId { get; set; }
+        public string VegCompositionId { get; set; }
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
         public virtual AppAccount AppAccount { get; set; }

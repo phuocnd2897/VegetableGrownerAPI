@@ -14,36 +14,16 @@ namespace API.Controllers
     public class QRCodeController : ControllerBase
     {
         private IQRCodeService _qrCodeService;
-        private IQRCodeForShipperService _qrCodeForShipperService;
-        public QRCodeController(IQRCodeService qrCodeService, IQRCodeForShipperService qrCodeForShipperService)
+        public QRCodeController(IQRCodeService qrCodeService)
         {
             _qrCodeService = qrCodeService;
-            _qrCodeForShipperService = qrCodeForShipperService;
-        }
-        [HttpPost]
-        public IActionResult CreateQRCode(string ExchangeId)
-        {
-            try
-            {
-                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
-                var result = this._qrCodeForShipperService.Add(ExchangeId, baseUrl);
-                if (result == null)
-                {
-                    return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
-                }
-                else return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
         [HttpGet]
-        public IActionResult GetQRCodeForShipper(string ExchangeId)
+        public IActionResult GetQRCodeForShipper(string ExchangeId, string phoneNumber)
         {
             try
             {
-                var result = this._qrCodeForShipperService.Get(ExchangeId);
+                var result = this._qrCodeService.Get(ExchangeId, 2, phoneNumber);
                 return Ok(result);
             }
             catch (Exception ex)

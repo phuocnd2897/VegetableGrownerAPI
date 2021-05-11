@@ -20,6 +20,7 @@ namespace VG.Model.Model
         public string Name { get; set; }
         [Required, MaxLength(200)]
         public string Url { get; set; }
+        public int Type { get; set; }
         [Required, MaxLength(128)]
         public string ExchangeId { get; set; }
         [ForeignKey("ExchangeId")]

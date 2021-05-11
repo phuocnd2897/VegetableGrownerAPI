@@ -46,7 +46,7 @@ namespace VG.Service.Service
             string description = "";
             string feature = "";
             List<WikiResponseModel> vegetables = new List<WikiResponseModel>();
-            var listLabel = _labelRepository.GetMulti(s => s.VegCompositionId == 3 && s.StandsFor == "CD").ToArray();
+            var listLabel = _labelRepository.GetMulti(s => s.VegCompositionId == "3" && s.StandsFor == "CD").ToArray();
             char[] separators = new char[] { '[', ']', '\\' };
             Regex pattern = new Regex("[\\[\\]\\\\]");
             using (var httpRequestSearch = new HttpRequestMessage(HttpMethod.Get, APIGetDescription + title))
@@ -82,8 +82,8 @@ namespace VG.Service.Service
                         {
                             foreach (var s in split)
                             {
-                                var test = IdentityHelper.RemoveUnicode(s.Split("\n\r")[0]).ToLower();
-                                var test2 = IdentityHelper.RemoveUnicode(item).ToLower();
+                                var test = IdentityHelper.RemoveUnicode(s.Split("\n\r")[0]).ToLower().Trim();
+                                var test2 = IdentityHelper.RemoveUnicode(item).ToLower().Trim();
                                 if (test.Contains(test2))
                                 {
                                     feature = Regex.Replace(string.Join("\n\r", s.Split("\n\r").Skip(1).ToArray()), "<.*?>.*?<.*?>", String.Empty);
@@ -92,6 +92,7 @@ namespace VG.Service.Service
                             }
                             if (feature != "")
                             {
+                                texts.RemoveRange(0, texts.Count);
                                 vegetables.Add(new WikiResponseModel
                                 {
                                     Name = title,
@@ -103,7 +104,9 @@ namespace VG.Service.Service
                             }
                             else
                             {
-                                texts = split.Select(s => Regex.Replace(s, "<.*?>.*?<.*?>", String.Empty)).ToList();
+                                texts = split.Select(s => Regex.Replace(s, "<.*?>.*?<.*?>", string.Empty)).ToList();
+                                texts = split.Select(s => Regex.Replace(s, @"<[^>]*>", string.Empty)).ToList();
+                                texts = split.Select(s => Regex.Replace(s, @"{{[^>]*}}", string.Empty)).ToList();
                                 vegetables.Add(new WikiResponseModel
                                 {
                                     Name = title,
@@ -117,8 +120,8 @@ namespace VG.Service.Service
                     }
                 }
             }
-            
-            return vegetables.GroupBy(s => s.Name).Select(s => s.First()).FirstOrDefault();
+            var vegResponse = vegetables.Where(s => s.Feature != "");
+            return vegResponse.Count() > 0 ? vegResponse.FirstOrDefault() : vegetables.GroupBy(s => s.Name).Select(s => s.First()).FirstOrDefault();
         }
 
         public IEnumerable<WikiTitleResponseModel> LeakInfoFromWikiByTitle(string title)

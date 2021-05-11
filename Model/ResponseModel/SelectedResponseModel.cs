@@ -13,4 +13,8 @@ namespace VG.Model.ResponseModel
     {
         public string Avatar { get; set; }
     }
+    public class LockedAccountSelectedResponseModel: SelectedResponseModel
+    {
+        public DateTime? DateUnLock { get; set; }
+    }
 }

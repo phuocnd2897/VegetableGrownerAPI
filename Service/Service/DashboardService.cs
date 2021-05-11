@@ -17,13 +17,13 @@ namespace VG.Service.Service
     }
     public class DashboardService : IDashboardService
     {
-        public IShareDetailRepository _shareDetailRepository;
+        public IPostRepository _postRepository;
         public IExchangeDetailRepository _exchangeDetailRepository;
         public IAccountRepository _accountRepository;
         public IVegetableDescriptionRepository _vegetableDescriptionRepository;
-        public DashboardService(IShareDetailRepository shareDetailRepository, IExchangeDetailRepository exchangeDetailRepository, IAccountRepository accountRepository, IVegetableDescriptionRepository vegetableDescriptionRepository)
+        public DashboardService(IPostRepository postRepository, IExchangeDetailRepository exchangeDetailRepository, IAccountRepository accountRepository, IVegetableDescriptionRepository vegetableDescriptionRepository)
         {
-            _shareDetailRepository = shareDetailRepository;
+            _postRepository = postRepository;
             _exchangeDetailRepository = exchangeDetailRepository;
             _accountRepository = accountRepository;
             _vegetableDescriptionRepository = vegetableDescriptionRepository;
@@ -35,7 +35,7 @@ namespace VG.Service.Service
             switch (Status)
             {
                 case 1:
-                    var share = this._shareDetailRepository.GetAll().GroupBy(s => s.AccountId).Select(s => new
+                    var share = this._postRepository.GetAll().GroupBy(s => s.AccountId).Select(s => new
                     {
                         Id = s.Key,
                         Count = s.Count()
@@ -51,13 +51,13 @@ namespace VG.Service.Service
                     }
                     break;
                 case 2:
-                    var vegCommon = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 1 && (s.AccountId == "" || s.AccountId == null) && s.Vegetables.Count > 0, new string[] { "Vegetables" })
+                    var vegCommon = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == "1" && (s.AccountId == "" || s.AccountId == null) && s.Vegetables.Count > 0, new string[] { "Vegetables" })
                         .Select(s => new SelectedResponseModel
                         {
                             Id = s.VegContent,
                             Text = s.Vegetables.Count().ToString()
                         });
-                    var veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == 1 && (s.AccountId != "" && s.AccountId != null)).GroupBy(s => s.VegContent).Select(s => new SelectedResponseModel
+                    var veg = this._vegetableDescriptionRepository.GetMulti(s => s.VegetableCompositionId == "1" && (s.AccountId != "" && s.AccountId != null)).GroupBy(s => s.VegContent).Select(s => new SelectedResponseModel
                     {
                         Id = s.Key,
                         Text = s.Count().ToString()
@@ -81,7 +81,7 @@ namespace VG.Service.Service
             DashboardResponseModel dashboardResponseModel = new DashboardResponseModel();
             List<int[]> series = new List<int[]>();
             dashboardResponseModel.labels = new string[] { "0 - 2", "2 - 4", "4 - 6", "6 - 8", "8 - 10", "10 - 12", "12 - 14", "14 - 16", "16 - 18", "18 - 20", "20 - 22", "22 - 24" };
-            var share = this._shareDetailRepository.GetAll();
+            var share = this._postRepository.GetAll();
             var exchange = this._exchangeDetailRepository.GetAll();
             int count02 = 0;
             int count24 = 0;
@@ -208,7 +208,7 @@ namespace VG.Service.Service
             DashboardResponseModel dashboardResponseModel = new DashboardResponseModel();
             List<int[]> series = new List<int[]>();
             dashboardResponseModel.labels = new string[] { "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" };
-            var share = this._shareDetailRepository.GetMulti(s => s.Status == (int)EnumStatusShare.Share);
+            var share = this._postRepository.GetMulti(s => s.Type == (int)EnumStatusShare.Share);
             var exchange = this._exchangeDetailRepository.GetMulti(s => s.Status == (int)EnumStatusShare.Exchange);
             int countJan = 0;
             int countFeb = 0;

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Uk2MB7CZE9YGJZBRSmD4rNijTOr5P+YjMm2Xmoqe79Ck23gP4p/n1dv5vWXebbaweM6pK4EOfZMLz86EAYsAUQ==",
+  "dgSpecHash": "wdpcjYQdyeiTwgi+Sw2IVNxuqYRj6hXNa2e4seiYoKmAq7FWwv5UuHh5k21nHLvSQ/VjqLNqYQc0q0l5s5reQg==",
   "success": true,
   "projectFilePath": "D:\\Capstone\\VegetableGrownerAPI\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\phuoc'\\.nuget\\packages\\htmlagilitypack\\1.11.29\\htmlagilitypack.1.11.29.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\korzh.easyquery\\7.0.1\\korzh.easyquery.7.0.1.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\korzh.easyquery.linq\\7.0.1\\korzh.easyquery.linq.7.0.1.nupkg.sha512",
+    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.10\\microsoft.aspnetcore.authentication.jwtbearer.3.1.10.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.1\\microsoft.aspnetcore.cryptography.internal.5.0.1.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.1\\microsoft.aspnetcore.cryptography.keyderivation.5.0.1.nupkg.sha512",

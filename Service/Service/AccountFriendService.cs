@@ -29,13 +29,15 @@ namespace VG.Service.Service
                 .Select(s => new AccountFiendResponseModel
                 {
                     Id = s.Id,
-                    FriendName = s.AppAccountReceive.Members.FirstOrDefault().FullName
+                    FriendName = s.AppAccountReceive.Members.FirstOrDefault().FullName,
+                    Avatar = s.AppAccountReceive.Members.FirstOrDefault().Avatar
                 });
             var friend2 = this._accountFriendRepository.GetMulti(s => s.Account_two_Id == account.Id, new string[] { "AppAccountSend.Members" })
                 .Select(s => new AccountFiendResponseModel
                 {
                     Id = s.Id,
-                    FriendName = s.AppAccountSend.Members.FirstOrDefault().FullName
+                    FriendName = s.AppAccountSend.Members.FirstOrDefault().FullName,
+                    Avatar = s.AppAccountSend.Members.FirstOrDefault().Avatar
                 });
             var result = friend1.Union(friend2);
             return result;

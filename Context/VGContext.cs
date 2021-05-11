@@ -22,7 +22,7 @@ namespace VG.Context
         public virtual DbSet<AccountRequest> AccountRequests { get; set; }
         public virtual DbSet<AccountFriend> AccountFriends { get; set; }
         public virtual DbSet<Member> Members { get; set; }
-        public virtual DbSet<ShareDetail> ShareDetails { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<ExchangeDetail> ExchangeDetails { get; set; }
         public virtual DbSet<VegetableImage> VegetableImages { get; set; }
         public virtual DbSet<AccountRole> Roles { get; set; }
@@ -30,7 +30,7 @@ namespace VG.Context
         public virtual DbSet<Vegetable> Vegetables { get; set; }
         public virtual DbSet<VegetableDescription> VegetableDescriptions { get; set; }
         public virtual DbSet<VegetableComposition> VegetableCompositions { get; set; }
-        public virtual DbSet<VegetableShare> VegetableShares { get; set; }
+        public virtual DbSet<VegetableExchange> VegetableExchanges { get; set; }
         public virtual DbSet<Label> Labels { get; set; }
         public virtual DbSet<Keyword> Keywords { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
@@ -39,7 +39,6 @@ namespace VG.Context
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<PrecentReport> PrecentReports { get; set; }
         public virtual DbSet<QRCodeExchange> QRCodeExchanges { get; set; }
-        public virtual DbSet<QRCodeForShipper> QRCodeForShippers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

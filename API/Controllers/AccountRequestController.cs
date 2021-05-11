@@ -43,7 +43,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet]
@@ -55,6 +55,20 @@ namespace API.Controllers
                 string phoneNumber = User.Identity.Name;
                 var result = this._accountRequestService.GetAccountRequest(phoneNumber);
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Có lỗi xảy ra. Vui lòng thử lại");
+            }
+        }
+        [HttpDelete]
+        [Route("CancleRequest")]
+        public IActionResult Delete(int Id)
+        {
+            try
+            {
+                this._accountRequestService.Delete(Id);
+                return Ok();
             }
             catch (Exception ex)
             {

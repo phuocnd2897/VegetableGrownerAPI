@@ -41,6 +41,23 @@ namespace API.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("CheckInstance")]
+        public IActionResult CheckInstance(ExchangeDetailRequestModel newItem)
+        {
+            try
+            {
+                var phoneNumber = User.Identity.Name;
+                var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+                var result = this._exchangeDetailService.CheckInstance(newItem, phoneNumber, baseUrl);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
         [HttpGet]
         public IActionResult Get(string Id)
         {
@@ -131,7 +148,7 @@ namespace API.Controllers
             {
                 var phoneNumber = User.Identity.Name;
                 var baseUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
-                this._exchangeDetailService.Finish(Id);
+                this._exchangeDetailService.Finish(Id, phoneNumber);
                 return Ok();
             }
             catch (Exception ex)

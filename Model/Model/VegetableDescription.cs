@@ -20,7 +20,7 @@ namespace VG.Model.Model
         public string Id { get; set; }
         [Required, MaxLength(1000)]
         public string VegContent { get; set; }
-        public int VegetableCompositionId { get; set; }
+        public string VegetableCompositionId { get; set; }
         public string AccountId { get; set; }
         public string VegDesCommonId { get; set; }
         [ForeignKey("VegetableCompositionId")]

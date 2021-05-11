@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Abv0EEt5SwXhGZeBLfWw17o8sLM2OqgZ5iu7hIBJgYyyKtYzC8hdpFviO/hvq5LXsYyu1z9dcEJPZIeUXQijXw==",
+  "dgSpecHash": "UnpcvYopDcJTaSdncfI3gjepx5bP84rimkYzSVwc4/+4J50wtSJc0uKURCjdaWUg3PoYDpauCGKC0xY3XYTbbQ==",
   "success": true,
   "projectFilePath": "D:\\Capstone\\VegetableGrownerAPI\\Context\\VG.Context.csproj",
   "expectedPackageFiles": [
@@ -20,10 +20,7 @@
     "C:\\Users\\phuoc'\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\phuoc'\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.0\\system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\3.1.12\\microsoft.netcore.app.runtime.win-x64.3.1.12.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\3.1.12\\microsoft.windowsdesktop.app.runtime.win-x64.3.1.12.nupkg.sha512",
-    "C:\\Users\\phuoc'\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.1.12\\microsoft.aspnetcore.app.runtime.win-x64.3.1.12.nupkg.sha512"
+    "C:\\Users\\phuoc'\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512"
   ],
   "logs": []
 }

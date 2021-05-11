@@ -102,3 +102,5 @@ D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.cspro
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.dll
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.pdb
 D:\Capstone\VegetableGrownerAPI\Service\obj\Debug\netcoreapp3.1\VG.Service.genruntimeconfig.cache
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+D:\Capstone\VegetableGrownerAPI\Service\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll

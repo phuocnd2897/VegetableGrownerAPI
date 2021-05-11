@@ -16,64 +16,63 @@ namespace VG.Service.Service
         IEnumerable<ExchangeDetailResponseModel> Add(ExchangeDetailRequestModel newItem, string phoneNumber, string baseUrl);
         ExchangeDetailRequestModel Update(ExchangeDetailRequestModel newItem);
         void IsAccept(string Id, int Status, string baseUrl);
-        void Finish(string Id);
+        void Finish(string Id, string phoneNumber);
         void Delete(string Id);
         ExchangeDetailResponseModel Get(string Id);
         IEnumerable<ExchangeDetailResponseModel> GetByAccountId(string phoneNumber);
         IEnumerable<ExchangeDetailResponseModel> GetExchangeRequest(string phoneNumber);
         ExchangeDetailResponseModel GetInformationExchange(string Id);
+        IEnumerable<ExchangeDetailResponseModel> CheckInstance(ExchangeDetailRequestModel newItem, string phoneNumber, string baseUrl);
     }
     public class ExchangeDetailService : IExchangeDetailService
     {
         private IExchangeDetailRepository _exchangeDetailRepository;
         private IAccountRepository _accountRepository;
-        private IShareDetailRepository _shareDetailRepository;
+        private IPostRepository _postRepository;
         private IVegetableRepository _vegetableRepository;
         private IQRCodeService _qrCodeService;
-        private IQRCodeForShipperService _qrCodeForShipperService;
-        public ExchangeDetailService(IAccountRepository accountRepository, IExchangeDetailRepository exchangeDetailRepository, IShareDetailRepository shareDetailRepository,
-            IVegetableRepository vegetableRepository, IQRCodeService qrCodeService, IQRCodeForShipperService qrCodeForShipperService)
+        public ExchangeDetailService(IAccountRepository accountRepository, IExchangeDetailRepository exchangeDetailRepository, IPostRepository postRepository,
+            IVegetableRepository vegetableRepository, IQRCodeService qrCodeService)
         {
             _accountRepository = accountRepository;
             _exchangeDetailRepository = exchangeDetailRepository;
-            _shareDetailRepository = shareDetailRepository;
+            _postRepository = postRepository;
             _vegetableRepository = vegetableRepository;
             _qrCodeService = qrCodeService;
-            _qrCodeForShipperService = qrCodeForShipperService;
         }
        
         public void IsAccept(string Id, int Status, string baseUrl)
         {
             string vegNameSend = "";
             string vegNameReceive = "";
-            var exchange = this._exchangeDetailRepository.GetSingle(s => s.Id == Id, new string[] { "ShareDetail" });
+            var exchange = this._exchangeDetailRepository.GetSingle(s => s.Id == Id, new string[] { "postDetail" });
             var account = this._accountRepository.GetSingle(s => s.Id == exchange.ReceiveBy, new string[] { "Members" });
             if (account.Status == false)
             {
                 throw new Exception("Tài khoản " + account.Members.FirstOrDefault().FullName + " đã bị khoá");
             }
 
-            var exchangeResponse = this._exchangeDetailRepository.GetMulti(s => s.ShareDetailId == exchange.ShareDetailId && s.Stt == exchange.Stt && s.ReceiveBy == exchange.Sender && s.Sender == exchange.ReceiveBy);
+            var exchangeResponse = this._exchangeDetailRepository.GetMulti(s => s.PostId == exchange.PostId && s.Stt == exchange.Stt && s.ReceiveBy == exchange.Sender && s.Sender == exchange.ReceiveBy);
             if (exchangeResponse.Count() > 0)
             {
                 exchangeResponse.FirstOrDefault().Status = Status;
                 if (Status == (int)EnumStatusRequest.Accept)
                 {
-                    var veg = this._vegetableRepository.GetSingle(s => s.Id == exchangeResponse.FirstOrDefault().VegetableId, new string[] { "VegetableDescription", "ShareDetails" });
+                    var veg = this._vegetableRepository.GetSingle(s => s.Id == exchangeResponse.FirstOrDefault().VegetableId, new string[] { "VegetableDescription", "postDetails" });
                     if (veg.Quantity >= exchangeResponse.FirstOrDefault().Quantity)
                     {
-                        if (veg.ShareDetails.Count() > 0)
+                        if (veg.Posts.Count() > 0)
                         {
-                            foreach (var share in veg.ShareDetails)
+                            foreach (var post in veg.Posts)
                             {
-                                share.Quantity = share.Quantity - exchangeResponse.FirstOrDefault().Quantity;
-                                this._shareDetailRepository.Update(share);
+                                post.Quantity = post.Quantity - exchangeResponse.FirstOrDefault().Quantity;
+                                this._postRepository.Update(post);
                             }
                         }
                         veg.Quantity = veg.Quantity - exchangeResponse.FirstOrDefault().Quantity;
                         this._vegetableRepository.Update(veg);
-                        var qrCode = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, baseUrl);
-                        var qrCodeForShipper = this._qrCodeForShipperService.Add(exchangeResponse.FirstOrDefault().Id, baseUrl);
+                        var qrCodeForShipper = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, 2, baseUrl);
+                        var qrCodeExchange = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, 1, baseUrl);
                         vegNameReceive = veg.VegetableDescription.VegContent;
                     }
                     else
@@ -87,21 +86,21 @@ namespace VG.Service.Service
 
             if (Status == (int)EnumStatusRequest.Accept)
             {
-                if (exchange.ShareDetail.Quantity >= exchange.Quantity)
+                if (exchange.Post.Quantity >= exchange.Quantity)
                 {
-                    exchange.ShareDetail.Quantity = exchange.ShareDetail.Quantity - exchange.Quantity;
+                    exchange.Post.Quantity = exchange.Post.Quantity - exchange.Quantity;
                     var veg = this._vegetableRepository.GetSingle(s => s.Id == exchange.VegetableId, new string[] { "VegetableDescription" });
                     veg.Quantity = veg.Quantity - exchange.Quantity;
                     this._vegetableRepository.Update(veg);
-                    var qrCode = this._qrCodeService.Add(exchange.Id, baseUrl);
-                    var qrCodeForShipper = this._qrCodeForShipperService.Add(exchange.Id, baseUrl);
+                    var qrCodeForShipper = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, 1, baseUrl);
+                    var qrCodeExchange = this._qrCodeService.Add(exchangeResponse.FirstOrDefault().Id, 2, baseUrl);
                     vegNameSend = veg.VegetableDescription.VegContent;
                     var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == exchange.ReceiveBy, new string[] { "AppAccountLogins", "Members" });
                     var accountHost = this._accountRepository.GetSingle(s => s.Id == exchange.Sender, new string[] { "Members" }).Members.FirstOrDefault();
+                    string body = accountHost.FullName + " đã đồng ý gửi cho bạn " + exchange.Quantity + " " + vegNameSend + " ";
+                    body += vegNameReceive != "" ? "và nhận lại " + exchangeResponse.FirstOrDefault().Quantity + " " + vegNameReceive : "";
                     var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(),
-                        "Yêu cầu đã được đồng ý",
-                        accountHost.FullName + " đã đồng ý gửi cho bạn " + exchange.Quantity + " " + vegNameSend +
-                        vegNameReceive != "" ? " và nhận lại " + exchangeResponse.FirstOrDefault().Quantity + " " + vegNameReceive : "");
+                        "Yêu cầu đã được đồng ý", body);
                 }
                 else
                 {
@@ -126,26 +125,23 @@ namespace VG.Service.Service
                     "Yêu cầu của " + accountReceive.FullName + " đã được hoàn thành");
             }
             this._exchangeDetailRepository.Update(exchange);
-            this._shareDetailRepository.Update(exchange.ShareDetail);
+            this._postRepository.Update(exchange.Post);
             this._exchangeDetailRepository.Commit();
-
-
         }
 
         public IEnumerable<ExchangeDetailResponseModel> Add(ExchangeDetailRequestModel newItem, string phoneNumber, string baseUrl)
         {
             List<ExchangeDetailResponseModel> exchangeDetailResponseModels = new List<ExchangeDetailResponseModel>();
             var stt = this._exchangeDetailRepository.GetMaxStt(s => s.Stt) + 1;
-            var share = this._shareDetailRepository.GetSingle(s => s.Id == newItem.ShareDetailId, new string[] { "Vegetable.VegetableDescription" });
-            if (share.Quantity > 0)
+            var post = this._postRepository.GetSingle(s => s.Id == newItem.PostId, new string[] { "Vegetable.VegetableDescription" });
+            if (post.Quantity > 0)
             {
-                var accountHost = this._accountRepository.GetSingle(s => s.Id == share.AccountId, new string[] { "Members" });
+                var accountHost = this._accountRepository.GetSingle(s => s.Id == post.AccountId, new string[] { "Members", "AppAccountLogins" });
                 var accountReceiver = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber, new string[] { "Members" });
-
                 if (newItem.VegetableId != "")
                 {
                     var veg = this._vegetableRepository.GetSingle(s => s.Id == newItem.VegetableId, new string[] { "VegetableDescription" });
-                    if (newItem.Quantity > share.Quantity)
+                    if (newItem.Quantity > post.Quantity)
                     {
                         throw new Exception("Số lượng cho không đủ. Vui lòng nhập lại");
                     }
@@ -161,8 +157,12 @@ namespace VG.Service.Service
                         Quantity = newItem.Quantity,
                         Sender = accountHost.Id,
                         ReceiveBy = accountReceiver.Id,
-                        ShareDetailId = newItem.ShareDetailId,
-                        VegetableId = share.VegetableId
+                        ProvinceId = newItem.ProvinceId,
+                        DistrictId = newItem.DistrictId,
+                        WardId = newItem.WardId,
+                        Address = newItem.Address,
+                        PostId = newItem.PostId,
+                        VegetableId = post.VegetableId
                     });
                     exchangeDetailResponseModels.Add(new ExchangeDetailResponseModel
                     {
@@ -173,7 +173,7 @@ namespace VG.Service.Service
                         FullNameReceiver = accountReceiver.Members.FirstOrDefault().FullName,
                         AccountHostId = accountHost.Id,
                         ReceiverId = accountReceiver.Id,
-                        ShareDetailId = share.Id,
+                        PostId = post.Id,
                         CreatedDate = exchangeSend.DateExchange
                     });
                     var exchangeResponse = this._exchangeDetailRepository.Add(new ExchangeDetail
@@ -184,7 +184,11 @@ namespace VG.Service.Service
                         Quantity = newItem.QuantityExchange,
                         Sender = accountReceiver.Id,
                         ReceiveBy = accountHost.Id,
-                        ShareDetailId = newItem.ShareDetailId,
+                        ProvinceId = post.ProvinceId,
+                        DistrictId = post.DistrictId,
+                        WardId = post.WardId,
+                        Address = post.Address,
+                        PostId = newItem.PostId,
                         VegetableId = newItem.VegetableId
                     });
                     exchangeDetailResponseModels.Add(new ExchangeDetailResponseModel
@@ -196,18 +200,17 @@ namespace VG.Service.Service
                         FullNameReceiver = accountHost.Members.FirstOrDefault().FullName,
                         AccountHostId = accountReceiver.Id,
                         ReceiverId = accountHost.Id,
-                        ShareDetailId = share.Id,
+                        PostId = post.Id,
                         CreatedDate = exchangeResponse.DateExchange
                     });
-                    var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == accountHost.Id, new string[] { "AppAccountLogins", "Members" });
-                    var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(),
+                    var mess = IdentityHelper.NotifyAsync(accountHost.AppAccountLogins.Select(s => s.DeviceToken).ToArray(),
                         "Bạn nhận được yêu cầu mới",
-                        accountReceiver.Members.FirstOrDefault().FullName + " yêu cầu nhận " + newItem.Quantity + " " + share.Vegetable.VegetableDescription.VegContent + " từ bạn. " +
+                        accountReceiver.Members.FirstOrDefault().FullName + " yêu cầu nhận " + newItem.Quantity + " " + post.Vegetable.VegetableDescription.VegContent + " từ bạn" +
                         " và gửi lại " + exchangeResponse.Quantity + " " + veg.VegetableDescription.VegContent);
                 }
                 else
                 {
-                    if (newItem.Quantity > share.Quantity)
+                    if (newItem.Quantity > post.Quantity)
                     {
                         throw new Exception("Số lượng cho không đủ. Vui lòng nhập lại");
                     }
@@ -219,8 +222,12 @@ namespace VG.Service.Service
                         Quantity = newItem.Quantity,
                         Sender = accountHost.Id,
                         ReceiveBy = accountReceiver.Id,
-                        ShareDetailId = newItem.ShareDetailId,
-                        VegetableId = share.VegetableId
+                        ProvinceId = newItem.ProvinceId,
+                        DistrictId = newItem.DistrictId,
+                        WardId = newItem.WardId,
+                        Address = newItem.Address,
+                        PostId = newItem.PostId,
+                        VegetableId = post.VegetableId
                     });
                     exchangeDetailResponseModels.Add(new ExchangeDetailResponseModel
                     {
@@ -231,20 +238,19 @@ namespace VG.Service.Service
                         FullNameReceiver = accountReceiver.Members.FirstOrDefault().FullName,
                         AccountHostId = accountHost.Id,
                         ReceiverId = accountReceiver.Id,
-                        ShareDetailId = share.Id,
+                        PostId = post.Id,
                         CreatedDate = resullt.DateExchange
                     });
-                    share.Quantity = share.Quantity - resullt.Quantity;
+                    post.Quantity = post.Quantity - resullt.Quantity;
                     var veg = this._vegetableRepository.GetSingle(s => s.Id == resullt.VegetableId, new string[] { "VegetableDescription" });
                     veg.Quantity = veg.Quantity - resullt.Quantity;
                     this._vegetableRepository.Update(veg);
-                    this._shareDetailRepository.Update(share);
-                    var qrCode = this._qrCodeService.Add(resullt.Id, baseUrl);
-                    var qrCodeForShipper = this._qrCodeForShipperService.Add(resullt.Id, baseUrl);
-                    var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == accountHost.Id, new string[] { "AppAccountLogins", "Members" });
-                    var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(),
+                    this._postRepository.Update(post);
+                    var qrCodeForShipper = this._qrCodeService.Add(resullt.Id, 2, baseUrl);
+                    var qrCodeExchange = this._qrCodeService.Add(resullt.Id, 1, baseUrl);
+                    var mess = IdentityHelper.NotifyAsync(accountHost.AppAccountLogins.Select(s => s.DeviceToken).ToArray(),
                         "Có tài khoản nhận rau từ bạn",
-                        accountReceiver.Members.FirstOrDefault().FullName + " đã nhận " + newItem.Quantity + " " + share.Vegetable.VegetableDescription.VegContent + " từ bạn.");
+                        accountReceiver.Members.FirstOrDefault().FullName + " đã nhận " + newItem.Quantity + " " + post.Vegetable.VegetableDescription.VegContent + " từ bạn.");
                 }
                 this._exchangeDetailRepository.Commit();
             }
@@ -273,20 +279,20 @@ namespace VG.Service.Service
 
         public ExchangeDetailResponseModel Get(string Id)
         {
-            var result = this._exchangeDetailRepository.GetSingle(S => S.Id == Id, new string[] { "ShareDetail" });
-            var accountHost = this._accountRepository.GetSingle(s => s.Id == result.ShareDetail.AccountId, new string[] { "Members" });
+            var result = this._exchangeDetailRepository.GetSingle(S => S.Id == Id, new string[] { "postDetail" });
+            var accountHost = this._accountRepository.GetSingle(s => s.Id == result.Post.AccountId, new string[] { "Members" });
             var accountReceiver = this._accountRepository.GetSingle(s => s.Id == result.ReceiveBy, new string[] { "Members" });
             return new ExchangeDetailResponseModel
             {
                 Id = result.Id,
                 Quantity = result.Quantity,
                 Status = result.Status,
-                AccountHostId = result.ShareDetail.AccountId,
+                AccountHostId = result.Post.AccountId,
                 ReceiverId = result.ReceiveBy,
                 FullNameReceiver = accountReceiver.Members.FirstOrDefault().FullName,
                 CreatedDate = result.DateExchange,
                 FullNameHost = accountHost.Members.FirstOrDefault().FullName,
-                ShareDetailId = result.ShareDetailId
+                PostId = result.PostId
             };
         }
 
@@ -302,17 +308,28 @@ namespace VG.Service.Service
             return result.OrderByDescending(s => s.CreatedDate);
         }
 
-        public void Finish(string Id)
+        public void Finish(string Id, string phoneNumber)
         {
             var exchange = this._exchangeDetailRepository.GetSingle(s => s.Id == Id);
+            var account = this._accountRepository.GetSingle(s => s.PhoneNumber == phoneNumber);
+            if (exchange.ReceiveBy != account.Id)
+            {
+                throw new Exception("Bạn không phải là người nhận của đơn hàng này");
+            }
             exchange.Status = (int)EnumStatusRequest.Finish;
             this._exchangeDetailRepository.Update(exchange);
+            var appAccountLogin = this._accountRepository.GetSingle(s => s.Id == exchange.Sender, new string[] { "AppAccountLogins", "Members" });
+            var accountReceive = this._accountRepository.GetSingle(s => s.Id == exchange.ReceiveBy, new string[] { "Members" }).Members.FirstOrDefault();
+            var mess = IdentityHelper.NotifyAsync(appAccountLogin.AppAccountLogins.Select(s => s.DeviceToken).ToArray(),
+                "Yêu cầu đã hoàn thành",
+                accountReceive.FullName + " đã nhận hàng.");
+            this._exchangeDetailRepository.Commit();
         }
 
         public ExchangeDetailResponseModel GetInformationExchange(string Id)
         {
-            var exchange = this._exchangeDetailRepository.GetSingle(s => s.Id == Id, new string[] { "Vegetable.VegetableDescription", "ShareDetail" });
-            var qrCode = this._qrCodeService.Get(exchange.Id);
+            var exchange = this._exchangeDetailRepository.GetSingle(s => s.Id == Id, new string[] { "Vegetable.VegetableDescription", "postDetail" });
+            var qrCodeExchange = this._qrCodeService.Get(exchange.Id, 1, "");
             var accountHost = this._accountRepository.GetSingle(s => s.Id == exchange.Sender, new string[] { "Members" });
             var accountReceiver = this._accountRepository.GetSingle(s => s.Id == exchange.ReceiveBy, new string[] { "Members" });
             return new ExchangeDetailResponseModel
@@ -325,8 +342,25 @@ namespace VG.Service.Service
                 ReceiverAddress = accountReceiver.Members.FirstOrDefault().Address,
                 VegNameReceive = exchange.Vegetable.VegetableDescription.VegContent,
                 ReceiverPhoneNumber = accountReceiver.PhoneNumber,
-                QRCode = qrCode.Url
+                QRCode = qrCodeExchange
             };
+        }
+
+        public IEnumerable<ExchangeDetailResponseModel> CheckInstance(ExchangeDetailRequestModel newItem, string phoneNumber, string baseUrl)
+        {
+
+            var share = this._postRepository.GetSingle(s => s.Id == newItem.PostId, new string[] { "Province", "District", "Ward" });
+            var addressSender = share.Address + ", " + share.Ward.Name + ", " + share.District.Name + "," + share.Province.Name;
+            var distance = IdentityHelper.GetDistance(addressSender, newItem.FullAddress);
+            if (distance > 15)
+            {
+                throw new Exception("Khoảng cách quá xa. Bạn có muốn tiếp tục không ?");
+            }
+            else
+            {
+                var result = this.Add(newItem, phoneNumber, baseUrl);
+                return result;
+            }
         }
     }
 }

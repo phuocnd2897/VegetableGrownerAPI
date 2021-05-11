@@ -10,5 +10,6 @@ namespace VG.Model.ResponseModel
         public string AccountSend { get; set; }
         public string FriendName { get; set; }
         public DateTime RequestedDate { get; set; }
+        public string Avatar { get; set; }
     }
 }
